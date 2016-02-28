@@ -72,6 +72,7 @@ return [
             ],
 
             'deactivated' => 'Your account has been deactivated.',
+            'invalid-domain' => 'Please use your company email account',
             'email_taken' => 'That e-mail address is already taken.',
 
             'password' => [

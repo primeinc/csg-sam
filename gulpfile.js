@@ -26,6 +26,7 @@ elixir(function(mix) {
       */
      .sass([
         'frontend/app.scss',
+        'frontend/plugin/toastr/toastr.scss',
         'plugin/sweetalert/sweetalert.scss'
      ], 'resources/assets/css/frontend/app.css')
 
@@ -42,7 +43,9 @@ elixir(function(mix) {
      .scripts([
         'plugin/sweetalert/sweetalert.min.js',
         'plugins.js',
-        'frontend/app.js'
+        'frontend/app.js',
+        'frontend/plugin/toastr/toastr.min.js',
+        'frontend/custom.js'
      ], 'public/js/frontend.js')
 
      /**

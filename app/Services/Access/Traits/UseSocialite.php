@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Exceptions\GeneralException;
 use Laravel\Socialite\Facades\Socialite;
 use App\Events\Frontend\Auth\UserLoggedIn;
+use Log;
 
 /**
  * Class UseSocialite
@@ -35,10 +36,24 @@ trait UseSocialite
             return $this->getAuthorizationFirst($provider);
         }
 
+        $socialUser = $this->getSocialUser($provider);
+
+        $accessConfig = config('socialite-login.limit-access', []);
+        foreach ($accessConfig as $property => $regex)
+        {
+            $value = object_get($socialUser, $property);
+            if (is_string($value) and preg_match($regex, $value))
+            {
+                continue;
+            }
+            Log::alert("Invalid login for company domain - Attempted: " . $value);
+            return redirect()->route('frontend.index')->withFlashDanger(trans('exceptions.frontend.auth.invalid-domain', ['provider' => $provider]));
+        }
+
         /**
          * Create the user if this is a new social account or find the one that is already there
          */
-        $user = $this->user->findOrCreateSocial($this->getSocialUser($provider), $provider);
+        $user = $this->user->findOrCreateSocial($socialUser, $provider);
 
         /**
          * User has been successfully created or already exists
@@ -51,7 +66,10 @@ trait UseSocialite
          */
         if (! access()->user()->isActive()) {
             auth()->logout();
-            throw new GeneralException(trans('exceptions.frontend.auth.deactivated'));
+
+            Log::alert("Login attempted for deactivated account: " . $value);
+            return redirect()->route('frontend.index')->withFlashDanger(trans('exceptions.frontend.auth.deactivated'));
+//            throw new GeneralException(trans('exceptions.frontend.auth.deactivated'));
         }
 
         /**
@@ -139,7 +157,8 @@ trait UseSocialite
         }
 
         if (strlen(getenv('GOOGLE_CLIENT_ID'))) {
-            $socialite_enable[] = link_to_route('auth.provider', trans('labels.frontend.auth.login_with', ['social_media' => 'Google']), 'google');
+//            $socialite_enable[] = link_to_route('auth.provider', trans('labels.frontend.auth.login_with', ['social_media' => 'Google']), 'google');
+            $socialite_enable[] = "<a href=\"" . route('auth.provider', 'google') . "\"><img src=\"/btn_google.png\" /></a>";
         }
 
         if (strlen(getenv('GITHUB_CLIENT_ID'))) {
