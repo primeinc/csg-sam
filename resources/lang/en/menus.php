@@ -57,8 +57,8 @@ return [
         ],
 
         'sidebar' => [
-            'dashboard' => 'Dashboard',
-            'general' => 'General',
+            'dashboard' => 'Admin Dashboard',
+            'general' => 'Admin Nav',
         ],
     ],
 
@@ -105,9 +105,24 @@ return [
             'logs' => 'Logs',
         ],
 
+        'samples' => [
+            'main' => 'Samples',
+            'search' => 'Search Samples',
+            'add' => 'Add Samples',
+            'bulk' => 'Bulk Edit',
+        ],
+
+
+        'dealers' => [
+            'main' => 'Dealers',
+            'find' => 'Find Dealer',
+            'add' => 'Add Dealer',
+        ],
+
         'sidebar' => [
             'dashboard' => 'Dashboard',
             'general' => 'General',
+            'admin'   => 'Admin Access',
         ],
     ],
 

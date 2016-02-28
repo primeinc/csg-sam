@@ -35,4 +35,21 @@ class User extends Authenticatable
      * @var array
      */
     protected $dates = ['deleted_at'];
+
+    /**
+     * Get the Dealers assigned to a User.
+     */
+    public function dealers()
+    {
+        return $this->hasMany('App\Dealer');
+    }
+
+    /**
+     * Get the Checkouts assigned to a User.
+     */
+    public function checkouts()
+    {
+        return $this->hasMany('App\Checkout');
+    }
+
 }

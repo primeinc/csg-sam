@@ -4,7 +4,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel (optional) -->
-        @role('User')
+        @roles(['Administrator', 'User'])
         <div class="user-panel">
             <div class="pull-left image">
                 <img src="{!! access()->user()->picture !!}" class="img-circle" alt="User Image" />
@@ -30,46 +30,72 @@
 
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
-            <li class="header">{{ trans('menus.frontend.sidebar.general') }}</li>
-
             <!-- Optionally, you can add icons to the links -->
-            <li class="{{ Active::pattern('admin/dashboard') }}">
-                <a href="{!! route('admin.dashboard') !!}">
+            <li class="{{ Active::pattern('dashboard') }}">
+                <a href="{!! route('frontend.user.dashboard') !!}">
                     <i class="fa fa-dashboard"></i>
                     <span>{{ trans('menus.frontend.sidebar.dashboard') }}</span>
                 </a>
             </li>
 
-            @role('User')
-            @permission('view-access-management')
-                <li class="{{ Active::pattern('admin/access/*') }}">
-                    <a href="{!!url('admin/access/users')!!}">
-                        <i class="fa fa-cog"></i>
-                        <span>{{ trans('menus.frontend.access.title') }}</span>
-                    </a>
-                </li>
-            @endauth
-
-            <li class="{{ Active::pattern('admin/log-viewer*') }} treeview">
+            <li class="{{ Active::pattern('samples/*') }} treeview">
                 <a href="#">
-                    <i class="fa fa-bug"></i>
-                    <span>{{ trans('menus.frontend.log-viewer.main') }}</span>
+                    <i class="fa fa-star"></i>
+                    <span>{{ trans('menus.frontend.samples.main') }}</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu {{ Active::pattern('admin/log-viewer*', 'menu-open') }}" style="display: none; {{ Active::pattern('admin/log-viewer*', 'display: block;') }}">
-                    <li class="{{ Active::pattern('admin/log-viewer') }}">
-                        <a href="{!! url('admin/log-viewer') !!}">
-                            <i class="fa fa-dashboard"></i>
-                            {{ trans('menus.frontend.log-viewer.dashboard') }}
+                <ul class="treeview-menu {{ Active::pattern('samples/search*', 'menu-open') }}" style="display: none; {{ Active::pattern('samples/search*', 'display: block;') }}">
+                    <li class="{{ Active::pattern('samples/search') }}">
+                        <a href="{!! url('samples/search') !!}">
+                            <i class="fa fa-search"></i>
+                            {{ trans('menus.frontend.samples.search') }}
                         </a>
                     </li>
-                    <li class="{{ Active::pattern('admin/log-viewer/logs') }}">
-                        <a href="{!! url('admin/log-viewer/logs') !!}">
-                            <i class="fa fa-binoculars"></i>
-                            {{ trans('menus.frontend.log-viewer.logs') }}
+                    <li class="{{ Active::pattern('samples/add') }}">
+                        <a href="{!! url('samples/add') !!}">
+                            <i class="fa fa-plus"></i>
+                            {{ trans('menus.frontend.samples.add') }}
+                        </a>
+                    </li>
+                    <li class="{{ Active::pattern('samples/bulk-edit') }}">
+                        <a href="{!! url('samples/bulk-edit') !!}">
+                            <i class="fa fa-plus-square"></i>
+                            {{ trans('menus.frontend.samples.bulk') }}
                         </a>
                     </li>
                 </ul>
+            </li>
+
+            <li class="{{ Active::pattern('dealers/*') }} treeview">
+                <a href="#">
+                    <i class="fa fa-building"></i>
+                    <span>{{ trans('menus.frontend.dealers.main') }}</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu {{ Active::pattern('dealers/search*', 'menu-open') }}" style="display: none; {{ Active::pattern('dealers/search*', 'display: block;') }}">
+                    <li class="{{ Active::pattern('dealers/search') }}">
+                        <a href="{!! url('samples/search') !!}">
+                            <i class="fa fa-search"></i>
+                            {{ trans('menus.frontend.dealers.search') }}
+                        </a>
+                    </li>
+                    <li class="{{ Active::pattern('dealers/add') }}">
+                        <a href="{!! url('dealers/add') !!}">
+                            <i class="fa fa-user-plus"></i>
+                            {{ trans('menus.frontend.dealers.add') }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            @permission('view-access-management')
+
+            <!-- Optionally, you can add icons to the links -->
+            <li class="{{ Active::pattern('admin/dashboard') }}">
+                <a href="{!! route('admin.dashboard') !!}">
+                    <i class="fa fa-cog"></i>
+                    <span>{{ trans('menus.frontend.sidebar.admin') }}</span>
+                </a>
             </li>
             @endauth
         </ul><!-- /.sidebar-menu -->

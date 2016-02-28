@@ -15,4 +15,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('profile/edit', 'ProfileController@edit')->name('frontend.user.profile.edit');
         Route::patch('profile/update', 'ProfileController@update')->name('frontend.user.profile.update');
     });
+    Route::group(['namespace' => 'Asset'], function() {
+        Route::get('samples', 'AssetController@index')->name('frontend.assets');
+        Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
+    });
 });
