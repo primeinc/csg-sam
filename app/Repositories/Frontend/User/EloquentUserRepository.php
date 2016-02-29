@@ -147,8 +147,11 @@ class EloquentUserRepository implements UserContract
             $user->providers()->save(new SocialLogin([
                 'provider'    => $provider,
                 'provider_id' => $data->id,
+                'avatar'      => $data->avatar,
             ]));
         }
+
+        // TODO update avatar from social login
 
         /**
          * Return the user object

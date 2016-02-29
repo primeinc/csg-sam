@@ -29,6 +29,10 @@ class EventServiceProvider extends ServiceProvider
         \App\Events\Frontend\Auth\UserRegistered::class => [
             \App\Listeners\Frontend\Auth\UserRegisteredListener::class,
         ],
+        \SocialiteProviders\Manager\SocialiteWasCalled::class => [
+            // add your listeners (aka providers) here
+            'App\Models\Access\SocialiteProviders\Google\GoogleExtendSocialite@handle',
+        ],
     ];
 
     /**

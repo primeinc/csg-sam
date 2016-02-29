@@ -115,7 +115,7 @@ return [
 
         'dealers' => [
             'main' => 'Dealers',
-            'find' => 'Find Dealer',
+            'search' => 'Find Dealer',
             'add' => 'Add Dealer',
         ],
 

@@ -25,7 +25,7 @@
         <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
         <![endif]-->
     </head>
-    <body class="skin-{!! config('backend.theme') !!}">
+    <body class="skin-{!! config('backend.theme') !!} sidebar-mini">
     <div class="wrapper">
         @include('backend.includes.header')
         @include('backend.includes.sidebar')

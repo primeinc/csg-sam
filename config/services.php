@@ -84,7 +84,9 @@ return [
             'https://www.googleapis.com/auth/plus.profile.emails.read',
         ],
 
-        'with' => [],
+        'with' => [
+            'hd' => env('GOOGLE_APP_DOMAIN')
+        ],
     ],
 
     'linkedin' => [

@@ -30,11 +30,8 @@
     </div>
 @elseif (Session::get('flash_danger'))
     <div class="alert alert-danger">
-        @if(is_array(json_decode(Session::get('flash_danger'), true)))
-            {!! implode('', Session::get('flash_danger')->all(':message<br/>')) !!}
-        @else
-            {!! Session::get('flash_danger') !!}
-        @endif
+
+        {!! var_dump(Session::get('flash_danger')) !!}
     </div>
 @elseif (Session::get('flash_message'))
     <div class="alert alert-info">

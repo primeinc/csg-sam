@@ -74,7 +74,7 @@
                 </a>
                 <ul class="treeview-menu {{ Active::pattern('dealers/search*', 'menu-open') }}" style="display: none; {{ Active::pattern('dealers/search*', 'display: block;') }}">
                     <li class="{{ Active::pattern('dealers/search') }}">
-                        <a href="{!! url('samples/search') !!}">
+                        <a href="{!! url('dealers/search') !!}">
                             <i class="fa fa-search"></i>
                             {{ trans('menus.frontend.dealers.search') }}
                         </a>

@@ -2,6 +2,8 @@
 
 namespace App\Models\Access\User\Traits\Attribute;
 
+use App\Models\Access\User\SocialLogin;
+
 /**
  * Class UserAttribute
  * @package App\Models\Access\User\Traits\Attribute
@@ -40,6 +42,13 @@ trait UserAttribute
      */
     public function getPictureAttribute()
     {
+        foreach ($this->providers as $p) {
+            if ($p->avatar) {
+                return $p->avatar;
+            }
+
+        }
+
         return gravatar()->get($this->email, ['size' => 50]);
     }
 
