@@ -10,7 +10,32 @@ use App\Models\Access\User\Traits\Relationship\UserRelationship;
 
 /**
  * Class User
+ *
  * @package App\Models\Access\User
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Dealer[] $dealers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Checkout[] $checkouts
+ * @property-read mixed $confirmed_label
+ * @property-read mixed $picture
+ * @property-read mixed $edit_button
+ * @property-read mixed $change_password_button
+ * @property-read mixed $status_button
+ * @property-read mixed $confirmed_button
+ * @property-read mixed $delete_button
+ * @property-read mixed $action_buttons
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Role\Role[] $roles
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Permission\Permission[] $permissions
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\User\SocialLogin[] $providers
+ * @property integer $id
+ * @property string $name
+ * @property string $email
+ * @property string $password
+ * @property boolean $status
+ * @property string $confirmation_code
+ * @property boolean $confirmed
+ * @property string $remember_token
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @property \Carbon\Carbon $deleted_at
  */
 class User extends Authenticatable
 {
@@ -41,7 +66,7 @@ class User extends Authenticatable
      */
     public function dealers()
     {
-        return $this->hasMany('App\Dealer');
+        return $this->hasMany('App\Models\Dealer');
     }
 
     /**
@@ -49,7 +74,7 @@ class User extends Authenticatable
      */
     public function checkouts()
     {
-        return $this->hasMany('App\Checkout');
+        return $this->hasMany('App\Models\Checkout');
     }
 
 }

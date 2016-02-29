@@ -11945,6 +11945,14 @@ table.text-center, table.text-center td, table.text-center th {
 #available-permissions {
   margin-top: 20px; }
 
+.asset-img {
+  border-radius: 10%;
+  float: left;
+  width: 200px;
+  height: 149px; }
+  .right .asset-img {
+    float: right; }
+
 /*
  * General: Miscellaneous
  * ----------------------

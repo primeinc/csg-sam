@@ -34,7 +34,7 @@ $factory->define(App\Models\Asset::class, function (Faker\Generator $faker) use 
         'msrp' => $faker->randomFloat(2),
         'image' => $faker->image(public_path() . '/uploads', 200, 149, 'business', false),
         'status' => $faker->numberBetween(1,3),
-        'statusNotes' => $faker->sentence,
+        'status_notes' => $faker->sentence,
     ];
 });
 
@@ -44,14 +44,23 @@ $factory->define(App\Models\Checkout::class, function (Faker\Generator $faker) u
         'user_id' => factory(App\Models\Access\User\User::class)->create()->id,
         'dealer_id' => factory(App\Models\Dealer::class)->create()->id,
         'notes' => $faker->sentence,
-        'expectedReturnDate' => $faker->dateTimeThisMonth,
+        'expected_return_date' => $faker->dateTimeThisMonth,
     ];
 });
 
 $factory->define(App\Models\Dealer::class, function (Faker\Generator $faker) use ($factory) {
     return [
         'user_id' => factory(App\Models\Access\User\User::class)->create()->id,
-        'companyName' => $faker->company,
-        'employeeName' => $faker->name,
+        'company_name' => $faker->company,
+        'employee_name' => $faker->name,
+    ];
+});
+
+$factory->define(App\Models\AssetLogs::class, function (Faker\Generator $faker) use ($factory) {
+    return [
+        'asset_id' => factory(App\Models\Asset::class)->create()->id,
+        'user_id' => factory(App\Models\Access\User\User::class)->create()->id,
+        'dealer_id' => factory(App\Models\Dealer::class)->create()->id,
+        'action' => $faker->numberBetween(1,5),
     ];
 });

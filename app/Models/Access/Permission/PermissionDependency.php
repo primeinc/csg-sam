@@ -7,7 +7,14 @@ use App\Models\Access\Permission\Traits\Relationship\PermissionDependencyRelatio
 
 /**
  * Class PermissionDependency
+ *
  * @package App\Models\Access\Permission
+ * @property-read \App\Models\Access\Permission\Permission $permission
+ * @property integer $id
+ * @property integer $permission_id
+ * @property integer $dependency_id
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class PermissionDependency extends Model
 {

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDealersTable extends Migration
+class CreateAssetLogsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,11 +12,12 @@ class CreateDealersTable extends Migration
      */
     public function up()
     {
-        Schema::create('dealers', function (Blueprint $table) {
+        Schema::create('asset_logs', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('asset_id')->index();
             $table->integer('user_id')->index();
-            $table->string('company_name');
-            $table->string('employee_name');
+            $table->integer('dealer_id')->index();
+            $table->tinyInteger('action');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -29,6 +30,6 @@ class CreateDealersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dealers');
+        Schema::drop('asset_logs');
     }
 }

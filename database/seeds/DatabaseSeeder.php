@@ -27,9 +27,10 @@ class DatabaseSeeder extends Seeder
         }
 
         factory(App\Models\Access\User\User::class, 5)->create();
-        factory(App\Models\Asset::class, 10)->create();
+        factory(App\Models\Asset::class, 5)->create();
         factory(App\Models\Dealer::class, 20)->create();
-        factory(App\Models\Checkout::class, 50)->create();
+        factory(App\Models\Checkout::class, 20)->create();
+        factory(App\Models\Asset::class, 5)->create();
 
         Model::reguard();
     }

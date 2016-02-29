@@ -18,8 +18,8 @@ class CreateCheckoutsTable extends Migration
             $table->integer('user_id')->index();
             $table->integer('dealer_id')->index();
             $table->string('notes');
-            $table->date('expectedReturnDate');
-            $table->date('returnedDate')->nullable();
+            $table->date('expected_return_date');
+            $table->date('returned_date')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });

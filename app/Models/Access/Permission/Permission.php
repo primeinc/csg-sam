@@ -8,7 +8,24 @@ use App\Models\Access\Permission\Traits\Relationship\PermissionRelationship;
 
 /**
  * Class Permission
+ *
  * @package App\Models\Access\Permission
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Role\Role[] $roles
+ * @property-read \App\Models\Access\Permission\PermissionGroup $group
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\User\User[] $users
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Permission\PermissionDependency[] $dependencies
+ * @property-read mixed $system_label
+ * @property-read mixed $edit_button
+ * @property-read mixed $delete_button
+ * @property-read mixed $action_buttons
+ * @property integer $id
+ * @property integer $group_id
+ * @property string $name
+ * @property string $display_name
+ * @property boolean $system
+ * @property integer $sort
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class Permission extends Model
 {

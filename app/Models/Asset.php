@@ -3,9 +3,30 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\Asset
+ *
+ * @property-read \App\Models\Mfr $mfr
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Checkout[] $checkouts
+ * @property integer $id
+ * @property integer $mfr_id
+ * @property string $part
+ * @property string $description
+ * @property float $msrp
+ * @property string $image
+ * @property boolean $status
+ * @property string $statusNotes
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @mixin \Eloquent
+ */
 class Asset extends Model
 {
+    use SoftDeletes;
+
     /**
      * The database table used by the model.
      *
@@ -18,7 +39,21 @@ class Asset extends Model
      *
      * @var array
      */
-    protected $fillable = ['mfr_id', 'part', 'description', 'msrp', 'filename', 'status'];
+    protected $fillable = ['mfr_id', 'part', 'description', 'msrp', 'image', 'status'];
+
+//    public static function create(array $attributes = [])
+//    {
+//        debug($attributes);
+//        if(!isset($attributes['image']))
+//            $attributes['image'] = "asset-placeholder.png";
+//        debug($attributes);
+//
+//        $model = new static($attributes);
+//
+//        $model->save();
+//
+//        return $model;
+//    }
 
     /**
      * Get the Manufacturer that owns the asset.
@@ -35,5 +70,23 @@ class Asset extends Model
     {
         return $this->hasMany('App\Models\Checkout');
     }
+
+    /**
+     * Get the Active Checkout for an asset.
+     */
+    public function activeCheckout()
+    {
+        return $this->hasOne('App\Models\Checkout')->whereNull('returned_date')->select('asset_id');
+    }
+
+
+    /**
+     * Get the Logs for an asset.
+     */
+    public function assetLogs()
+    {
+        return $this->hasMany('App\Models\AssetLogs');
+    }
+
 
 }

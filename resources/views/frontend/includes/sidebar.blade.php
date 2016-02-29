@@ -44,7 +44,7 @@
                     <span>{{ trans('menus.frontend.samples.main') }}</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu {{ Active::pattern('samples/search*', 'menu-open') }}" style="display: none; {{ Active::pattern('samples/search*', 'display: block;') }}">
+                <ul class="treeview-menu {{ Active::pattern('samples/*', 'menu-open') }}" style="display: none; {{ Active::pattern('samples/*', 'display: block;') }}">
                     <li class="{{ Active::pattern('samples/search') }}">
                         <a href="{!! url('samples/search') !!}">
                             <i class="fa fa-search"></i>

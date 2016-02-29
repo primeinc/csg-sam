@@ -3,9 +3,22 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
+/**
+ * App\Models\Mfr
+ *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Asset[] $assets
+ * @property integer $id
+ * @property string $name
+ * @property string $deleted_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @mixin \Eloquent
+ */
 class Mfr extends Model
 {
+    use SoftDeletes;
 
     /**
      * The attributes that are mass assignable.

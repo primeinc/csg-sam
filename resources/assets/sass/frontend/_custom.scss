@@ -1,1 +1,10 @@
 #available-permissions {margin-top:20px}
+.asset-img {
+  @include border-radius-same(10%);
+  float: left;
+  width: 200px;
+  height: 149px;
+  .right & {
+    float: right;
+  }
+}

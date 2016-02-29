@@ -20,7 +20,7 @@ class CreateAssetsTable extends Migration
             $table->decimal('msrp', 6, 2);
             $table->string('image');
             $table->tinyInteger('status')->default(1)->index();
-            $table->string('statusNotes');
+            $table->string('status_notes');
             $table->softDeletes();
             $table->timestamps();
         });

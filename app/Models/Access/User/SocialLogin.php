@@ -6,7 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 
 /**
  * Class SocialLogin
+ *
  * @package App\Models\Access\User
+ * @property integer $id
+ * @property integer $user_id
+ * @property string $provider
+ * @property string $provider_id
+ * @property string $avatar
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
  */
 class SocialLogin extends Model
 {
