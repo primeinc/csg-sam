@@ -14,7 +14,7 @@ class CreateMfrsTable extends Migration
     {
         Schema::create('mfrs', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+            $table->string('name')->unique();
             $table->softDeletes();
             $table->timestamps();
         });

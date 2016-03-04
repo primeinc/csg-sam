@@ -1,56 +1,48 @@
 <?php
 
-namespace App\Http\Controllers\Frontend\Asset;
+namespace App\Http\Controllers\Frontend\AssetLogs;
 
-use App\Models\Asset;
+use App\Models\AssetLogs;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Repositories\Frontend\Mfr\MfrContract;
-use App\Repositories\Frontend\Asset\AssetContract;
+use App\Models\Mfr;
+use App\Repositories\Frontend\AssetLogs\AssetLogsContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
-class AssetController extends Controller
+class AssetLogsController extends Controller
 {
     /**
      * The asset repository instance.
      *
-     * @var AssetContract
+     * @var AssetLogsContract
      */
-    protected $assets;
-    /**
-     * The asset repository instance.
-     *
-     * @var MfrContract
-     */
-    protected $mfrs;
+    protected $assetLogs;
 
     /**
      * Create a new controller instance.
      *
-     * @param  AssetContract $assets
-     * @param MfrContract $mfrs
+     * @param  AssetLogsContract $assetLogs
      */
-    public function __construct(AssetContract $assets, MfrContract $mfrs)
+    public function __construct(AssetLogsContract $assetLogs)
     {
         $this->middleware('auth');
 
-        $this->assets = $assets;
-        $this->mfrs = $mfrs;
+        $this->assetLogs = $assetLogs;
     }
 
 
     public function index() {
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
-        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+//        $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
+//        $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+        $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
 
-        return view('frontend.assets.samples', compact('assets'));
+        return view('frontend.assetLogs.samples', compact('assetLogs'));
     }
 
     public function add(Request $request)
     {
-        return view('frontend.assets.add');
+        return view('frontend.assetLogs.add');
     }
 
     /**
@@ -75,9 +67,10 @@ class AssetController extends Controller
         else
             $request->merge(['imageName' => 'asset-placeholder.png'] );
 
-        $mfr = $this->mfrs->findOrCreate($request->mfr);
+        $mfr = Mfr::findOrCreate($request->mfr);
 
-        Asset::create([
+
+        AssetLogs::create([
             'part' => $request->part,
             'mfr_id' => $mfr->id,
             'description' => $request->description,

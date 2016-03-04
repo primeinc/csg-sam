@@ -1,56 +1,47 @@
 <?php
 
-namespace App\Http\Controllers\Frontend\Asset;
+namespace App\Http\Controllers\Frontend\Checkout;
 
-use App\Models\Asset;
+use App\Models\Checkout;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Repositories\Frontend\Mfr\MfrContract;
-use App\Repositories\Frontend\Asset\AssetContract;
+use App\Repositories\Frontend\Checkout\CheckoutContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
-class AssetController extends Controller
+class CheckoutController extends Controller
 {
     /**
      * The asset repository instance.
      *
-     * @var AssetContract
+     * @var CheckoutContract
      */
-    protected $assets;
-    /**
-     * The asset repository instance.
-     *
-     * @var MfrContract
-     */
-    protected $mfrs;
+    protected $checkouts;
 
     /**
      * Create a new controller instance.
      *
-     * @param  AssetContract $assets
-     * @param MfrContract $mfrs
+     * @param  CheckoutContract $checkouts
      */
-    public function __construct(AssetContract $assets, MfrContract $mfrs)
+    public function __construct(CheckoutContract $checkouts)
     {
         $this->middleware('auth');
 
-        $this->assets = $assets;
-        $this->mfrs = $mfrs;
+        $this->checkouts = $checkouts;
     }
 
 
     public function index() {
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
-        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+//        $checkouts = Checkout::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
+//        $checkouts = Checkout::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+        $checkouts = Checkout::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
 
-        return view('frontend.assets.samples', compact('assets'));
+        return view('frontend.checkouts.samples', compact('checkouts'));
     }
 
     public function add(Request $request)
     {
-        return view('frontend.assets.add');
+        return view('frontend.checkouts.add');
     }
 
     /**
@@ -75,11 +66,10 @@ class AssetController extends Controller
         else
             $request->merge(['imageName' => 'asset-placeholder.png'] );
 
-        $mfr = $this->mfrs->findOrCreate($request->mfr);
 
-        Asset::create([
+        Checkout::create([
             'part' => $request->part,
-            'mfr_id' => $mfr->id,
+            'mfr_id' => 2,
             'description' => $request->description,
             'msrp' => $request->msrp,
             'image' => $request->imageName,

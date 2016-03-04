@@ -6,7 +6,7 @@
         <div class="col-md-6">
                 <div class="box box-default ">
                     <div class="box-header with-border">
-                        <h3 class="box-title">CSGID: {{ $asset->id }}</h3>
+                        <h3 class="box-title">#{{ $asset->id }}</h3>
                         <div class="box-tools pull-right">
                             {{--<span class="label label-default">{{ $asset['msrp'] }}</span>--}}
                             @if ($asset->status == 2) {{--$asset->activeCheckout--}}
@@ -29,7 +29,7 @@
                             <img class="img-responsive" src="/uploads/{{ $asset->image }}" alt="message user image">
                         </div>
                         <dl>
-                            <dt>Manufacturer</dt>
+                            <dt>Manufacture</dt>
                             <dd>{{ $asset->Mfr->name }}</dd>
                             <dt>Description</dt>
                             <dd>{{ $asset->description }}</dd>

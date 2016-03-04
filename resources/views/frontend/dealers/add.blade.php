@@ -22,13 +22,12 @@
                                 <input type="text" name="part" id="asset-part" class="form-control">
                             </div>
                         </div>
+
                         <div class="form-group">
-                            <label for="asset-mfr" class="col-sm-3 control-label">Manufacturer</label>
+                            <label for="asset-mfr" class="col-sm-3 control-label">Manufacture</label>
 
                             <div class="col-sm-6">
-                                <select id="asset-mfr" name="mfr" class="form-control select2">
-                                    <option></option>
-                                </select>
+                                <input type="text" name="part" id="asset-mfr" class="form-control">
                             </div>
                         </div>
 
@@ -71,42 +70,4 @@
     </div>
 @endsection
 
-@section('after-scripts-end')
-    <script>
-        $.fn.select2.defaults.set( "theme", "bootstrap" );
 
-        $("#asset-mfr").select2({
-            placeholder: "Select or add a Manufacturer",
-            tags: true,
-            ajax: {
-                url: "{!! route('frontend.mfrs.search') !!}",
-                dataType: 'json',
-                delay: 500,
-                width: null,
-                data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-                    // parse the results into the format expected by Select2
-                    // since we are using custom formatting functions we do not need to
-                    // alter the remote JSON data, except to indicate that infinite
-                    // scrolling can be used
-                    params.page = params.page || 1;
-
-                    return {
-                        results: data.items,
-                        pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-            minimumInputLength: 1
-        });
-    </script>
-
-@endsection

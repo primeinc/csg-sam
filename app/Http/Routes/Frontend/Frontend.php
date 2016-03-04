@@ -22,4 +22,25 @@ Route::group(['middleware' => 'auth'], function () {
         Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
         Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
     });
+    Route::group(['namespace' => 'Dealer'], function() {
+        Route::get('dealers', 'DealerController@index')->name('frontend.dealers');
+        Route::get('dealers/add', 'DealerController@add')->name('frontend.dealers.add');
+        Route::post('dealers/add', 'DealerController@store')->name('frontend.dealers.add');
+        Route::delete('dealers/{dealer}', 'DealerController@destroy')->name('frontend.dealers');
+        Route::get('dealers/search', 'DealerController@index')->name('frontend.dealers');
+    });
+    Route::group(['namespace' => 'Mfr'], function() {
+        Route::get('mfrs', 'MfrController@index')->name('frontend.mfrs');
+        Route::get('mfrs/add', 'MfrController@add')->name('frontend.mfrs.add');
+        Route::post('mfrs/add', 'MfrController@store')->name('frontend.mfrs.add');
+        Route::delete('mfrs/{mfr}', 'MfrController@destroy')->name('frontend.mfrs');
+        Route::get('mfrs/search', 'MfrController@search')->name('frontend.mfrs.search');
+    });
+    Route::group(['namespace' => 'Checkout'], function() {
+        Route::get('checkout', 'CheckoutController@index')->name('frontend.checkout');
+        Route::get('checkout/add', 'CheckoutController@add')->name('frontend.checkout.add');
+        Route::post('checkout/add', 'CheckoutController@store')->name('frontend.checkout.add');
+        Route::delete('checkout/{checkout}', 'CheckoutController@destroy')->name('frontend.checkout');
+        Route::get('checkout/search', 'CheckoutController@index')->name('frontend.checkout');
+    });
 });

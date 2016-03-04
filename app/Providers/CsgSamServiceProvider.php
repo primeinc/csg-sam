@@ -38,5 +38,17 @@ class CsgSamServiceProvider extends ServiceProvider
             \App\Repositories\Frontend\Asset\AssetContract::class,
             \App\Repositories\Frontend\Asset\EloquentAssetRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Frontend\Dealer\DealerContract::class,
+            \App\Repositories\Frontend\Dealer\EloquentDealerRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Frontend\Mfr\MfrContract::class,
+            \App\Repositories\Frontend\Mfr\EloquentMfrRepository::class
+        );
+        $this->app->bind(
+            \App\Repositories\Frontend\Checkout\CheckoutContract::class,
+            \App\Repositories\Frontend\Checkout\EloquentCheckoutRepository::class
+        );
     }
 }

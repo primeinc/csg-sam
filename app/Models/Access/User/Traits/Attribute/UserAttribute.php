@@ -43,7 +43,7 @@ trait UserAttribute
      */
     public function getPictureAttribute()
     {
-        if ($this->providers->first()->avatar)
+        if ($this->providers->first())
             return $this->providers->first()->avatar;
 
         return gravatar()->get($this->email, ['size' => 50]);

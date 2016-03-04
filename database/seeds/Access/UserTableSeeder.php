@@ -29,7 +29,7 @@ class UserTableSeeder extends Seeder
             [
                 'name'              => 'Will Peters',
                 'email'             => 'will@csgreps.com',
-                'password'          => null,
+                'password'          => bcrypt('1234'),
                 'confirmation_code' => md5(uniqid(mt_rand(), true)),
                 'confirmed'         => true,
                 'created_at'        => Carbon::now(),

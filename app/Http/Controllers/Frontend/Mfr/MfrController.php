@@ -1,23 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Frontend\Asset;
+namespace App\Http\Controllers\Frontend\Mfr;
 
-use App\Models\Asset;
+use App\Models\Mfr;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\Frontend\Mfr\MfrContract;
-use App\Repositories\Frontend\Asset\AssetContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Response;
 
-class AssetController extends Controller
+class MfrController extends Controller
 {
-    /**
-     * The asset repository instance.
-     *
-     * @var AssetContract
-     */
-    protected $assets;
     /**
      * The asset repository instance.
      *
@@ -28,29 +22,27 @@ class AssetController extends Controller
     /**
      * Create a new controller instance.
      *
-     * @param  AssetContract $assets
-     * @param MfrContract $mfrs
+     * @param  MfrContract $mfrs
      */
-    public function __construct(AssetContract $assets, MfrContract $mfrs)
+    public function __construct(MfrContract $mfrs)
     {
         $this->middleware('auth');
 
-        $this->assets = $assets;
         $this->mfrs = $mfrs;
     }
 
 
     public function index() {
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
-        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+//        $mfrs = Mfr::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
+//        $mfrs = Mfr::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+        $mfrs = Mfr::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
 
-        return view('frontend.assets.samples', compact('assets'));
+        return view('frontend.mfrs.samples', compact('mfrs'));
     }
 
     public function add(Request $request)
     {
-        return view('frontend.assets.add');
+        return view('frontend.mfrs.add');
     }
 
     /**
@@ -75,16 +67,35 @@ class AssetController extends Controller
         else
             $request->merge(['imageName' => 'asset-placeholder.png'] );
 
-        $mfr = $this->mfrs->findOrCreate($request->mfr);
 
-        Asset::create([
+        Mfr::create([
             'part' => $request->part,
-            'mfr_id' => $mfr->id,
+            'mfr_id' => 2,
             'description' => $request->description,
             'msrp' => $request->msrp,
             'image' => $request->imageName,
         ]);
 
         return redirect('/samples');
+    }
+
+    public function search(Request $request)
+    {
+        $term = $request->q;
+
+        $results = array();
+
+        $queries = Mfr::where('name', 'LIKE', '%'.$term.'%')->get();
+
+        $results['total_count'] = $queries->count();
+        $results['incomplete_results'] = false;
+        $results['items'] = [];
+
+        foreach ($queries as $query)
+        {
+//            $results['items'][] = [ 'id' => $query->id, 'text' => $query->name ];
+            $results['items'][] = [ 'id' => $query->name, 'text' => $query->name ];
+        }
+        return Response::json($results);
     }
 }
