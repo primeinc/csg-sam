@@ -20,6 +20,18 @@ elixir(function(mix) {
        'node_modules/bootstrap-sass/assets/javascripts/bootstrap.min.js',
        'public/js/vendor/bootstrap'
      )
+     .copy(
+         'node_modules/select2/dist/css/select2.min.css',
+         'resources/assets/css/plugin/select2/select2.min.css'
+     )
+     .copy(
+         'node_modules/select2/dist/js/select2.min.js',
+         'resources/assets/js/plugin/select2/select2.min.js'
+     )
+     .copy(
+         'node_modules/select2-bootstrap-theme/dist/select2-bootstrap.min.css',
+         'resources/assets/css/plugin/select2/select2-bootstrap.min.css'
+     )
 
      /**
       * Process frontend SCSS stylesheets
@@ -34,7 +46,9 @@ elixir(function(mix) {
       * Combine pre-processed frontend CSS files
       */
      .styles([
-        'frontend/app.css'
+        'frontend/app.css',
+        'plugin/select2/select2.min.css',
+        'plugin/select2/select2-bootstrap.min.css'
      ], 'public/css/frontend.css')
 
      /**
@@ -45,7 +59,8 @@ elixir(function(mix) {
         'plugins.js',
         'frontend/app.js',
         'frontend/plugin/toastr/toastr.min.js',
-        'frontend/custom.js'
+        'frontend/custom.js',
+        'plugin/select2/select2.min.js'
      ], 'public/js/frontend.js')
 
      /**
@@ -61,7 +76,9 @@ elixir(function(mix) {
       * Combine pre-processed backend CSS files
       */
      .styles([
-         'backend/app.css'
+         'backend/app.css',
+         'plugin/select2/select2.min.css',
+         'plugin/select2/select2-bootstrap.min.css'
      ], 'public/css/backend.css')
 
      /**
@@ -72,7 +89,8 @@ elixir(function(mix) {
          'plugins.js',
          'backend/app.js',
          'backend/plugin/toastr/toastr.min.js',
-         'backend/custom.js'
+         'backend/custom.js',
+         'plugin/select2/select2.min.js'
      ], 'public/js/backend.js')
 
     /**
