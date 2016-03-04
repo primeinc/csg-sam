@@ -9,6 +9,7 @@ use App\Repositories\Frontend\Mfr\MfrContract;
 use App\Repositories\Frontend\Asset\AssetContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Redirect;
 
 class AssetController extends Controller
 {
@@ -63,6 +64,7 @@ class AssetController extends Controller
     {
         $this->validate($request, [
             'part' => 'required|max:100',
+            'mfr' => 'required|max:255',
             'description' => 'required|max:255',
             'msrp' => 'numeric',
         ]);
@@ -86,5 +88,46 @@ class AssetController extends Controller
         ]);
 
         return redirect('/samples');
+    }
+
+    public function edit(Request $request)
+    {
+        $asset = $this->assets->find($request->asset);
+
+        return view('frontend.assets.edit', compact('asset'));
+    }
+
+
+    public function update(Request $request)
+    {
+        $this->validate($request, [
+            'id' => 'numeric',
+            'part' => 'required|max:100',
+            'mfr' => 'required|max:255',
+            'description' => 'required|max:255',
+            'msrp' => 'numeric',
+        ]);
+
+        $asset = $this->assets->find($request->asset);
+        $mfr = $this->mfrs->findOrCreate($request->mfr);
+
+        if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
+            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
+            Image::make($request->file('image'))->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
+
+            $request->merge(['imageName' => $imageName] );
+            $asset->image = $request->imageName;
+        }
+
+        $asset->part = $request->part;
+        $asset->mfr_id = $mfr->id;
+        $asset->description = $request->description;
+        $asset->msrp = $request->msrp;
+
+        $asset->save();
+
+//        return view('frontend.assets.edit', compact('asset'));
+        //return redirect()->intended('frontend.assets.edit')->with('asset' , $asset->id);
+        return Redirect::route('frontend.assets.edit', array('asset' => $asset->id));
     }
 }

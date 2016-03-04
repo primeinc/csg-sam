@@ -19,6 +19,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('samples', 'AssetController@index')->name('frontend.assets');
         Route::get('samples/add', 'AssetController@add')->name('frontend.assets.add');
         Route::post('samples/add', 'AssetController@store')->name('frontend.assets.add');
+        Route::get('samples/edit/{asset}', 'AssetController@edit')->name('frontend.assets.edit');
+        Route::post('samples/update/{asset}', 'AssetController@update')->name('frontend.assets.update');
         Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
         Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
     });

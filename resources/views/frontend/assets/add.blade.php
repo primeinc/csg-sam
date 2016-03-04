@@ -5,67 +5,65 @@
 
         <div class="col-md-10 col-md-offset-1">
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-plus"></i> New Asset
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">New Asset</h3>
                 </div>
-
-                <div class="panel-body">
-                    <form action="/samples/add" method="POST" class="form-horizontal" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        <!-- Asset Name -->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="/samples/add" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="box-body">
                         <div class="form-group">
                             <label for="asset-part" class="col-sm-3 control-label">Part #</label>
 
-                            <div class="col-sm-6">
-                                <input type="text" name="part" id="asset-part" class="form-control">
+                            <div class="col-sm-9">
+                                <input type="text" name="part" id="asset-part" class="form-control" >
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="asset-mfr" class="col-sm-3 control-label">Manufacturer</label>
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-9">
                                 <select id="asset-mfr" name="mfr" class="form-control select2">
                                     <option></option>
                                 </select>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label for="asset-description" class="col-sm-3 control-label">Description</label>
 
-                            <div class="col-sm-6">
-                                <input type="text" name="description" id="asset-description" class="form-control">
+                            <div class="col-sm-9">
+                                <input type="text" name="description" id="asset-description" class="form-control" >
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="asset-msrp" class="col-sm-3 control-label">List Price</label>
 
-                            <div class="col-sm-6">
-                                <input type="text" name="msrp" id="asset-msrp" class="form-control">
+                            <div class="col-sm-9">
+                                <div class="input-group">
+                                    <span class="input-group-addon"><i class="fa fa-dollar"></i></span>
+                                    <input type="text" name="msrp" id="asset-msrp" class="form-control" >
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="asset-image" class="col-sm-3 control-label">Picture</label>
-                            <div class="col-sm-6">
+                            <div class="col-sm-9">
                                 <input type="file" name="image" id="asset-image" class="form-control">
                             </div>
                         </div>
-
-                        <!-- Add Asset Button -->
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-default pull-right">
-                                    <i class="fa fa-plus"></i> Add Asset
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div><!-- panel -->
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-info pull-right">Add Asset</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+            </div>
+            <!-- /.box -->
 
         </div><!-- col-md-10 -->
     </div>
@@ -74,6 +72,7 @@
 @section('after-scripts-end')
     <script>
         $.fn.select2.defaults.set( "theme", "bootstrap" );
+        $.fn.select2.defaults.set( "width", "off" );
 
         $("#asset-mfr").select2({
             placeholder: "Select or add a Manufacturer",
