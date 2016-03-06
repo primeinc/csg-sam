@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Frontend\Asset;
 
-use App\Models\Asset;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Repositories\Frontend\Mfr\MfrContract;
+use App\Http\Requests;
+use App\Models\Asset;
 use App\Repositories\Frontend\Asset\AssetContract;
+use App\Repositories\Frontend\Mfr\MfrContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Redirect;
@@ -40,16 +40,13 @@ class AssetController extends Controller
         $this->mfrs = $mfrs;
     }
 
-
     public function index() {
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
         $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
 
         return view('frontend.assets.samples', compact('assets'));
     }
 
-    public function add(Request $request)
+    public function add()
     {
         return view('frontend.assets.add');
     }
@@ -57,8 +54,8 @@ class AssetController extends Controller
     /**
      * Create a new asset.
      *
-     * @param  Request  $request
-     * @return Response
+     * @param  Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function store(Request $request)
     {
@@ -96,7 +93,6 @@ class AssetController extends Controller
 
         return view('frontend.assets.edit', compact('asset'));
     }
-
 
     public function update(Request $request)
     {

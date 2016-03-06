@@ -1,102 +1,61 @@
 @extends('frontend.layouts.master')
 
-@section('content')
-    <div class="row">
-        @foreach($assets as $asset)
-        <div class="col-md-6">
-                <div class="box box-default ">
-                    <div class="box-header with-border">
-                        <h3 class="box-title">#{{ $asset->id }}</h3>
-                        <div class="box-tools pull-right">
-                            {{--<span class="label label-default">{{ $asset['msrp'] }}</span>--}}
-                            @if ($asset->status == 2) {{--$asset->activeCheckout--}}
-                            <span class="label label-warning">
-                                Checked Out
-                            </span>
-                            @elseif ($asset->status == 3)
-                            <span class="label label-info">
-                                In-Storage
-                            </span>
-                            @else
-                            <span class="label label-success">
-                                Avaliable
-                            </span>
-                            @endif
-                        </div><!-- /.box-tools -->
-                    </div><!-- /.box-header -->
-                    <div class="box-body">
-                        <div class="col-xs-6">
-                            <img class="img-responsive" src="/uploads/{{ $asset->image }}" alt="message user image">
-                        </div>
-                        <dl>
-                            <dt>Manufacture</dt>
-                            <dd>{{ $asset->Mfr->name }}</dd>
-                            <dt>Description</dt>
-                            <dd>{{ $asset->description }}</dd>
-                        </dl>
-                    </div><!-- /.box-body -->
-                    <div class="box-footer">
-                        <div class="pull-right">
-                            <div class="btn-group">
-                                {{--<button type="button" class="btn btn-danger">Left</button>--}}
-                                @if ($asset->status == 2) {{-- Checked Out --}}
-                                    <button type="button" class="btn btn-default">Edit</button>
-                                    <button type="button" class="btn btn-info">Checkin</button>
-                                @elseif ($asset->status == 3) {{-- In-Storage --}}
-                                    <button type="button" class="btn btn-default">Edit</button>
-                                    <button type="button" class="btn btn-primary">Checkout</button>
-                                @else
-                                    <button type="button" class="btn btn-default">Edit</button>
-                                    <button type="button" class="btn btn-primary">Checkout</button>
-                                @endif
-                            </div>
-                        </div><!-- /.box-tools -->
-                    </div><!-- box-footer -->
-                </div><!-- /.box -->
-        </div>
-        @endforeach
-    </div>
-    <div class='row'>
-        <div class='col-md-8'>
-
-            <!-- PRODUCT LIST -->
-            <div class="box box-primary">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Recently Added Samples</h3>
-                    <div class="box-tools pull-right">
-                        <button class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                        <button class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
-                    </div>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <ul class="products-list product-list-in-box">
-
-                        @foreach($assets as $asset)
-                        <li class="item">
-                            <div class="product-img">
-                                <img src="/uploads/{{ $asset['image'] }}" alt="Product Image">
-                            </div>
-                            <div class="product-info">
-                                <a href="javascript::;" class="product-title">CSGID #: {{ $asset['id'] }}<span class="label label-warning pull-right">{{ $asset['msrp'] }}</span></a>
-                        <span class="product-description">
-                          {{--Part: {{ $asset['part'] }}--}}
-                          <strong>Manufacture: </strong>{{ $asset['Mfr']['name'] }}
-                          <br><strong>Description: </strong>{{ $asset['description'] }}
-                        </span>
-                            </div>
-                        </li><!-- /.item -->
-                        @endforeach
-                    </ul>
-                </div><!-- /.box-body -->
-                <div class="box-footer text-center">
-                    <a href="javascript::;" class="uppercase">View All Products</a>
-                </div><!-- /.box-footer -->
-            </div><!-- /.box -->
-
-
-
-        </div>
-    </div><!-- /.row -->
+@section('page-header')
+    <h1>
+        {{ trans('labels.backend.access.users.management') }}
+        <small>{{ trans('labels.backend.access.users.active') }}</small>
+    </h1>
 @endsection
 
+@section('content')
+    <div class="box box-success">
+        <div class="box-header with-border">
+            <h3 class="box-title">{{ trans('labels.backend.access.users.active') }}</h3>
 
+            <div class="box-tools pull-right">
+                @include('backend.access.includes.partials.header-buttons')
+            </div>
+        </div><!-- /.box-header -->
+
+        <div class="box-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Company Name</th>
+                        <th>Employee Name</th>
+                        <th>CSG Rep</th>
+                        <th class="visible-lg">Created</th>
+                        <th class="visible-lg">Last Updated</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @foreach ($dealers as $dealer)
+                        <tr>
+                            <td>{!! $dealer->id !!}</td>
+                            <td>{!! $dealer->company_name !!}</td>
+                            <td>{!! $dealer->employee_name !!}</td>
+                            <td>{!! $dealer->User->name !!}</td>
+                            <td class="visible-lg">{!! $dealer->created_at->diffForHumans() !!}</td>
+                            <td class="visible-lg">{!! $dealer->updated_at->diffForHumans() !!}</td>
+                            <td>{!! $dealer->action_buttons !!}</td>
+                        </tr>
+                    @endforeach
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pull-left">
+{{--                {!! $dealer->total() !!} {{ trans_choice('labels.backend.access.users.table.total', $users->total()) }}--}}
+            </div>
+
+            <div class="pull-right">
+{{--                {!! $dealer->render() !!}--}}
+            </div>
+
+            <div class="clearfix"></div>
+        </div><!-- /.box-body -->
+    </div><!--box-->
+@stop

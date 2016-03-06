@@ -12,8 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Checkout[] $checkouts
  * @property integer $id
  * @property integer $user_id
- * @property string $companyName
- * @property string $employeeName
+ * @property string $company_name
+ * @property string $employee_name
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at

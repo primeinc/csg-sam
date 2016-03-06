@@ -5,69 +5,88 @@
 
         <div class="col-md-10 col-md-offset-1">
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <i class="fa fa-plus"></i> New Asset
+            <div class="box box-info">
+                <div class="box-header with-border">
+                    <h3 class="box-title">New Dealer</h3>
                 </div>
-
-                <div class="panel-body">
-                    <form action="/samples/add" method="POST" class="form-horizontal" enctype="multipart/form-data">
-                        {{ csrf_field() }}
-
-                        <!-- Asset Name -->
+                <!-- /.box-header -->
+                <!-- form start -->
+                <form action="/dealers/add" method="POST" class="form-horizontal" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="box-body">
                         <div class="form-group">
-                            <label for="asset-part" class="col-sm-3 control-label">Part #</label>
+                            <label for="dealer-company" class="col-sm-3 control-label">Company</label>
 
-                            <div class="col-sm-6">
-                                <input type="text" name="part" id="asset-part" class="form-control">
+                            <div class="col-sm-9">
+                                <input type="text" name="company_name" id="dealer-company" class="form-control" >
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="asset-mfr" class="col-sm-3 control-label">Manufacture</label>
+                            <label for="dealer-employee" class="col-sm-3 control-label">Employee Name</label>
 
-                            <div class="col-sm-6">
-                                <input type="text" name="part" id="asset-mfr" class="form-control">
+                            <div class="col-sm-9">
+                                <input type="text" name="employee_name" id="dealer-employee" class="form-control" >
                             </div>
                         </div>
-
                         <div class="form-group">
-                            <label for="asset-description" class="col-sm-3 control-label">Description</label>
+                            <label for="dealer-user" class="col-sm-3 control-label">Assigned User</label>
 
-                            <div class="col-sm-6">
-                                <input type="text" name="description" id="asset-description" class="form-control">
+                            <div class="col-sm-9">
+                                <select id="dealer-user" name="user_id" class="form-control select2">
+                                    <option></option>
+                                </select>
                             </div>
                         </div>
-
-                        <div class="form-group">
-                            <label for="asset-msrp" class="col-sm-3 control-label">List Price</label>
-
-                            <div class="col-sm-6">
-                                <input type="text" name="msrp" id="asset-msrp" class="form-control">
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label for="asset-image" class="col-sm-3 control-label">Picture</label>
-                            <div class="col-sm-6">
-                                <input type="file" name="image" id="asset-image" class="form-control">
-                            </div>
-                        </div>
-
-                        <!-- Add Asset Button -->
-                        <div class="form-group">
-                            <div class="col-sm-offset-3 col-sm-6">
-                                <button type="submit" class="btn btn-default pull-right">
-                                    <i class="fa fa-plus"></i> Add Asset
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div><!-- panel -->
+                    </div>
+                    <!-- /.box-body -->
+                    <div class="box-footer">
+                        <button type="submit" class="btn btn-info pull-right">Add Dealer</button>
+                    </div>
+                    <!-- /.box-footer -->
+                </form>
+            </div>
+            <!-- /.box -->
 
         </div><!-- col-md-10 -->
     </div>
 @endsection
 
+@section('after-scripts-end')
+    <script>
+        $.fn.select2.defaults.set( "theme", "bootstrap" );
+        $.fn.select2.defaults.set( "width", "off" );
 
+        $("#dealer-user").select2({
+            placeholder: "Select a User",
+            ajax: {
+                url: "{!! route('frontend.user.search') !!}",
+                dataType: 'json',
+                delay: 500,
+                width: null,
+                data: function (params) {
+                    return {
+                        q: params.term, // search term
+                        page: params.page
+                    };
+                },
+                processResults: function (data, params) {
+                    // parse the results into the format expected by Select2
+                    // since we are using custom formatting functions we do not need to
+                    // alter the remote JSON data, except to indicate that infinite
+                    // scrolling can be used
+                    params.page = params.page || 1;
+
+                    return {
+                        results: data.items,
+                        pagination: {
+                            more: (params.page * 30) < data.total_count
+                        }
+                    };
+                },
+                cache: true
+            },
+            minimumInputLength: 1
+        });
+    </script>
+
+@endsection

@@ -14,6 +14,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('dashboard', 'DashboardController@index')->name('frontend.user.dashboard');
         Route::get('profile/edit', 'ProfileController@edit')->name('frontend.user.profile.edit');
         Route::patch('profile/update', 'ProfileController@update')->name('frontend.user.profile.update');
+        Route::get('user/search', 'SearchController@search')->name('frontend.user.search');
     });
     Route::group(['namespace' => 'Asset'], function() {
         Route::get('samples', 'AssetController@index')->name('frontend.assets');
@@ -25,11 +26,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
     });
     Route::group(['namespace' => 'Dealer'], function() {
-        Route::get('dealers', 'DealerController@index')->name('frontend.dealers');
+//        Route::get('dealers', 'DealerController@index')->name('frontend.dealers');
         Route::get('dealers/add', 'DealerController@add')->name('frontend.dealers.add');
         Route::post('dealers/add', 'DealerController@store')->name('frontend.dealers.add');
         Route::delete('dealers/{dealer}', 'DealerController@destroy')->name('frontend.dealers');
         Route::get('dealers/search', 'DealerController@index')->name('frontend.dealers');
+        Route::resource('dealers', 'DealerController');
     });
     Route::group(['namespace' => 'Mfr'], function() {
         Route::get('mfrs', 'MfrController@index')->name('frontend.mfrs');

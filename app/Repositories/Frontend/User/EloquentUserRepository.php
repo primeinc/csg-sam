@@ -52,6 +52,19 @@ class EloquentUserRepository implements UserContract
     }
 
     /**
+     * @param $name
+     * @return mixed
+     */
+    public function findByName($name) {
+        $users = User::where('name', $name);
+
+        if ($users instanceof User)
+            return $users;
+
+        return false;
+    }
+
+    /**
      * @param $token
      * @return mixed
      * @throws GeneralException
