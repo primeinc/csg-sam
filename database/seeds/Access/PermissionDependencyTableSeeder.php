@@ -26,7 +26,7 @@ class PermissionDependencyTableSeeder extends Seeder
         
         $permission1Id = DB::table('permissions')->where('name', 'view-backend')->first()->id;
         $permission2Id = DB::table('permissions')->where('name', 'view-access-management')->first()->id;
-        
+
         /**
          * View access management needs view backend
          */
@@ -41,7 +41,7 @@ class PermissionDependencyTableSeeder extends Seeder
          * All of the access permissions need view access management and view backend
          * Starts at id = 3 to skip view-backend, view-access-management
          */
-        $remainingPermissionsIds = DB::table('permissions')->where('id', '>', 2)->pluck('id');
+        $remainingPermissionsIds = DB::table('permissions')->whereBetween('id', [3, 21])->pluck('id');
         
         foreach ($remainingPermissionsIds as $remainingPermissionId) {
             DB::table(config('access.permission_dependencies_table'))->insert([
@@ -63,6 +63,19 @@ class PermissionDependencyTableSeeder extends Seeder
          * Other dependencies here, follow above structure
          * If you have many it would be a good idea to break this up into different files and require them here
          */
+
+        $permission1Id = DB::table('permissions')->where('name', 'edit-dealers')->first()->id;
+        $permission2Id = DB::table('permissions')->where('name', 'delete-dealers')->first()->id;
+
+        /**
+         * View access management needs view backend
+         */
+        DB::table(config('access.permission_dependencies_table'))->insert([
+            'permission_id' => $permission2Id,
+            'dependency_id' => $permission1Id,
+            'created_at'    => Carbon::now(),
+            'updated_at'    => Carbon::now(),
+        ]);
 
         /**
          * End other dependencies

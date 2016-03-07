@@ -285,6 +285,28 @@ class PermissionTableSeeder extends Seeder
         $deletePermissions->updated_at   = Carbon::now();
         $deletePermissions->save();
 
+        $permission_model          = config('access.permission');
+        $editDealers               = new $permission_model;
+        $editDealers->name         = 'edit-dealers';
+        $editDealers->display_name = 'Edit Dealers';
+        $editDealers->system       = true;
+        $editDealers->group_id     = 5;
+        $editDealers->sort         = 1;
+        $editDealers->created_at   = Carbon::now();
+        $editDealers->updated_at   = Carbon::now();
+        $editDealers->save();
+
+        $permission_model            = config('access.permission');
+        $deleteDealers               = new $permission_model;
+        $deleteDealers->name         = 'delete-dealers';
+        $deleteDealers->display_name = 'Delete Dealers';
+        $deleteDealers->system       = true;
+        $deleteDealers->group_id     = 5;
+        $deleteDealers->sort         = 2;
+        $deleteDealers->created_at   = Carbon::now();
+        $deleteDealers->updated_at   = Carbon::now();
+        $deleteDealers->save();
+
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
