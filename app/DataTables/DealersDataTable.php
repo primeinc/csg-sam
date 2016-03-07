@@ -18,7 +18,11 @@ class DealersDataTable extends DataTable
     {
         return $this->datatables
             ->eloquent($this->query())
-            ->addColumn('action', 'path.to.action.view')
+//            ->addColumn('action', 'path.to.action.view')
+            ->addColumn('action', function ($data) {
+//                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+                return $data->action_buttons;
+            })
             ->make(true);
     }
 
@@ -29,13 +33,7 @@ class DealersDataTable extends DataTable
      */
     public function query()
     {
-        $dealers = Dealer::query();
-
-        debug($dealers);
-
-        $new = $this->applyScopes($dealers);
-
-        debug($new);
+        $dealers = Dealer::query()->with('user');
 
         return $this->applyScopes($dealers);
     }
@@ -50,7 +48,7 @@ class DealersDataTable extends DataTable
         return $this->builder()
                     ->columns($this->getColumns())
                     ->ajax('')
-                    ->addAction(['width' => '80px'])
+                    ->addAction(['width' => '55px'])
                     ->parameters($this->getBuilderParameters());
     }
 
@@ -62,13 +60,18 @@ class DealersDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'id',
-            'company_name',
-            'employee_name',
-            'user_id',
-            'created_at',
-            'updated_at',
+            ['data' => 'id', 'name' => 'dealers.id', 'title' => 'ID'],
+            ['data' => 'company_name', 'name' => 'dealers.company_name', 'title' => 'Dealer'],
+            ['data' => 'employee_name', 'name' => 'dealers.employee_name', 'title' => 'Employee'],
+            ['data' => 'user.name', 'name' => 'user.name', 'title' => 'CSG Rep'],
         ];
+//        return [
+//            'id',
+//            'company_name',
+//            'employee_name',
+//            'user.name',
+//        ];
+
     }
 
     /**
@@ -79,5 +82,20 @@ class DealersDataTable extends DataTable
     protected function filename()
     {
         return 'dealers';
+    }
+
+    /**
+     * Get builder parameters.
+     *
+     * @return array
+     */
+    protected function getBuilderParameters()
+    {
+        return [
+            'width' => 'off',
+            'order'   => [[0, 'desc']],
+            'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
+            'buttons' => ['excel', 'pdf', 'print'],
+        ];
     }
 }

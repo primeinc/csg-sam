@@ -255,6 +255,7 @@ return [
         'Html'        => Collective\Html\HtmlFacade::class,
         'Socialite'   => Laravel\Socialite\Facades\Socialite::class,
         'Image'       => Intervention\Image\Facades\Image::class,
+        'Datatables' => Yajra\Datatables\Datatables::class,
     ],
 
 ];

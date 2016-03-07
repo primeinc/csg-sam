@@ -21,7 +21,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Dealer extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, DealerAttribute;
 
     /**
      * Get the User assigned to the Dealer.

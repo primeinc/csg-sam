@@ -31,7 +31,7 @@
 @elseif (Session::get('flash_danger'))
     <div class="alert alert-danger">
 
-        {!! var_dump(Session::get('flash_danger')) !!}
+        {!! Session::get('flash_danger') !!}
     </div>
 @elseif (Session::get('flash_message'))
     <div class="alert alert-info">

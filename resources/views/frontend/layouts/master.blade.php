@@ -16,6 +16,7 @@
             <!-- Styles -->
     @yield('before-styles-end')
     {!! Html::style(elixir('css/frontend.css')) !!}
+    @stack('styles')
     @yield('after-styles-end')
 
             <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -57,6 +58,7 @@
 
 @yield('before-scripts-end')
 {!! HTML::script(elixir('js/frontend.js')) !!}
+@stack('scripts')
 @yield('after-scripts-end')
 </body>
 </html>
