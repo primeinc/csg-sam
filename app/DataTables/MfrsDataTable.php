@@ -2,10 +2,10 @@
 
 namespace App\DataTables;
 
-use App\Models\Dealer;
+use App\Models\Mfr;
 use Yajra\Datatables\Services\DataTable;
 
-class DealersDataTable extends DataTable
+class MfrsDataTable extends DataTable
 {
     // protected $printPreview  = 'path.to.print.preview.view';
 
@@ -33,7 +33,7 @@ class DealersDataTable extends DataTable
      */
     public function query()
     {
-        $dealers = Dealer::query()->with('user');
+        $dealers = Mfr::query();
 
         return $this->applyScopes($dealers);
     }
@@ -60,10 +60,8 @@ class DealersDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'id'            => ['name' => 'dealers.id', 'title' => 'ID'],
-            'company_name'  => ['name' => 'dealers.company_name', 'title' => 'Dealer Name'],
-            'employee_name' => ['name' => 'dealers.employee_name', 'title' => 'Employee'],
-            'user.name'     => ['name' => 'user.name', 'title' => 'CSG Rep'],
+            'id'            => ['title' => 'ID'],
+            'name'          => ['title' => 'Manufacturer Name'],
         ];
     }
 
@@ -85,7 +83,7 @@ class DealersDataTable extends DataTable
     protected function getBuilderParameters()
     {
         return [
-            'lengthMenu' => [[25, 50, 75, 100, -1],[25, 50, 75, 100, "All"]],
+            'lengthMenu' => [[50, 75, 100, -1],[50, 75, 100, "All"]],
             'order'   => [[0, 'desc']],
             'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
             'buttons' => ['excel', 'pdf', 'print'],

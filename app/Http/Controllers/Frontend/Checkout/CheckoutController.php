@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Frontend\Checkout;
 use App\Models\Checkout;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Models\Dealer;
+use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Checkout\CheckoutContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
@@ -12,31 +14,40 @@ use Intervention\Image\Facades\Image;
 class CheckoutController extends Controller
 {
     /**
-     * The asset repository instance.
+     * The checkout repository instance.
      *
      * @var CheckoutContract
      */
-    protected $checkouts;
+    protected $checkout;
+
+    /**
+     * The asset repository instance.
+     *
+     * @var AssetContract
+     */
+    protected $asset;
 
     /**
      * Create a new controller instance.
      *
-     * @param  CheckoutContract $checkouts
+     * @param CheckoutContract $checkout
+     * @param AssetContract $asset
+     * @internal param CheckoutContract $checkouts
      */
-    public function __construct(CheckoutContract $checkouts)
+    public function __construct(CheckoutContract $checkout, AssetContract $asset)
     {
         $this->middleware('auth');
 
-        $this->checkouts = $checkouts;
+        $this->checkout = $checkout;
+        $this->asset = $asset;
     }
 
 
-    public function index() {
-//        $checkouts = Checkout::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
-//        $checkouts = Checkout::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
-        $checkouts = Checkout::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+    public function index(Request $request) {
+        $asset = $this->asset->find($request->asset);
+//        $dealer = Dealer::select('id', 'employee_name')->get();
 
-        return view('frontend.checkouts.samples', compact('checkouts'));
+        return view('frontend.checkout.index', compact('asset'));
     }
 
     public function add(Request $request)
@@ -52,27 +63,17 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         $this->validate($request, [
-            'part' => 'required|max:100',
-            'description' => 'required|max:255',
-            'msrp' => 'numeric',
+            'daterange' => 'required|max:10',
+            'dealer' => 'numeric',
+            'rep' => 'numeric',
         ]);
 
-        if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
-            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            Image::make($request->file('image'))->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
-            $request->merge(['imageName' => $imageName] );
-        }
-        else
-            $request->merge(['imageName' => 'asset-placeholder.png'] );
-
-
         Checkout::create([
-            'part' => $request->part,
-            'mfr_id' => 2,
-            'description' => $request->description,
-            'msrp' => $request->msrp,
-            'image' => $request->imageName,
+            'daterange' => $request->daterange,
+            'dealer' => $request->dealer,
+            'rep' => $request->rep
         ]);
 
         return redirect('/samples');

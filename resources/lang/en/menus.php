@@ -119,6 +119,11 @@ return [
             'add' => 'Add Dealer',
         ],
 
+        'mfrs' => [
+            'main' => 'Manufacturers',
+            'list' => 'Find Manufacturers',
+        ],
+
         'sidebar' => [
             'dashboard' => 'Dashboard',
             'general' => 'General',

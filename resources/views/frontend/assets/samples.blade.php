@@ -52,10 +52,10 @@
                                     <button type="button" class="btn btn-info">Checkin</button>
                                 @elseif ($asset->status == 3) {{-- In-Storage --}}
                                     <a href="{!! url('samples/edit/' . $asset->id) !!}" class="btn btn-default" role="button">Edit</a>
-                                    <button type="button" class="btn btn-primary">Checkout</button>
+                                    <a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>
                                 @else
                                     <a href="{!! url('samples/edit/' . $asset->id) !!}" class="btn btn-default" role="button">Edit</a>
-                                    <button type="button" class="btn btn-primary">Checkout</button>
+                                    <a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>
                                 @endif
                             </div>
                         </div><!-- /.box-tools -->

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Mfr;
 
+use App\DataTables\MfrsDataTable;
 use App\Models\Mfr;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -29,15 +30,6 @@ class MfrController extends Controller
         $this->middleware('auth');
 
         $this->mfrs = $mfrs;
-    }
-
-
-    public function index() {
-//        $mfrs = Mfr::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
-//        $mfrs = Mfr::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
-        $mfrs = Mfr::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
-
-        return view('frontend.mfrs.samples', compact('mfrs'));
     }
 
     public function add(Request $request)
@@ -97,5 +89,10 @@ class MfrController extends Controller
             $results['items'][] = [ 'id' => $query->name, 'text' => $query->name ];
         }
         return Response::json($results);
+    }
+
+    public function index(MfrsDataTable $dataTable)
+    {
+        return $dataTable->render('frontend.mfrs.index');
     }
 }

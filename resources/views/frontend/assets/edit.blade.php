@@ -58,10 +58,10 @@
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="btn-group">
-                            @if ($asset->status == 2)  Checked Out
+                            @if ($asset->status == 2)  <!--Checked Out-->
                             <button type="button" class="btn btn-default">Move to Storage</button>
                             <button type="button" class="btn btn-info">Checkin</button>
-                            @elseif ($asset->status == 3)  In-Storage
+                            @elseif ($asset->status == 3)  <!--In-Storage-->
                             <button type="button" class="btn btn-default">Remove from Storage</button>
                             <button type="button" class="btn btn-primary">Checkout</button>
                             @else

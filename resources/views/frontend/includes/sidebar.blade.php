@@ -72,9 +72,9 @@
                     <span>{{ trans('menus.frontend.dealers.main') }}</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu {{ Active::pattern('dealers/search*', 'menu-open') }}" style="display: none; {{ Active::pattern('dealers/search*', 'display: block;') }}">
-                    <li class="{{ Active::pattern('dealers/search') }}">
-                        <a href="{!! url('dealers/search') !!}">
+                <ul class="treeview-menu {{ Active::pattern('dealers/*', 'menu-open') }}" style="display: none; {{ Active::pattern('dealers/*', 'display: block;') }}">
+                    <li class="{{ Active::pattern('dealers/list') }}">
+                        <a href="{!! url('dealers/list') !!}">
                             <i class="fa fa-search"></i>
                             {{ trans('menus.frontend.dealers.search') }}
                         </a>
@@ -83,6 +83,22 @@
                         <a href="{!! url('dealers/add') !!}">
                             <i class="fa fa-user-plus"></i>
                             {{ trans('menus.frontend.dealers.add') }}
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li class="{{ Active::pattern('mfrs/*') }} treeview">
+                <a href="#">
+                    <i class="fa fa-building"></i>
+                    <span>{{ trans('menus.frontend.mfrs.main') }}</span>
+                    <i class="fa fa-angle-left pull-right"></i>
+                </a>
+                <ul class="treeview-menu {{ Active::pattern('mfrs/*', 'menu-open') }}" style="display: none; {{ Active::pattern('mfrs/*', 'display: block;') }}">
+                    <li class="{{ Active::pattern('mfrs/list') }}">
+                        <a href="{!! url('mfrs/list') !!}">
+                            <i class="fa fa-search"></i>
+                            {{ trans('menus.frontend.mfrs.list') }}
                         </a>
                     </li>
                 </ul>

@@ -50,4 +50,26 @@ class SearchController extends Controller
 
         return Response::json($results);
     }
+
+    public function searchAll(Request $request)
+    {
+        $term = $request->q;
+
+        $results = array();
+
+        $queries = User::get();
+
+//        $queries = $this->user->findByName($term);
+
+        $results['total_count'] = $queries->count();
+        $results['incomplete_results'] = false;
+        $results['items'] = [];
+
+        foreach ($queries as $query)
+        {
+            $results['items'][] = [ 'id' => $query->id, 'text' => $query->name ];
+        }
+
+        return Response::json($results);
+    }
 }

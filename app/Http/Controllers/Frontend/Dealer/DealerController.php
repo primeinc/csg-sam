@@ -11,6 +11,7 @@ use App\Repositories\Frontend\Dealer\DealerContract;
 use App\Repositories\Frontend\User\UserContract;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Response;
 
 class DealerController extends Controller
 {
@@ -67,5 +68,31 @@ class DealerController extends Controller
     public function index(DealersDataTable $dataTable)
     {
         return $dataTable->render('frontend.dealers.index');
+    }
+
+    public function search(Request $request)
+    {
+        $term = $request->q;
+
+        $results = array();
+
+        $queries = Dealer::where('employee_name', 'LIKE', '%'.$term.'%')
+            ->orWhere('company_name', 'LIKE', '%'.$term.'%')
+            ->with('user')
+            ->get();
+
+        $results['total_count'] = $queries->count();
+        $results['incomplete_results'] = false;
+        $results['items'] = [];
+
+        foreach ($queries as $query)
+        {
+            $results['items'][] = [ 'id' => $query->id,
+                'text' => $query->company_name . ' - ' . $query->employee_name,
+                'user_id' => $query->user_id,
+                'user_name' => $query->user->name
+            ];
+        }
+        return Response::json($results);
     }
 }
