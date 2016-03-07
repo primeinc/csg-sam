@@ -103,6 +103,13 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="form-group">
+                            <label for="checkout-notes" class="col-sm-3 control-label">Notes</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="notes" id="checkout-notes" class="form-control">
+                            </div>
+                        </div>
                     </div>
                     <div class="box-footer">
                         <button type="submit" class="btn btn-info pull-right">Checkout</button>
@@ -124,7 +131,8 @@
     <script>
         $('input[name="daterange"]').daterangepicker({
             singleDatePicker: true,
-            showDropdowns: true
+            showDropdowns: true,
+            startDate: "{{ Carbon\Carbon::now()->addDays(30)->format('m/d/Y') }}"
         });
         $.fn.select2.defaults.set( "theme", "bootstrap" );
         $.fn.select2.defaults.set( "width", "off" );

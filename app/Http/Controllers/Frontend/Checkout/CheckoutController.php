@@ -2,14 +2,17 @@
 
 namespace App\Http\Controllers\Frontend\Checkout;
 
+use App\Models\Asset;
 use App\Models\Checkout;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Dealer;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Checkout\CheckoutContract;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
+use Redirect;
 
 class CheckoutController extends Controller
 {
@@ -63,19 +66,29 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
+//        dd($request);
         $this->validate($request, [
             'daterange' => 'required|max:10',
-            'dealer' => 'numeric',
-            'rep' => 'numeric',
+            'dealer' => 'required|numeric',
+            'rep' => 'required|numeric',
+            'notes' => 'max:255',
         ]);
+
+        $dt = \Carbon\Carbon::createFromFormat('m/d/Y',$request->daterange)->toDateString();
 
         Checkout::create([
-            'daterange' => $request->daterange,
-            'dealer' => $request->dealer,
-            'rep' => $request->rep
+            'expected_return_date' => $dt,
+            'asset_id' => $request->asset,
+            'dealer_id' => $request->dealer,
+            'user_id' => $request->rep,
+            'notes' => $request->notes
         ]);
 
-        return redirect('/samples');
+        // TODO: move this to an event
+        Asset::find($request->asset)->update([
+           'status' => '2'
+        ]);
+
+        return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
     }
 }
