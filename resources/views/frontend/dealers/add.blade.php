@@ -29,11 +29,11 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="dealer-user" class="col-sm-3 control-label">Assigned User</label>
+                            <label for="dealer-user" class="col-sm-3 control-label">Assigned Rep</label>
 
                             <div class="col-sm-9">
                                 <select id="dealer-user" name="user_id" class="form-control select2">
-                                    <option></option>
+                                    <option value="{{ access()->user()->id }}" selected="selected">{{ access()->user()->name }}</option>
                                 </select>
                             </div>
                         </div>
@@ -56,36 +56,12 @@
         $.fn.select2.defaults.set( "theme", "bootstrap" );
         $.fn.select2.defaults.set( "width", "off" );
 
-        $("#dealer-user").select2({
-            placeholder: "Select a User",
-            ajax: {
-                url: "{!! route('frontend.user.search') !!}",
-                dataType: 'json',
-                delay: 500,
-                width: null,
-                data: function (params) {
-                    return {
-                        q: params.term, // search term
-                        page: params.page
-                    };
-                },
-                processResults: function (data, params) {
-                    // parse the results into the format expected by Select2
-                    // since we are using custom formatting functions we do not need to
-                    // alter the remote JSON data, except to indicate that infinite
-                    // scrolling can be used
-                    params.page = params.page || 1;
-
-                    return {
-                        results: data.items,
-                        pagination: {
-                            more: (params.page * 30) < data.total_count
-                        }
-                    };
-                },
-                cache: true
-            },
-            minimumInputLength: 1
+        $(document).ready(function() {
+            $.getJSON("{!! route('frontend.user.search.all') !!}", function (data) {
+                $("#dealer-user").select2({
+                    data: data.items
+                });
+            })
         });
     </script>
 

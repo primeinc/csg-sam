@@ -43,5 +43,9 @@ Route::group(['middleware' => 'auth'], function () {
     Route::group(['namespace' => 'Checkout'], function() {
         Route::get('checkout/{asset}', 'CheckoutController@index')->name('frontend.checkout');
         Route::post('checkout/{asset}', 'CheckoutController@store')->name('frontend.checkout');
+        Route::get('samples/checkout/{asset}', 'CheckoutController@checkoutModal')->name('frontend.checkout');
+        Route::post('samples/checkout/{asset}', 'CheckoutController@store')->name('frontend.checkout');
+        Route::get('samples/checkin/{asset}', 'CheckoutController@checkinModal')->name('frontend.checkout.checkin');
+        Route::post('samples/checkin/{asset}', 'CheckoutController@returnAsset');
     });
 });

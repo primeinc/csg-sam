@@ -60,5 +60,15 @@
 {!! HTML::script(elixir('js/frontend.js')) !!}
 @stack('scripts')
 @yield('after-scripts-end')
+
+<!-- Modal -->
+<div class="modal fade" id="dynModal" role="dialog" aria-hidden="true">
+    <div class="vertical-alignment-helper">
+        <div class="modal-dialog vertical-align-center">
+            <div class="modal-content">
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>

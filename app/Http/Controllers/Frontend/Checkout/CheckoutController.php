@@ -53,6 +53,13 @@ class CheckoutController extends Controller
         return view('frontend.checkout.index', compact('asset'));
     }
 
+    public function checkoutModal(Request $request) {
+        $asset = $this->asset->find($request->asset);
+        //        $dealer = Dealer::select('id', 'employee_name')->get();
+
+        return view('frontend.checkout.checkoutModal', compact('asset'));
+    }
+
     public function add(Request $request)
     {
         return view('frontend.checkouts.add');
@@ -87,6 +94,33 @@ class CheckoutController extends Controller
         // TODO: move this to an event
         Asset::find($request->asset)->update([
            'status' => '2'
+        ]);
+
+        return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
+    }
+
+    public function checkinModal(Request $request) {
+        $asset = $this->asset->find($request->asset);
+
+        return view('frontend.checkout.checkinModal', compact('asset'));
+    }
+
+    public function returnAsset(Request $request) {
+
+        $this->validate($request, [
+            'notes' => 'max:255',
+        ]);
+
+        $checkout = Checkout::where('asset_id', '=', $request->asset)->where('returned_date', '=', null)->first();
+
+        $checkout->returned_date = Carbon::now()->toDateString();
+        $checkout->notes = $checkout->notes . '\n' . $request->notes;
+
+        $checkout->save();
+
+        // TODO: move this to an event
+        Asset::find($request->asset)->update([
+            'status' => '1'
         ]);
 
         return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));

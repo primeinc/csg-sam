@@ -59,14 +59,14 @@
                     <div class="pull-right">
                         <div class="btn-group">
                             @if ($asset->status == 2)  <!--Checked Out-->
-                            <button type="button" class="btn btn-default">Move to Storage</button>
-                            <button type="button" class="btn btn-info">Checkin</button>
+                                <button type="button" class="btn btn-default">Move to Storage</button>
+                                <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->
-                            <button type="button" class="btn btn-default">Remove from Storage</button>
-                            <button type="button" class="btn btn-primary">Checkout</button>
+                                <button type="button" class="btn btn-default">Remove from Storage</button>
+                                <a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>
                             @else
                                 <button type="button" class="btn btn-default">Move to Storage</button>
-                            <button type="button" class="btn btn-primary">Checkout</button>
+                                <a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>
                             @endif
                         </div>
                     </div><!-- /.box-tools -->
@@ -250,3 +250,18 @@
     </script>
 
 @endsection
+
+@push('scripts')
+    <script type="text/javascript">
+        jQuery(function($){
+            $('button.checkin').click(function(ev){
+                ev.preventDefault();
+                var uid = $(this).data('id');
+                $.get('/samples/checkin/' + uid, function(html){
+                    $('#dynModal .modal-content').html(html);
+                    $('#dynModal').modal('show', {backdrop: 'static'});
+                });
+            });
+        });
+    </script>
+@stop

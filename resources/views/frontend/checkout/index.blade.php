@@ -142,8 +142,7 @@
             ajax: {
                 url: "{!! route('frontend.dealers.search') !!}",
                 dataType: 'json',
-                delay: 500,
-                width: null,
+                delay: 250,
                 data: function (params) {
                     return {
                         q: params.term, // search term
