@@ -26,7 +26,8 @@ class UserRoleSeeder extends Seeder
         //Attach admin role to admin user
         $user_model = config('auth.providers.users.model');
         $user_model = new $user_model;
-        $user_model::first()->attachRole(1);
+//        $user_model::first()->attachRole(1);
+        $user_model::find(2)->attachRole(1);
 
         //Attach user role to general user
 //        $user_model = config('auth.providers.users.model');

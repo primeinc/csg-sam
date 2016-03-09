@@ -49,6 +49,8 @@
                                 <dd>{{ $asset->description }}</dd>
                                 <dt>Part #</dt>
                                 <dd>{{ $asset->part }}</dd>
+                                <dt>ACK #</dt>
+                                <dd>{{ $asset->ack }}</dd>
                                 <dt>List Price</dt>
                                 <dd>{{ $asset->msrp }}</dd>
                             </dl>
@@ -100,6 +102,13 @@
 
                             <div class="col-sm-9">
                                 <input type="text" name="part" id="asset-part" class="form-control" value="{{ $asset->part }}">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="asset-ack" class="col-sm-3 control-label">ACK #</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="ack" id="asset-ack" class="form-control" value="{{ $asset->ack }}">
                             </div>
                         </div>
                         <div class="form-group">
@@ -185,7 +194,7 @@
                 <li>
                     <!-- timeline icon -->
                     @if($log->event == 'audit.asset.create')
-                        <i class="fa fa-envelope bg-primary"></i>
+                        <i class="fa fa-crosshairs bg-primary"></i>
                     @elseif($log->event == 'audit.asset.edit')
                         <i class="fa fa-edit bg-grey"></i>
                     @elseif($log->event == 'audit.asset.checkout')
@@ -203,34 +212,34 @@
                             @elseif($log->event == 'audit.asset.edit')
                                 edited this asset
                             @elseif($log->event == 'audit.asset.checkout')
-                                checked out this asset
+                                checked out this asset to {{ $log->checkout->dealer->employee_name }} @ {{ $log->checkout->dealer->company_name }}
                             @elseif($log->event == 'audit.asset.checkin')
                                 checked in this asset
                             @endif
                         </h3>
 
-                        <div class="timeline-body">
-                            @if($log->event == 'audit.asset.create')
-                                created this asset
-                            @elseif($log->event == 'audit.asset.edit')
-                                @foreach(json_decode($log->context) as $field => $changed)
-                                    <p>
-                                    {{ $field }} | {{ $changed->old }} => {{ $changed->new }}
-                                    </p>
+                        {{--<div class="timeline-body">--}}
+                            {{--@if($log->event == 'audit.asset.create')--}}
+                                {{--created this asset--}}
+                            {{--@elseif($log->event == 'audit.asset.edit')--}}
+                                {{--@foreach(json_decode($log->context) as $field => $changed)--}}
+                                    {{--<p>--}}
+                                    {{--{{ $field }} | {{ $changed->old }} => {{ $changed->new }}--}}
+                                    {{--</p>--}}
 
-                                    {{ debug($field) }}
-                                    {{ debug($changed) }}
-                                @endforeach
-                            @elseif($log->event == 'audit.asset.checkout')
-                                checked out this asset to {{ $log->checkout->dealer->employee_name }}
-                            @elseif($log->event == 'audit.asset.checkin')
-                                checked in this asset
-                            @endif
-                        </div>
+                                    {{--{{ debug($field) }}--}}
+                                    {{--{{ debug($changed) }}--}}
+                                {{--@endforeach--}}
+                            {{--@elseif($log->event == 'audit.asset.checkout')--}}
+                                {{--checked out this asset to {{ $log->checkout->dealer->employee_name }}--}}
+                            {{--@elseif($log->event == 'audit.asset.checkin')--}}
+                                {{--checked in this asset--}}
+                            {{--@endif--}}
+                        {{--</div>--}}
 
-                        <div class="timeline-footer">
+                        {{--<div class="timeline-footer">--}}
                             {{--<a class="btn btn-primary btn-xs">...</a>--}}
-                        </div>
+                        {{--</div>--}}
                     </div>
                 </li>
                     @endif

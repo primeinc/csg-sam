@@ -17,7 +17,8 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="#" method="get" class="sidebar-form">
+        <form action="{!! url('samples/search') !!}" method="post" class="sidebar-form">
+            {{ csrf_field() }}
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="{{ trans('strings.frontend.general.search_placeholder') }}"/>
                   <span class="input-group-btn">

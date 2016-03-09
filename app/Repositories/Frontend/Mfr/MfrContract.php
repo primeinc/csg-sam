@@ -22,6 +22,8 @@ interface MfrContract
 
     public function findByName($name);
 
+    public function findByNameAll($name);
+
     public function findOrCreate($name);
 
 }

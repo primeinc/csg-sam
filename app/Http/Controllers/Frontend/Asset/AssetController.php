@@ -47,6 +47,28 @@ class AssetController extends Controller
         return view('frontend.assets.samples', compact('assets'));
     }
 
+    public function search(Request $request) {
+//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+        $term = $request->q;
+
+        $mfrList = $this->mfrs->findByNameAll($term);
+        $mfrIn = array();
+        foreach ($mfrList as $mfr){
+            $mfrIn[] = $mfr->id;
+        }
+
+        $assets = Asset::where('id', 'LIKE', '%'.$term.'%')
+            ->orWhere('part', 'LIKE', '%'.$term.'%')
+            ->orWhere('description', 'LIKE', '%'.$term.'%')
+            ->orWhere('ack', 'LIKE', '%'.$term.'%')
+            ->orWhereIn('mfr_id', $mfrIn)
+            ->get();
+
+        $assets->load('Mfr');
+
+        return view('frontend.assets.samples', compact('assets'));
+    }
+
     public function add()
     {
         return view('frontend.assets.add');
@@ -110,6 +132,7 @@ class AssetController extends Controller
             'part' => 'required|max:100',
             'mfr' => 'required|max:255',
             'description' => 'required|max:255',
+            'ack' => 'required|max:255',
             'msrp' => 'numeric',
         ]);
 
@@ -128,6 +151,7 @@ class AssetController extends Controller
         $asset->mfr_id = $mfr->id;
         $asset->description = $request->description;
         $asset->msrp = $request->msrp;
+        $asset->ack = $request->ack;
 
         Event::fire('audit.asset.edit', [$asset]);
 

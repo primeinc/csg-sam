@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('samples/update/{asset}', 'AssetController@update')->name('frontend.assets.update');
         Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
         Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
+        Route::post('samples/search', 'AssetController@search')->name('frontend.assets');
     });
     Route::group(['namespace' => 'Dealer'], function() {
         Route::resource('dealers/list', 'DealerController');

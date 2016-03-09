@@ -14,4 +14,10 @@ interface DealerContract
      */
     public function find($id);
 
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function findByEmail($email);
+
 }

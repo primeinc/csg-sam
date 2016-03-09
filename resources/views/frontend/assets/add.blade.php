@@ -22,6 +22,13 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <label for="asset-ack" class="col-sm-3 control-label">ACK #</label>
+
+                            <div class="col-sm-9">
+                                <input type="text" name="ack" id="asset-ack" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label for="asset-mfr" class="col-sm-3 control-label">Manufacturer</label>
 
                             <div class="col-sm-9">

@@ -1,9 +1,7 @@
 <?php
-
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,16 +19,17 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->call(AccessTableSeeder::class);
+        $this->call(LegacySQLSeeder::class);
 
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
 
-        factory(App\Models\Access\User\User::class, 5)->create();
-        factory(App\Models\Asset::class, 5)->create();
-        factory(App\Models\Dealer::class, 20)->create();
-        factory(App\Models\Checkout::class, 20)->create();
-        factory(App\Models\Asset::class, 5)->create();
+//        factory(App\Models\Access\User\User::class, 5)->create();
+//        factory(App\Models\Asset::class, 5)->create();
+//        factory(App\Models\Dealer::class, 20)->create();
+//        factory(App\Models\Checkout::class, 20)->create();
+//        factory(App\Models\Asset::class, 5)->create();
 
         Model::reguard();
     }

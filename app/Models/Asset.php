@@ -86,7 +86,8 @@ class Asset extends Model
      */
     public function assetLogs()
     {
-        return $this->hasMany('App\Models\AssetLogs');
+        return $this->hasMany('App\Models\AssetLogs')
+            ->orderBy('created_at', 'desc');
     }
 
     /**

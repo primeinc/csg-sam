@@ -18,10 +18,11 @@ class AuditLogHandler
         $log = new AssetLogs;
 
         $log->asset_id = $asset->id;
-        $log->user_id = Auth::user()->id;
+        $log->user_id = Auth::user() ? Auth::user()->id : 1;
         $log->checkout_id = $checkout->id;
         $log->event = 'audit.asset.checkout';
         $log->context = $checkout->toJson();
+        $log->created_at = $checkout->created_at;
 
         $log->save();
     }
@@ -31,7 +32,7 @@ class AuditLogHandler
         $log = new AssetLogs;
 
         $log->asset_id = $asset->id;
-        $log->user_id = Auth::user()->id;
+        $log->user_id = Auth::user() ? Auth::user()->id : 1;
         $log->checkout_id = $checkout->id;
         $log->event = 'audit.asset.checkin';
         $log->context = $this->getChanges($checkout);
@@ -44,9 +45,10 @@ class AuditLogHandler
         $log = new AssetLogs;
 
         $log->asset_id = $asset->id;
-        $log->user_id = Auth::user()->id;
+        $log->user_id = Auth::user() ? Auth::user()->id : 1;
         $log->event = 'audit.asset.create';
         $log->context = $asset->toJson();
+        $log->created_at = $asset->created_at;
 
         $log->save();
     }
@@ -56,7 +58,7 @@ class AuditLogHandler
         $log = new AssetLogs;
 
         $log->asset_id = $asset->id;
-        $log->user_id = Auth::user()->id;
+        $log->user_id = Auth::user() ? Auth::user()->id : 1;
         $log->event = 'audit.asset.edit';
         $log->context = $this->getChanges($asset);
 

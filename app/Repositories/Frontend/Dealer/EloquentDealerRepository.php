@@ -14,4 +14,17 @@ class EloquentDealerRepository implements DealerContract
     {
         return Dealer::findOrFail($id);
     }
+
+    /**
+     * @param $email
+     * @return mixed
+     */
+    public function findByEmail($email) {
+        $dealer = Dealer::where('email', $email)->first();
+
+        if ($dealer instanceof Dealer)
+            return $dealer;
+
+        return false;
+    }
 }

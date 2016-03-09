@@ -40,6 +40,18 @@ class EloquentMfrRepository implements MfrContract
         return false;
     }
 
+
+    /**
+     * @param $name
+     * @return bool
+     */
+    public function findByNameAll($name) {
+        $mfr = Mfr::where('name', 'LIKE', '%'.$name.'%')->get();
+
+        return $mfr;
+
+    }
+
     /**
      * @param $name
      * @return EloquentMfrRepository

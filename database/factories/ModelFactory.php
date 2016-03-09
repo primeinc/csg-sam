@@ -31,10 +31,11 @@ $factory->define(App\Models\Asset::class, function (Faker\Generator $faker) use 
         'mfr_id' => factory(App\Models\Mfr::class)->create()->id,
         'part' => $faker->isbn13,
         'description' => $faker->catchPhrase,
+        'ack' => '',
         'msrp' => $faker->randomFloat(2),
         'image' => $faker->image(public_path() . '/uploads', 200, 149, null, false),
         'status' => $faker->numberBetween(1,3),
-        'status_notes' => $faker->sentence,
+        'notes' => $faker->sentence,
     ];
 });
 
