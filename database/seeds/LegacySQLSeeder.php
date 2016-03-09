@@ -17,6 +17,17 @@ class LegacySQLSeeder extends Seeder
             DB::statement('SET FOREIGN_KEY_CHECKS=0;');
         }
 
+        try {
+            Schema::drop('assets_old');
+            Schema::drop('checkin_old');
+            Schema::drop('emailtemplates_old');
+            Schema::drop('reserved_old');
+            Schema::drop('signout_old');
+            Schema::drop('users_old');
+        }
+        catch (Exception $e) {
+        }
+
         DB::unprepared(file_get_contents(storage_path('app/thecsg_assets_old.sql')));
 
         $oldAssets = DB::table('assets_old')->get();
@@ -106,6 +117,7 @@ class LegacySQLSeeder extends Seeder
 
         echo 'starting old checkins';
 
+        DB::statement('DELETE t1 FROM checkin_old t1 LEFT JOIN assets t2 ON t2.id = t1.csgid WHERE t2.id IS NULL');
         DB::statement('SELECT t1.* FROM checkin_old t1 LEFT JOIN assets t2 ON t2.id = t1.csgid WHERE t2.id IS NOT NULL ORDER BY id ASC');
 
         $oldCheckins = DB::table('checkin_old')->get();
