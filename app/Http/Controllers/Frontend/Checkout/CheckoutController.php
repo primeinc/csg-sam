@@ -10,6 +10,7 @@ use App\Models\Dealer;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Checkout\CheckoutContract;
 use Carbon\Carbon;
+use Event;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Redirect;
@@ -48,14 +49,12 @@ class CheckoutController extends Controller
 
     public function index(Request $request) {
         $asset = $this->asset->find($request->asset);
-//        $dealer = Dealer::select('id', 'employee_name')->get();
 
         return view('frontend.checkout.index', compact('asset'));
     }
 
     public function checkoutModal(Request $request) {
         $asset = $this->asset->find($request->asset);
-        //        $dealer = Dealer::select('id', 'employee_name')->get();
 
         return view('frontend.checkout.checkoutModal', compact('asset'));
     }
@@ -73,7 +72,8 @@ class CheckoutController extends Controller
      */
     public function store(Request $request)
     {
-//        dd($request);
+        // TODO: validate asset is not already checked out
+
         $this->validate($request, [
             'daterange' => 'required|max:10',
             'dealer' => 'required|numeric',
@@ -83,18 +83,22 @@ class CheckoutController extends Controller
 
         $dt = \Carbon\Carbon::createFromFormat('m/d/Y',$request->daterange)->toDateString();
 
-        Checkout::create([
-            'expected_return_date' => $dt,
-            'asset_id' => $request->asset,
-            'dealer_id' => $request->dealer,
-            'user_id' => $request->rep,
-            'notes' => $request->notes
-        ]);
+        $checkout = new Checkout;
+
+        $checkout->expected_return_date = $dt;
+        $checkout->asset_id = $request->asset;
+        $checkout->dealer_id = $request->dealer;
+        $checkout->user_id = $request->rep;
+        $checkout->notes = $request->notes;
+        $checkout->save();
 
         // TODO: move this to an event
-        Asset::find($request->asset)->update([
-           'status' => '2'
+        $asset = $this->asset->find($request->asset);
+        $asset->update([
+            'status' => '2'
         ]);
+
+        Event::fire('audit.asset.checkout', [$asset, $checkout]);
 
         return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
     }
@@ -119,9 +123,12 @@ class CheckoutController extends Controller
         $checkout->save();
 
         // TODO: move this to an event
-        Asset::find($request->asset)->update([
+        $asset = $this->asset->find($request->asset);
+        $asset->update([
             'status' => '1'
         ]);
+
+        Event::fire('audit.asset.checkin', [$asset, $checkout]);
 
         return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
     }

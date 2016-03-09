@@ -16,8 +16,9 @@ class CreateAssetLogsTable extends Migration
             $table->increments('id');
             $table->integer('asset_id')->index();
             $table->integer('user_id')->index();
-            $table->integer('dealer_id')->index();
-            $table->tinyInteger('action');
+            $table->integer('checkout_id')->nullable()->index();
+            $table->integer('storage_id')->nullable()->index();
+            $table->string('event');
             $table->softDeletes();
             $table->timestamps();
         });

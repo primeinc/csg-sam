@@ -45,6 +45,7 @@ class EventServiceProvider extends ServiceProvider
     {
         parent::boot($events);
 
-        //
+        $events->listen('audit.asset.checkout', 'App\Classes\AuditLogHandler@onAssetCheckout');
+        $events->listen('audit.asset.checkin', 'App\Classes\AuditLogHandler@onAssetCheckin');
     }
 }

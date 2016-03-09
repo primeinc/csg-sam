@@ -57,10 +57,11 @@ $factory->define(App\Models\Dealer::class, function (Faker\Generator $faker) use
 });
 
 $factory->define(App\Models\AssetLogs::class, function (Faker\Generator $faker) use ($factory) {
+    // TODO: update this
     return [
         'asset_id' => factory(App\Models\Asset::class)->create()->id,
         'user_id' => factory(App\Models\Access\User\User::class)->create()->id,
-        'dealer_id' => factory(App\Models\Dealer::class)->create()->id,
-        'action' => $faker->numberBetween(1,5),
+        'checkout_id' => factory(App\Models\Checkout::class)->create()->id,
+        'action' => 'audit.asset.checkin',
     ];
 });

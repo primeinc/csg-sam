@@ -58,4 +58,12 @@ class Checkout extends Model
     {
         return $this->belongsTo('App\Models\Dealer');
     }
+
+    /**
+     * Get the Logs for checkout entry.
+     */
+    public function assetLogs()
+    {
+        return $this->hasMany('App\Models\AssetLogs');
+    }
 }

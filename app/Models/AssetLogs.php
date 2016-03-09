@@ -17,9 +17,9 @@ class AssetLogs extends Model
         return $this->belongsTo('App\Models\Asset');
     }
 
-    public function dealer()
+    public function checkout()
     {
-        return $this->belongsTo('App\Models\Dealer');
+        return $this->belongsTo('App\Models\Checkout');
     }
 
     public function user()
