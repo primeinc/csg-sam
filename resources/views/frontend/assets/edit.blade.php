@@ -168,43 +168,81 @@
     </div>
 
     <div class="row">
-
         <div class="col-md-12">
-        <ul class="timeline">
 
-            <!-- timeline time label -->
-            <li class="time-label">
-        <span class="bg-red">
-            10 Feb. 2014
-        </span>
-            </li>
-            <!-- /.timeline-label -->
+            @foreach($asset->assetLogDates as $logDay)
+            <ul class="timeline">
+                <!-- timeline time label -->
+                <li class="time-label">
+                    <span class="bg-grey">
+                        {{ $logDay->created_at->toFormattedDateString() }}
+                    </span>
+                </li>
+                <!-- /.timeline-label -->
+                @foreach($asset->assetLogs as $log )
+                    @if($log->created_at->diffInDays($logDay->created_at) === 0)
+                <!-- timeline item -->
+                <li>
+                    <!-- timeline icon -->
+                    @if($log->event == 'audit.asset.create')
+                        <i class="fa fa-envelope bg-primary"></i>
+                    @elseif($log->event == 'audit.asset.edit')
+                        <i class="fa fa-edit bg-grey"></i>
+                    @elseif($log->event == 'audit.asset.checkout')
+                        <i class="fa fa-sign-out bg-red"></i>
+                    @elseif($log->event == 'audit.asset.checkin')
+                        <i class="fa fa-sign-in bg-aqua"></i>
+                    @endif
+                    <div class="timeline-item">
+                        <span class="time"><i class="fa fa-clock-o"></i> {{ $log->created_at->diffForHumans() }}</span>
 
-            <!-- timeline item -->
-            <li>
-                <!-- timeline icon -->
-                <i class="fa fa-envelope bg-blue"></i>
-                <div class="timeline-item">
-                    <span class="time"><i class="fa fa-clock-o"></i> 12:05</span>
+                        <h3 class="timeline-header">
+                            <a href="#">{{ $log->user->name }}</a>
+                            @if($log->event == 'audit.asset.create')
+                                created this asset
+                            @elseif($log->event == 'audit.asset.edit')
+                                edited this asset
+                            @elseif($log->event == 'audit.asset.checkout')
+                                checked out this asset
+                            @elseif($log->event == 'audit.asset.checkin')
+                                checked in this asset
+                            @endif
+                        </h3>
 
-                    <h3 class="timeline-header"><a href="#">Support Team</a> ...</h3>
+                        <div class="timeline-body">
+                            @if($log->event == 'audit.asset.create')
+                                created this asset
+                            @elseif($log->event == 'audit.asset.edit')
+                                @foreach(json_decode($log->context) as $field => $changed)
+                                    <p>
+                                    {{ $field }} | {{ $changed->old }} => {{ $changed->new }}
+                                    </p>
 
-                    <div class="timeline-body">
-                        ...
-                        Content goes here
+                                    {{ debug($field) }}
+                                    {{ debug($changed) }}
+                                @endforeach
+                            @elseif($log->event == 'audit.asset.checkout')
+                                checked out this asset to {{ $log->checkout->dealer->employee_name }}
+                            @elseif($log->event == 'audit.asset.checkin')
+                                checked in this asset
+                            @endif
+                        </div>
+
+                        <div class="timeline-footer">
+                            {{--<a class="btn btn-primary btn-xs">...</a>--}}
+                        </div>
                     </div>
+                </li>
+                    @endif
+                @endforeach
+                <!-- END timeline item -->
 
-                    <div class="timeline-footer">
-                        <a class="btn btn-primary btn-xs">...</a>
-                    </div>
-                </div>
-            </li>
-            <!-- END timeline item -->
-            <li>
-                <i class="fa fa-clock-o bg-gray"></i>
-            </li>
-        </ul>
-    </div>
+            @endforeach
+                <li>
+                    <i class="fa fa-clock-o bg-gray"></i>
+                </li>
+            </ul>
+        </div>
     </div>
 </section>
 @endsection

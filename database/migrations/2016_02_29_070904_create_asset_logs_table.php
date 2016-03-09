@@ -19,6 +19,7 @@ class CreateAssetLogsTable extends Migration
             $table->integer('checkout_id')->nullable()->index();
             $table->integer('storage_id')->nullable()->index();
             $table->string('event');
+            $table->text('context');
             $table->softDeletes();
             $table->timestamps();
         });

@@ -83,6 +83,12 @@ class CheckoutController extends Controller
 
         $dt = \Carbon\Carbon::createFromFormat('m/d/Y',$request->daterange)->toDateString();
 
+        // TODO: move this to an event
+        $asset = $this->asset->find($request->asset);
+        $asset->update([
+            'status' => '2'
+        ]);
+
         $checkout = new Checkout;
 
         $checkout->expected_return_date = $dt;
@@ -90,13 +96,8 @@ class CheckoutController extends Controller
         $checkout->dealer_id = $request->dealer;
         $checkout->user_id = $request->rep;
         $checkout->notes = $request->notes;
-        $checkout->save();
 
-        // TODO: move this to an event
-        $asset = $this->asset->find($request->asset);
-        $asset->update([
-            'status' => '2'
-        ]);
+        $checkout->save();
 
         Event::fire('audit.asset.checkout', [$asset, $checkout]);
 
@@ -115,20 +116,20 @@ class CheckoutController extends Controller
             'notes' => 'max:255',
         ]);
 
-        $checkout = Checkout::where('asset_id', '=', $request->asset)->where('returned_date', '=', null)->first();
-
-        $checkout->returned_date = Carbon::now()->toDateString();
-        $checkout->notes = $checkout->notes . '\n' . $request->notes;
-
-        $checkout->save();
-
         // TODO: move this to an event
         $asset = $this->asset->find($request->asset);
         $asset->update([
             'status' => '1'
         ]);
 
+        $checkout = Checkout::where('asset_id', '=', $request->asset)->where('returned_date', '=', null)->first();
+
+        $checkout->returned_date = Carbon::now()->toDateString();
+        $checkout->notes = $checkout->notes . '\n' . $request->notes;
+
         Event::fire('audit.asset.checkin', [$asset, $checkout]);
+
+        $checkout->save();
 
         return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
     }

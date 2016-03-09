@@ -7,6 +7,7 @@ use App\Http\Requests;
 use App\Models\Asset;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
+use Event;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 use Redirect;
@@ -76,13 +77,16 @@ class AssetController extends Controller
 
         $mfr = $this->mfrs->findOrCreate($request->mfr);
 
-        Asset::create([
-            'part' => $request->part,
-            'mfr_id' => $mfr->id,
-            'description' => $request->description,
-            'msrp' => $request->msrp,
-            'image' => $request->imageName,
-        ]);
+        $asset = new Asset;
+        $asset->part = $request->part;
+        $asset->mfr_id = $mfr->id;
+        $asset->description = $request->description;
+        $asset->msrp = $request->msrp;
+        $asset->image = $request->imageName;
+
+        $asset->save();
+
+        Event::fire('audit.asset.create', [$asset]);
 
         return redirect('/samples');
     }
@@ -90,6 +94,11 @@ class AssetController extends Controller
     public function edit(Request $request)
     {
         $asset = $this->assets->find($request->asset);
+
+//        $asset->load('assetLogs');
+
+        $asset->assetLogs->load('user', 'checkout');
+//        $asset->assetLogs->checkouts->load('user', 'dealer');
 
         return view('frontend.assets.edit', compact('asset'));
     }
@@ -120,10 +129,10 @@ class AssetController extends Controller
         $asset->description = $request->description;
         $asset->msrp = $request->msrp;
 
+        Event::fire('audit.asset.edit', [$asset]);
+
         $asset->save();
 
-//        return view('frontend.assets.edit', compact('asset'));
-        //return redirect()->intended('frontend.assets.edit')->with('asset' , $asset->id);
         return Redirect::route('frontend.assets.edit', array('asset' => $asset->id));
     }
 }

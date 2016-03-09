@@ -7,27 +7,6 @@ use DB;
 
 class AuditLogHandler
 {
-    public function onUserLogout($user)
-    {
-        //thepsion5's ten second super-effective audit logging function
-        $log = [
-            'event'     => 'user.logout',
-            'actor_id'  => $user->id,
-            'actee_id'  => $user->id,
-            'context'   => $user->toJson(),
-        ];
-        DB::table('log')->insert($log);
-    }
-
-//    /**
-//     * Create a new AssetLogs instance.
-//     *
-//     * @param AssetLogs $log
-//     */
-//    public function __construct(AssetLogs $log)
-//    {
-//        $this->log = $log;
-//    }
 
     public function handle($data)
     {
@@ -42,6 +21,7 @@ class AuditLogHandler
         $log->user_id = Auth::user()->id;
         $log->checkout_id = $checkout->id;
         $log->event = 'audit.asset.checkout';
+        $log->context = $checkout->toJson();
 
         $log->save();
     }
@@ -54,7 +34,46 @@ class AuditLogHandler
         $log->user_id = Auth::user()->id;
         $log->checkout_id = $checkout->id;
         $log->event = 'audit.asset.checkin';
+        $log->context = $this->getChanges($checkout);
 
         $log->save();
+    }
+
+    public function onAssetCreate($asset)
+    {
+        $log = new AssetLogs;
+
+        $log->asset_id = $asset->id;
+        $log->user_id = Auth::user()->id;
+        $log->event = 'audit.asset.create';
+        $log->context = $asset->toJson();
+
+        $log->save();
+    }
+
+    public function onAssetEdit($asset)
+    {
+        $log = new AssetLogs;
+
+        $log->asset_id = $asset->id;
+        $log->user_id = Auth::user()->id;
+        $log->event = 'audit.asset.edit';
+        $log->context = $this->getChanges($asset);
+
+        $log->save();
+    }
+
+    public function getChanges($model)
+    {
+        $changes = array();
+        foreach($model->getDirty() as $key => $value){
+            $original = $model->getOriginal($key);
+            $changes[$key] = [
+                'old' => $original,
+                'new' => $value,
+            ];
+        }
+
+        return json_encode($changes);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use DB;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -86,6 +87,17 @@ class Asset extends Model
     public function assetLogs()
     {
         return $this->hasMany('App\Models\AssetLogs');
+    }
+
+    /**
+     * Get the Logs for an asset.
+     */
+    public function assetLogDates()
+    {
+        return $this->hasMany('App\Models\AssetLogs')
+            ->orderBy('created_at', 'desc')
+            ->groupBy(DB::raw('DAY(created_at)'))
+            ->select('asset_id', 'created_at');
     }
 
 
