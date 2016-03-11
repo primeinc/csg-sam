@@ -18,11 +18,12 @@ class AuditLogHandler
         $log = new AssetLogs;
 
         $log->asset_id = $asset->id;
-        $log->user_id = Auth::user() ? Auth::user()->id : 1;
+        $log->user_id = Auth::user() ? Auth::user()->id : $checkout->user_id;
         $log->checkout_id = $checkout->id;
         $log->event = 'audit.asset.checkout';
         $log->context = $checkout->toJson();
         $log->created_at = $checkout->created_at;
+        $log->updated_at = $checkout->updated_at;
 
         $log->save();
     }
@@ -32,7 +33,7 @@ class AuditLogHandler
         $log = new AssetLogs;
 
         $log->asset_id = $asset->id;
-        $log->user_id = Auth::user() ? Auth::user()->id : 1;
+        $log->user_id = Auth::user() ? Auth::user()->id : $checkout->user_id;
         $log->checkout_id = $checkout->id;
         $log->event = 'audit.asset.checkin';
         $log->context = $this->getChanges($checkout);

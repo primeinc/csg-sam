@@ -97,7 +97,7 @@ class Asset extends Model
     {
         return $this->hasMany('App\Models\AssetLogs')
             ->orderBy('created_at', 'desc')
-            ->groupBy(DB::raw('DAY(created_at)'))
+            ->groupBy(DB::raw('YEAR(created_at), MONTH(created_at), DAY(created_at)'))
             ->select('asset_id', 'created_at');
     }
 

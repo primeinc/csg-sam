@@ -212,7 +212,11 @@
                             @elseif($log->event == 'audit.asset.edit')
                                 edited this asset
                             @elseif($log->event == 'audit.asset.checkout')
-                                checked out this asset to {{ $log->checkout->dealer->employee_name }} @ {{ $log->checkout->dealer->company_name }}
+                                @if($log->checkout->dealer->id == 1)
+                                    checked out this asset to an {{ $log->checkout->dealer->company_name }}
+                                @else
+                                    checked out this asset to {{ $log->checkout->dealer->employee_name }} @ {{ $log->checkout->dealer->company_name }}
+                                @endif
                             @elseif($log->event == 'audit.asset.checkin')
                                 checked in this asset
                             @endif

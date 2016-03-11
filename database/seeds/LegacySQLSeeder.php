@@ -1,9 +1,13 @@
 <?php
 use App\Classes\AuditLogHandler;
 use App\Models\Asset;
+use App\Models\AssetLogs;
 use App\Models\Checkout;
+use App\Repositories\Backend\Role\EloquentRoleRepository;
 use App\Repositories\Frontend\Dealer\EloquentDealerRepository;
 use App\Repositories\Frontend\Mfr\EloquentMfrRepository;
+use App\Repositories\Frontend\User\EloquentUserRepository;
+use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -42,7 +46,7 @@ class LegacySQLSeeder extends Seeder
             else {
                 $imageName = uniqid() . '.png';
                 try {
-                    $img = Image::make('http://samples.csgreps.com/pics/' . $oldAsset->filename);
+                    $img = Image::make('1http://samples.csgreps.com/pics/' . $oldAsset->filename);
                     $img->resize(300, 200, function ($constraint) {
                         $constraint->aspectRatio();
                     });
@@ -71,8 +75,8 @@ class LegacySQLSeeder extends Seeder
                     'image'             => $imageName,
                     'status'            => $oldAsset->status,
                     'notes'             => $oldAsset->location,
-                    'created_at'        => Carbon\Carbon::now(),
-                    'updated_at'        => Carbon\Carbon::now(),
+                    'created_at'        => $oldAsset->created,
+                    'updated_at'        => $oldAsset->created,
                 ];
 
             DB::table('assets')->insert($assets);
@@ -83,11 +87,11 @@ class LegacySQLSeeder extends Seeder
 
         $dealers = [
                 'user_id'           => 1,
-                'company_name'      => 'Internal Dealer',
-                'employee_name'     => 'Unknown Placeholder',
+                'company_name'      => 'Unknown Dealership',
+                'employee_name'     => 'Unknown DSR',
                 'email'             => 'info@csgreps.com',
-                'created_at'        => Carbon\Carbon::now(),
-                'updated_at'        => Carbon\Carbon::now(),
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
             ];
 
         DB::table('dealers')->insert($dealers);
@@ -108,11 +112,31 @@ class LegacySQLSeeder extends Seeder
                     'company_name'      => $oldDealer->company,
                     'employee_name'     => $oldDealer->fullname,
                     'email'             => $oldDealer->username,
-                    'created_at'        => Carbon\Carbon::now(),
-                    'updated_at'        => Carbon\Carbon::now(),
+                    'created_at'        => Carbon::now(),
+                    'updated_at'        => Carbon::now(),
                 ];
 
             DB::table('dealers')->insert($dealers);
+        }
+
+        $oldUsers = DB::table('users_old')
+            ->where('email', 'LIKE' , '%@csgreps.com%')
+            ->get();
+
+        foreach ($oldUsers as $oldUser){
+            //TODO change username
+            $users = [
+                'name'              => $oldUser->fullname,
+                'email'             => $oldUser->username,
+                'status'            => 1,
+                'confirmed'         => true,
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ];
+            $insertID  = DB::table(config('access.users_table'))->insertGetId($users);
+            $user_model = config('auth.providers.users.model');
+            $user_model = new $user_model;
+            $user_model::find($insertID)->attachRole(2);
         }
 
         echo 'starting old checkins';
@@ -123,16 +147,22 @@ class LegacySQLSeeder extends Seeder
         $oldCheckins = DB::table('checkin_old')->get();
 
         foreach ($oldCheckins as $oldCheckin){
-            //TODO change username
+            $userID = 1;
             $dealers = new EloquentDealerRepository();
             $dealer = $dealers->findByEmail($oldCheckin->username);
             if(!$dealer){
                 $dealer = $dealers->findByEmail('info@csgreps.com');
+
+                $user_model = new EloquentUserRepository(new EloquentRoleRepository());
+                $user = $user_model->findByEmail($oldCheckin->username);
+                if($user)
+                    $userID = $user->id;
             }
+
 
             $checkins = [
                     'asset_id'               => $oldCheckin->csgid,
-                    'user_id'                => '1',
+                    'user_id'                => $userID,
                     'dealer_id'              => $dealer->id,
                     'notes'                  => $oldCheckin->location,
                     'expected_return_date'   => $oldCheckin->returndate,
@@ -144,6 +174,54 @@ class LegacySQLSeeder extends Seeder
             $insertID  = DB::table('checkouts')->insertGetId($checkins);
 
             $log->onAssetCheckout(Asset::find($oldCheckin->csgid), Checkout::find($insertID));
+
+            $manualLog = new AssetLogs;
+
+            $manualLog->asset_id = $oldCheckin->csgid;
+            $manualLog->user_id = $userID;
+            $manualLog->checkout_id = $insertID;
+            $manualLog->event = 'audit.asset.checkin';
+            $manualLog->context = '{}';
+            $manualLog->created_at = $oldCheckin->returndate;
+            $manualLog->updated_at = $oldCheckin->returndate;
+
+            $manualLog->save();
+        }
+
+        echo 'starting curent signouts';
+
+        DB::statement('DELETE t1 FROM signout_old t1 LEFT JOIN assets t2 ON t2.id = t1.csgid WHERE t2.id IS NULL');
+        DB::statement('SELECT t1.* FROM signout_old t1 LEFT JOIN assets t2 ON t2.id = t1.csgid WHERE t2.id IS NOT NULL ORDER BY id ASC');
+
+        $oldSignouts = DB::table('signout_old')->get();
+
+        foreach ($oldSignouts as $oldSignout){
+            $userID = 1;
+            $dealers = new EloquentDealerRepository();
+            $dealer = $dealers->findByEmail($oldSignout->username);
+            if(!$dealer){
+                $dealer = $dealers->findByEmail('info@csgreps.com');
+
+                $user_model = new EloquentUserRepository(new EloquentRoleRepository());
+                $user = $user_model->findByEmail($oldSignout->username);
+                if($user)
+                    $userID = $user->id;
+            }
+
+            $checkins = [
+                'asset_id'               => $oldSignout->csgid,
+                'user_id'                => $userID,
+                'dealer_id'              => $dealer->id,
+                'notes'                  => $oldSignout->location,
+                'expected_return_date'   => $oldSignout->returndate,
+                'returned_date'          => null,
+                'created_at'             => $oldSignout->date,
+                'updated_at'             => $oldSignout->date,
+            ];
+
+            $insertID  = DB::table('checkouts')->insertGetId($checkins);
+
+            $log->onAssetCheckout(Asset::find($oldSignout->csgid), Checkout::find($insertID));
         }
 
         if (env('DB_CONNECTION') == 'mysql') {
