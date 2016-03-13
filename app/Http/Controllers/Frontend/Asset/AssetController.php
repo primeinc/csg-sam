@@ -43,7 +43,9 @@ class AssetController extends Controller
     }
 
     public function index() {
-        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->get();
+
+        $assets->load('activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
         return view('frontend.assets.samples', compact('assets'));
     }
@@ -66,6 +68,8 @@ class AssetController extends Controller
             ->get();
 
         $assets->load('Mfr');
+
+        $assets->load('activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
         return view('frontend.assets.samples', compact('assets'));
     }

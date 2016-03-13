@@ -22,17 +22,13 @@
                     <div class="box-tools pull-right">
                         {{--$asset->activeCheckout--}}
                         @if ($asset->status == 2)
-                        <span class="label label-warning">
-                                Checked Out
-                            </span>
+                            <span class="label label-default">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
+                            <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
+                            <span class="label label-warning">Checked Out</span>
                         @elseif ($asset->status == 3)
-                            <span class="label label-info">
-                                In-Storage
-                            </span>
+                            <span class="label label-info">In-Storage</span>
                         @else
-                            <span class="label label-success">
-                                Avaliable
-                            </span>
+                            <span class="label label-success">Avaliable</span>
                         @endif
                     </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->
@@ -65,10 +61,10 @@
                                 <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->
                                 <button type="button" class="btn btn-default">Remove from Storage</button>
-                                <a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>
+                                <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                             @else
                                 <button type="button" class="btn btn-default">Move to Storage</button>
-                                <a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>
+                                <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                             @endif
                         </div>
                     </div><!-- /.box-tools -->
@@ -243,17 +239,19 @@
 
 @endsection
 
-@push('scripts')
-    <script type="text/javascript">
-        jQuery(function($){
-            $('button.checkin').click(function(ev){
-                ev.preventDefault();
-                var uid = $(this).data('id');
-                $.get('/samples/checkin/' + uid, function(html){
-                    $('#dynModal .modal-content').html(html);
-                    $('#dynModal').modal('show', {backdrop: 'static'});
-                });
-            });
-        });
-    </script>
-@stop
+@include('frontend.checkout._modalScripts')
+
+{{--@push('scripts')--}}
+    {{--<script type="text/javascript">--}}
+        {{--jQuery(function($){--}}
+            {{--$('button.checkin').click(function(ev){--}}
+                {{--ev.preventDefault();--}}
+                {{--var uid = $(this).data('id');--}}
+                {{--$.get('/samples/checkin/' + uid, function(html){--}}
+                    {{--$('#dynModal .modal-content').html(html);--}}
+                    {{--$('#dynModal').modal('show', {backdrop: 'static'});--}}
+                {{--});--}}
+            {{--});--}}
+        {{--});--}}
+    {{--</script>--}}
+{{--@stop--}}

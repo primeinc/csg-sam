@@ -101,7 +101,7 @@ class CheckoutController extends Controller
 
         Event::fire('audit.asset.checkout', [$asset, $checkout]);
 
-        return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
+        return Redirect::route('samples.show', array('id' => $asset->id));
     }
 
     public function checkinModal(Request $request) {
@@ -131,6 +131,6 @@ class CheckoutController extends Controller
 
         $checkout->save();
 
-        return Redirect::route('frontend.assets.edit', array('asset' => $request->asset));
+        return Redirect::route('samples.show', array('id' => $asset->id));
     }
 }
