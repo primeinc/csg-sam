@@ -9,6 +9,7 @@ use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
 use Event;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Route;
 use Intervention\Image\Facades\Image;
 use Redirect;
 
@@ -69,7 +70,7 @@ class AssetController extends Controller
         return view('frontend.assets.samples', compact('assets'));
     }
 
-    public function add()
+    public function create()
     {
         return view('frontend.assets.add');
     }
@@ -85,6 +86,7 @@ class AssetController extends Controller
         $this->validate($request, [
             'part' => 'required|max:100',
             'mfr' => 'required|max:255',
+            'ack' => 'max:255',
             'description' => 'required|max:255',
             'msrp' => 'numeric',
         ]);
@@ -97,7 +99,7 @@ class AssetController extends Controller
         else
             $request->merge(['imageName' => 'asset-placeholder.png'] );
 
-        $mfr = $this->mfrs->findOrCreate($request->mfr);
+        $mfr = $this->mfrs->findOrCreate($request->mfr['name']);
 
         $asset = new Asset;
         $asset->part = $request->part;
@@ -113,19 +115,16 @@ class AssetController extends Controller
         return redirect('/samples');
     }
 
-    public function edit(Request $request)
+    public function show($id)
     {
-        $asset = $this->assets->find($request->asset);
+        $asset = $this->assets->find($id);
 
-//        $asset->load('assetLogs');
+        $asset->assetLogs->load('user', 'checkout', 'checkout.dealer', 'checkout.dealer.dealership');
 
-        $asset->assetLogs->load('user', 'checkout');
-//        $asset->assetLogs->checkouts->load('user', 'dealer');
-
-        return view('frontend.assets.edit', compact('asset'));
+        return view('frontend.assets.show', compact('asset'));
     }
 
-    public function update(Request $request)
+    public function update($id, Request $request)
     {
         $this->validate($request, [
             'id' => 'numeric',
@@ -136,8 +135,8 @@ class AssetController extends Controller
             'msrp' => 'numeric',
         ]);
 
-        $asset = $this->assets->find($request->asset);
-        $mfr = $this->mfrs->findOrCreate($request->mfr);
+        $asset = $this->assets->find($id);
+        $mfr = $this->mfrs->findOrCreate($request->mfr['name']);
 
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
             $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
@@ -157,6 +156,12 @@ class AssetController extends Controller
 
         $asset->save();
 
-        return Redirect::route('frontend.assets.edit', array('asset' => $asset->id));
+//        return Redirect::route('frontend.assets.edit', array('asset' => $asset->id));
+        return redirect()->action('Frontend\Asset\AssetController@show', [$asset->id]);
+    }
+
+    public function getMfrIdAttribute($value)
+    {
+        return 'wow - ' . $value;
     }
 }

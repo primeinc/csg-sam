@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDealersTable extends Migration
+class CreateDealershipsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,12 +12,9 @@ class CreateDealersTable extends Migration
      */
     public function up()
     {
-        Schema::create('dealers', function (Blueprint $table) {
+        Schema::create('dealerships', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('dealership_id')->index();
-            $table->integer('user_id')->index();
-            $table->string('employee_name')->index();
-            $table->string('email');
+            $table->string('name')->unique();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -30,6 +27,6 @@ class CreateDealersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dealers');
+        Schema::drop('dealerships');
     }
 }

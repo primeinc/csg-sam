@@ -1,5 +1,4 @@
 <?php
-
 namespace App\DataTables;
 
 use App\Models\Dealer;
@@ -8,7 +7,6 @@ use Yajra\Datatables\Services\DataTable;
 class DealersDataTable extends DataTable
 {
     // protected $printPreview  = 'path.to.print.preview.view';
-
     /**
      * Display ajax response.
      *
@@ -16,14 +14,11 @@ class DealersDataTable extends DataTable
      */
     public function ajax()
     {
-        return $this->datatables
-            ->eloquent($this->query())
-//            ->addColumn('action', 'path.to.action.view')
-            ->addColumn('action', function ($data) {
-//                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-                return $data->action_buttons;
-            })
-            ->make(true);
+        return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
+        ->addColumn('action', function ($data) {
+            //                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+            return $data->action_buttons;
+        })->make(true);
     }
 
     /**
@@ -33,7 +28,7 @@ class DealersDataTable extends DataTable
      */
     public function query()
     {
-        $dealers = Dealer::query()->with('user');
+        $dealers = Dealer::query()->with('user')->with('dealership');
 
         return $this->applyScopes($dealers);
     }
@@ -45,11 +40,7 @@ class DealersDataTable extends DataTable
      */
     public function html()
     {
-        return $this->builder()
-                    ->columns($this->getColumns())
-                    ->ajax('')
-                    ->addAction(['width' => '60px'])
-                    ->parameters($this->getBuilderParameters());
+        return $this->builder()->columns($this->getColumns())->ajax('')->addAction(['width' => '60px'])->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -60,10 +51,25 @@ class DealersDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'id'            => ['name' => 'dealers.id', 'title' => 'ID'],
-            'company_name'  => ['name' => 'dealers.company_name', 'title' => 'Dealer Name'],
-            'employee_name' => ['name' => 'dealers.employee_name', 'title' => 'Employee'],
-            'user.name'     => ['name' => 'user.name', 'title' => 'CSG Rep'],
+            'id' => ['name' => 'dealers.id', 'title' => 'ID'],
+            'dealership.name' => ['name' => 'dealership.name', 'title' => 'Dealership'],
+            'employee_name' => ['name' => 'dealers.employee_name', 'title' => 'DSR'],
+            'user.name' => ['name' => 'user.name', 'title' => 'CSG Rep'],
+        ];
+    }
+
+    /**
+     * Get builder parameters.
+     *
+     * @return array
+     */
+    protected function getBuilderParameters()
+    {
+        return [
+            'lengthMenu' => [[25, 50, 75, 100, -1], [25, 50, 75, 100, "All"]],
+            'order' => [[0, 'desc']],
+            'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
+            'buttons' => ['excel', 'pdf', 'print'],
         ];
     }
 
@@ -75,20 +81,5 @@ class DealersDataTable extends DataTable
     protected function filename()
     {
         return 'dealers';
-    }
-
-    /**
-     * Get builder parameters.
-     *
-     * @return array
-     */
-    protected function getBuilderParameters()
-    {
-        return [
-            'lengthMenu' => [[25, 50, 75, 100, -1],[25, 50, 75, 100, "All"]],
-            'order'   => [[0, 'desc']],
-            'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
-            'buttons' => ['excel', 'pdf', 'print'],
-        ];
     }
 }

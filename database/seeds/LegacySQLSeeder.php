@@ -5,6 +5,7 @@ use App\Models\AssetLogs;
 use App\Models\Checkout;
 use App\Repositories\Backend\Role\EloquentRoleRepository;
 use App\Repositories\Frontend\Dealer\EloquentDealerRepository;
+use App\Repositories\Frontend\Dealership\EloquentDealershipRepository;
 use App\Repositories\Frontend\Mfr\EloquentMfrRepository;
 use App\Repositories\Frontend\User\EloquentUserRepository;
 use Carbon\Carbon;
@@ -84,10 +85,19 @@ class LegacySQLSeeder extends Seeder
             $log->onAssetCreate(Asset::find($oldAsset->csgid));
         }
 
+        $dealerships = [
+            'id'                => 1,
+            'name'              => 'Unknown Dealership',
+            'created_at'        => Carbon::now(),
+            'updated_at'        => Carbon::now(),
+        ];
+
+        DB::table('dealerships')->insert($dealerships);
 
         $dealers = [
+                'id'                => 1,
                 'user_id'           => 1,
-                'company_name'      => 'Unknown Dealership',
+                'dealership_id'     => 1,
                 'employee_name'     => 'Unknown DSR',
                 'email'             => 'info@csgreps.com',
                 'created_at'        => Carbon::now(),
@@ -107,9 +117,13 @@ class LegacySQLSeeder extends Seeder
 
         foreach ($oldDealers as $oldDealer){
             //TODO change username
+
+            $dealerships = new EloquentDealershipRepository;
+            $dealership = $dealerships->findOrCreate($oldDealer->company);
+
             $dealers = [
                     'user_id'           => 1,
-                    'company_name'      => $oldDealer->company,
+                    'dealership_id'     => $dealership->id,
                     'employee_name'     => $oldDealer->fullname,
                     'email'             => $oldDealer->username,
                     'created_at'        => Carbon::now(),

@@ -15,14 +15,16 @@
                     {{ csrf_field() }}
                     <div class="box-body">
                         <div class="form-group">
-                            <label for="dealer-company" class="col-sm-3 control-label">Company</label>
+                            <label for="dealer-dealership" class="col-sm-3 control-label">Dealership</label>
 
                             <div class="col-sm-9">
-                                <input type="text" name="company_name" id="dealer-company" class="form-control" >
+                                <select id="dealer-dealership" name="dealership_id" class="form-control select2">
+                                    <option></option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="dealer-employee" class="col-sm-3 control-label">Employee Name</label>
+                            <label for="dealer-employee" class="col-sm-3 control-label">Dealer Sales Rep</label>
 
                             <div class="col-sm-9">
                                 <input type="text" name="employee_name" id="dealer-employee" class="form-control" >
@@ -57,11 +59,25 @@
         $.fn.select2.defaults.set( "width", "off" );
 
         $(document).ready(function() {
+            $.getJSON("{!! route('frontend.dealerships.search.all') !!}", function (data) {
+                $("#dealer-dealership").select2({
+                    placeholder: 'Select or add a Dealership',
+                    tags: true,
+                    data: data.items,
+                    createTag: function (params) {
+                        return {
+                            id: params.term,
+                            text: 'New: ' + params.term,
+                            newOption: false
+                        }
+                    }
+                })
+            });
             $.getJSON("{!! route('frontend.user.search.all') !!}", function (data) {
                 $("#dealer-user").select2({
                     data: data.items
                 });
-            })
+            });
         });
     </script>
 

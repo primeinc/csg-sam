@@ -51,15 +51,13 @@
                         <div class="pull-right">
                             <div class="btn-group">
                                 {{--<button type="button" class="btn btn-danger">Left</button>--}}
+                                <a href="{!! url('samples/' . $asset->id) !!}" class="btn btn-default" role="button">Details</a>
                                 @if ($asset->status == 2) {{-- Checked Out --}}
-                                    <a href="{!! url('samples/edit/' . $asset->id) !!}" class="btn btn-default" role="button">Edit</a>
                                     <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                                 @elseif ($asset->status == 3) {{-- In-Storage --}}
-                                    <a href="{!! url('samples/edit/' . $asset->id) !!}" class="btn btn-default" role="button">Edit</a>
                                     {{--<a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>--}}
                                     <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                                 @else
-                                    <a href="{!! url('samples/edit/' . $asset->id) !!}" class="btn btn-default" role="button">Edit</a>
                                     {{--<a href="{!! url('checkout/' . $asset->id) !!}" class="btn btn-primary" role="button">Checkout</a>--}}
                                     <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                                 @endif

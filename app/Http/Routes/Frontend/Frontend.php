@@ -18,14 +18,23 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('user/search/all', 'SearchController@searchAll')->name('frontend.user.search.all');
     });
     Route::group(['namespace' => 'Asset'], function() {
-        Route::get('samples', 'AssetController@index')->name('frontend.assets');
-        Route::get('samples/add', 'AssetController@add')->name('frontend.assets.add');
-        Route::post('samples/add', 'AssetController@store')->name('frontend.assets.add');
-        Route::get('samples/edit/{asset}', 'AssetController@edit')->name('frontend.assets.edit');
-        Route::post('samples/update/{asset}', 'AssetController@update')->name('frontend.assets.update');
-        Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
+//        Route::get('samples', 'AssetController@index')->name('frontend.assets');
+//        Route::get('samples/add', 'AssetController@add')->name('frontend.assets.add');
+//        Route::post('samples/add', 'AssetController@store')->name('frontend.assets.add');
+//        Route::get('samples/edit/{asset}', 'AssetController@edit')->name('frontend.assets.edit');
+//        Route::post('samples/update/{asset}', 'AssetController@update')->name('frontend.assets.update');
+//        Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
         Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
         Route::post('samples/search', 'AssetController@search')->name('frontend.assets');
+        Route::resource('samples', 'AssetController');
+    });
+    Route::group(['namespace' => 'Dealership'], function() {
+        Route::resource('dealerships/list', 'DealershipController');
+        Route::get('dealerships/add', 'DealershipController@add')->name('frontend.dealerships.add');
+        Route::post('dealerships/add', 'DealershipController@store')->name('frontend.dealerships.add');
+        Route::delete('dealerships/{mfr}', 'DealershipController@destroy')->name('frontend.dealerships');
+        Route::get('dealerships/search', 'DealershipController@search')->name('frontend.dealerships.search');
+        Route::get('dealerships/search/all', 'DealershipController@searchAll')->name('frontend.dealerships.search.all');
     });
     Route::group(['namespace' => 'Dealer'], function() {
         Route::resource('dealers/list', 'DealerController');

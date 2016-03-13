@@ -31,6 +31,11 @@ class Dealer extends Model
         return $this->belongsTo('App\Models\Access\User\User');
     }
 
+    public function dealership()
+    {
+        return $this->belongsTo('App\Models\Dealership');
+    }
+
     /**
      * Get the checkouts for a Dealer.
      */
