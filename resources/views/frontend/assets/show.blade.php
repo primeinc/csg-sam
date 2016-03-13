@@ -21,14 +21,18 @@
                     <h3 class="box-title">CSGID: {{ $asset->id }}</h3>
                     <div class="box-tools pull-right">
                         {{--$asset->activeCheckout--}}
-                        @if ($asset->status == 2)
+                        @if ($asset->status == 2 && $asset->activeCheckout)
                             <span class="label label-default">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
                             <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
-                            <span class="label label-warning">Checked Out</span>
+                                @if($asset->activeCheckout->permanent)
+                                    <span class="label label-danger">Permanently Checked Out</span>
+                                @else
+                                    <span class="label label-warning">Checked Out</span>
+                                @endif
                         @elseif ($asset->status == 3)
                             <span class="label label-info">In-Storage</span>
                         @else
-                            <span class="label label-success">Avaliable</span>
+                            <span class="label label-success">Available</span>
                         @endif
                     </div><!-- /.box-tools -->
                 </div><!-- /.box-header -->

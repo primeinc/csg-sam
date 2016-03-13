@@ -40,10 +40,21 @@
                 </div>
             </div>
             <div class="form-group">
-                <label for="checkout-notes" class="col-sm-3 control-label">Notes</label>
+                <label for="checkout-project" class="col-sm-3 control-label">Project</label>
 
                 <div class="col-sm-9">
-                    <input type="text" name="notes" id="checkout-notes" class="form-control">
+                    <input type="text" name="project" id="checkout-project" class="form-control">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="checkout-project" class="col-sm-3 control-label"></label>
+                <div class="col-sm-9">
+                    <div class="checkbox">
+                        <label>
+                            <input type="checkbox" name="permanent">
+                            Permanent Sample?
+                        </label>
+                    </div>
                 </div>
             </div>
         </div>

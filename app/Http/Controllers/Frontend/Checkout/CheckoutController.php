@@ -78,7 +78,7 @@ class CheckoutController extends Controller
             'daterange' => 'required|max:10',
             'dealer' => 'required|numeric',
             'rep' => 'required|numeric',
-            'notes' => 'max:255',
+            'project' => 'max:255',
         ]);
 
         $dt = \Carbon\Carbon::createFromFormat('m/d/Y',$request->daterange)->toDateString();
@@ -95,7 +95,10 @@ class CheckoutController extends Controller
         $checkout->asset_id = $request->asset;
         $checkout->dealer_id = $request->dealer;
         $checkout->user_id = $request->rep;
-        $checkout->notes = $request->notes;
+        $checkout->project = $request->project;
+
+        if($request->permanent == 'on')
+            $checkout->permanent = 1;
 
         $checkout->save();
 
@@ -125,7 +128,7 @@ class CheckoutController extends Controller
         $checkout = Checkout::where('asset_id', '=', $request->asset)->where('returned_date', '=', null)->first();
 
         $checkout->returned_date = Carbon::now()->toDateString();
-        $checkout->notes = $checkout->notes . '\n' . $request->notes;
+        $checkout->notes = $request->notes;
 
         Event::fire('audit.asset.checkin', [$asset, $checkout]);
 

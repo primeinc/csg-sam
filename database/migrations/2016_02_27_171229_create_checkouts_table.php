@@ -17,7 +17,9 @@ class CreateCheckoutsTable extends Migration
             $table->integer('asset_id')->index();
             $table->integer('user_id')->index();
             $table->integer('dealer_id')->index();
+            $table->string('project');
             $table->string('notes');
+            $table->tinyInteger('permanent');
             $table->date('expected_return_date');
             $table->date('returned_date')->nullable();
             $table->softDeletes();
