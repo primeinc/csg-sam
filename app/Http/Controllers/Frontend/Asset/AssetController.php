@@ -93,7 +93,7 @@ class AssetController extends Controller
 
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
             $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            Image::make($request->file('image'))->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
+            Image::make($request->file('image'))->orientate()->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
             $request->merge(['imageName' => $imageName] );
         }
         else
@@ -132,7 +132,7 @@ class AssetController extends Controller
             'part' => 'required|max:100',
             'mfr' => 'required|max:255',
             'description' => 'required|max:255',
-            'ack' => 'required|max:255',
+            'ack' => 'max:255',
             'msrp' => 'numeric',
         ]);
 
@@ -141,7 +141,7 @@ class AssetController extends Controller
 
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
             $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            Image::make($request->file('image'))->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
+            Image::make($request->file('image'))->orientate()->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
 
             $request->merge(['imageName' => $imageName] );
             $asset->image = $request->imageName;

@@ -2,7 +2,8 @@
     {{ Form::bsText('part', 'Part #') }}
     {{ Form::bsText('ack', 'ACK #') }}
     @if(isset($asset))
-        {{ Form::select2('mfr[name]', 'Manufacturer', [$asset->mfr->id => $asset->mfr->name], $asset->mfr->id) }}
+        {{-- TODO: Change MFR value to MFR_ID --}}
+        {{ Form::select2('mfr[name]', 'Manufacturer', [$asset->mfr->name => $asset->mfr->name], $asset->mfr->name) }}
     @else
         {{ Form::select2('mfr[name]', 'Manufacturer') }}
     @endif
