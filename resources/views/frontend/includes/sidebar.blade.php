@@ -52,14 +52,14 @@
                             {{ trans('menus.frontend.samples.search') }}
                         </a>
                     </li>
-                    <li class="{{ Active::pattern('samples/add') }}">
-                        <a href="{!! url('samples/add') !!}">
+                    <li class="{{ Active::pattern('samples/create') }}">
+                        <a href="{!! url('samples/create') !!}">
                             <i class="fa fa-plus"></i>
                             {{ trans('menus.frontend.samples.add') }}
                         </a>
                     </li>
                     <li class="{{ Active::pattern('samples/bulk-edit') }}">
-                        <a href="{!! url('samples/bulk-edit') !!}">
+                        <a href="#{{-- url('samples/bulk-edit') --}}">
                             <i class="fa fa-plus-square"></i>
                             {{ trans('menus.frontend.samples.bulk') }}
                         </a>
@@ -78,6 +78,12 @@
                         <a href="{!! url('dealers/list') !!}">
                             <i class="fa fa-search"></i>
                             {{ trans('menus.frontend.dealers.search') }}
+                        </a>
+                    </li>
+                    <li class="{{ Active::pattern('dealers/list') }}">
+                        <a href="{!! url('dealers/list') !!}">
+                            <i class="fa fa-search"></i>
+                            {{ trans('menus.frontend.dealers.dealerships') }}
                         </a>
                     </li>
                     <li class="{{ Active::pattern('dealers/add') }}">

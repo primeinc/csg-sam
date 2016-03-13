@@ -107,7 +107,7 @@ return [
 
         'samples' => [
             'main' => 'Samples',
-            'search' => 'Search Samples',
+            'search' => 'List Samples',
             'add' => 'Add Samples',
             'bulk' => 'Bulk Edit',
         ],
@@ -115,7 +115,8 @@ return [
 
         'dealers' => [
             'main' => 'Dealers',
-            'search' => 'Find Dealer',
+            'search' => 'List Dealer',
+            'dealerships' => 'List Dealerships',
             'add' => 'Add Dealer',
         ],
 

@@ -21,12 +21,12 @@
     </div>
 @endsection
 
-@section('after-scripts-end')
+@push('scripts')
     <script>
         $.fn.select2.defaults.set( "theme", "bootstrap" );
         $.fn.select2.defaults.set( "width", "off" );
 
-        $("#mfr[name]").select2({
+        $("#mfr\\[name\\]").select2({
             placeholder: "Select or add a Manufacturer",
             tags: true,
             ajax: {
@@ -59,5 +59,4 @@
             minimumInputLength: 1
         });
     </script>
-
-@endsection
+@endpush

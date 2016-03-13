@@ -2,7 +2,7 @@
 
 @push('styles')
 <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
-@stop
+@endpush
 
 @section('content')
     <div class="row">
@@ -128,7 +128,7 @@
             $('input[name="daterange"]').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
-                startDate: "{{ Carbon\Carbon::now()->addDays(30)->format('m/d/Y') }}"
+                startDate: "{{ Carbon\Carbon::now()->addDays(14)->format('m/d/Y') }}"
             });
             $("#checkout-dealer").select2({
                 placeholder: "Select a Dealer",
@@ -190,4 +190,4 @@
 
     });
 </script>
-@stop
+@endpush

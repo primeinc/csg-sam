@@ -103,6 +103,7 @@ class AssetController extends Controller
 
         $asset = new Asset;
         $asset->part = $request->part;
+        $asset->ack = $request->ack;
         $asset->mfr_id = $mfr->id;
         $asset->description = $request->description;
         $asset->msrp = $request->msrp;
@@ -112,7 +113,7 @@ class AssetController extends Controller
 
         Event::fire('audit.asset.create', [$asset]);
 
-        return redirect('/samples');
+        return redirect()->action('Frontend\Asset\AssetController@show', [$asset->id]);
     }
 
     public function show($id)
