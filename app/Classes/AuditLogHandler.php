@@ -66,6 +66,18 @@ class AuditLogHandler
         $log->save();
     }
 
+    public function onAssetLocationChange($asset)
+    {
+        $log = new AssetLogs;
+
+        $log->asset_id = $asset->id;
+        $log->user_id = Auth::user() ? Auth::user()->id : 1;
+        $log->event = 'audit.asset.location.change';
+        $log->context = $this->getChanges($asset);
+
+        $log->save();
+    }
+
     public function getChanges($model)
     {
         $changes = array();

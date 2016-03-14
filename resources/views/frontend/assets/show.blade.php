@@ -143,6 +143,8 @@
                         <i class="fa fa-sign-out bg-red"></i>
                     @elseif($log->event == 'audit.asset.checkin')
                         <i class="fa fa-sign-in bg-aqua"></i>
+                    @elseif($log->event == 'audit.asset.location.change')
+                        <i class="fa fa-location-arrow bg-purple"></i>
                     @endif
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> {{ $log->created_at->diffForHumans() }}</span>
@@ -164,6 +166,8 @@
                                 @endif
                             @elseif($log->event == 'audit.asset.checkin')
                                 checked in this asset
+                            @elseif($log->event == 'audit.asset.location.change')
+                                changed the location to {{ $log->context->location_name->new }}
                             @endif
                         </h3>
 

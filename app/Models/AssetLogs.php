@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use stdClass;
 
 class AssetLogs extends Model
 {
@@ -25,6 +26,19 @@ class AssetLogs extends Model
     public function user()
     {
         return $this->belongsTo('App\Models\Access\User\User');
+    }
+
+    public function getContextAttribute($value)
+    {
+        $context = json_decode($value);
+
+        if(isset($context->location_id)){
+            $context->location_name = new stdClass();
+            $context->location_name->new = Location::find($context->location_id->new)->name;
+            $context->location_name->old = Location::find($context->location_id->old)->name;
+        }
+
+        return $context;
     }
 
 }

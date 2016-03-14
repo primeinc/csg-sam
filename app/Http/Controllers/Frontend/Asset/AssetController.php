@@ -150,6 +150,8 @@ class AssetController extends Controller
 
         $asset->location_id = $location->id;
 
+        Event::fire('audit.asset.location.change', [$asset]);
+
         $asset->save();
 
         return redirect()->action('Frontend\Asset\AssetController@show', [$asset->id]);

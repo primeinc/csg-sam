@@ -200,6 +200,7 @@ class LegacySQLSeeder extends Seeder
             $userID = 1;
             $dealers = new EloquentDealerRepository();
             $dealer = $dealers->findByEmail($oldCheckin->username);
+            $asset = Asset::find($oldCheckin->csgid);
             if(!$dealer){
                 $dealer = $dealers->findByEmail('unknown@csgreps.com');
 
@@ -209,19 +210,54 @@ class LegacySQLSeeder extends Seeder
                     $userID = $user->id;
                     if($oldCheckin->username == 'info@csgreps.com') {
                         // West Side Storage
+                        $asset->location_id = 3;
+                        // log storage change
+                        $manualLog = new AssetLogs;
+                        $manualLog->asset_id = $asset->id;
+                        $manualLog->user_id = 1;
+                        $manualLog->event = 'audit.asset.location.change';
+                        $manualLog->context = $log->getChanges($asset);
+                        $manualLog->created_at = $oldCheckin->date;
+                        $manualLog->updated_at = $oldCheckin->date;
+                        $manualLog->save();
+                        // log storage change
                         continue;
-                        // add logging
                     }
                     elseif($oldCheckin->username == 'jack@csgreps.com') {
                         // East Side Storage
+                        $asset->location_id = 4;
+                        // log storage change
+                        $manualLog = new AssetLogs;
+                        $manualLog->asset_id = $asset->id;
+                        $manualLog->user_id = 1;
+                        $manualLog->event = 'audit.asset.location.change';
+                        $manualLog->context = $log->getChanges($asset);
+                        $manualLog->created_at = $oldCheckin->date;
+                        $manualLog->updated_at = $oldCheckin->date;
+                        $manualLog->save();
+                        // log storage change
                         continue;
                     }
                     elseif($oldCheckin->username == 'voicemail@csgreps.com') {
                         // Missing / Lost
+                        $asset->location_id = 2;
+                        // log storage change
+                        $manualLog = new AssetLogs;
+                        $manualLog->asset_id = $asset->id;
+                        $manualLog->user_id = 1;
+                        $manualLog->event = 'audit.asset.location.change';
+                        $manualLog->context = $log->getChanges($asset);
+                        $manualLog->created_at = $oldCheckin->date;
+                        $manualLog->updated_at = $oldCheckin->date;
+                        $manualLog->save();
+                        // log storage change
                         continue;
                     }
                 }
             }
+
+            $asset->location_id = 1;
+            $asset->save();
 
             $checkins = [
                     'asset_id'               => $oldCheckin->csgid,
@@ -273,6 +309,16 @@ class LegacySQLSeeder extends Seeder
                     if($oldSignout->username == 'info@csgreps.com') {
                         // West Side Storage
                         $asset->location_id = 3;
+                        // log storage change
+                        $manualLog = new AssetLogs;
+                        $manualLog->asset_id = $asset->id;
+                        $manualLog->user_id = 1;
+                        $manualLog->event = 'audit.asset.location.change';
+                        $manualLog->context = $log->getChanges($asset);
+                        $manualLog->created_at = $oldSignout->date;
+                        $manualLog->updated_at = $oldSignout->date;
+                        $manualLog->save();
+                        // log storage change
                         $asset->save();
                         continue;
                         // add logging
@@ -280,12 +326,32 @@ class LegacySQLSeeder extends Seeder
                     elseif($oldSignout->username == 'jack@csgreps.com') {
                         // East Side Storage
                         $asset->location_id = 4;
+                        // log storage change
+                        $manualLog = new AssetLogs;
+                        $manualLog->asset_id = $asset->id;
+                        $manualLog->user_id = 1;
+                        $manualLog->event = 'audit.asset.location.change';
+                        $manualLog->context = $log->getChanges($asset);
+                        $manualLog->created_at = $oldSignout->date;
+                        $manualLog->updated_at = $oldSignout->date;
+                        $manualLog->save();
+                        // log storage change
                         $asset->save();
                         continue;
                     }
                     elseif($oldSignout->username == 'voicemail@csgreps.com') {
                         // Missing / Lost
                         $asset->location_id = 2;
+                        // log storage change
+                        $manualLog = new AssetLogs;
+                        $manualLog->asset_id = $asset->id;
+                        $manualLog->user_id = 1;
+                        $manualLog->event = 'audit.asset.location.change';
+                        $manualLog->context = $log->getChanges($asset);
+                        $manualLog->created_at = $oldSignout->date;
+                        $manualLog->updated_at = $oldSignout->date;
+                        $manualLog->save();
+                        // log storage change
                         $asset->save();
                         continue;
                     }
