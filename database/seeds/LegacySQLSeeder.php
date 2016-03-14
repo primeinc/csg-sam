@@ -74,7 +74,8 @@ class LegacySQLSeeder extends Seeder
                     'ack'               => $oldAsset->ack,
                     'msrp'              => $oldAsset->msrp,
                     'image'             => $imageName,
-                    'status'            => $oldAsset->status,
+//                    'status'            => $oldAsset->status,
+                    'status'            => 1,
                     'notes'             => $oldAsset->location,
                     'created_at'        => $oldAsset->created,
                     'updated_at'        => $oldAsset->created,
@@ -134,7 +135,7 @@ class LegacySQLSeeder extends Seeder
                 'user_id'           => 1,
                 'dealership_id'     => 1,
                 'employee_name'     => 'Unknown DSR',
-                'email'             => 'info@csgreps.com',
+                'email'             => 'unknown@csgreps.com',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ];
@@ -200,14 +201,27 @@ class LegacySQLSeeder extends Seeder
             $dealers = new EloquentDealerRepository();
             $dealer = $dealers->findByEmail($oldCheckin->username);
             if(!$dealer){
-                $dealer = $dealers->findByEmail('info@csgreps.com');
+                $dealer = $dealers->findByEmail('unknown@csgreps.com');
 
                 $user_model = new EloquentUserRepository(new EloquentRoleRepository());
                 $user = $user_model->findByEmail($oldCheckin->username);
-                if($user)
+                if($user) {
                     $userID = $user->id;
+                    if($oldCheckin->username == 'info@csgreps.com') {
+                        // West Side Storage
+                        continue;
+                        // add logging
+                    }
+                    elseif($oldCheckin->username == 'jack@csgreps.com') {
+                        // East Side Storage
+                        continue;
+                    }
+                    elseif($oldCheckin->username == 'voicemail@csgreps.com') {
+                        // Missing / Lost
+                        continue;
+                    }
+                }
             }
-
 
             $checkins = [
                     'asset_id'               => $oldCheckin->csgid,
@@ -248,13 +262,34 @@ class LegacySQLSeeder extends Seeder
             $userID = 1;
             $dealers = new EloquentDealerRepository();
             $dealer = $dealers->findByEmail($oldSignout->username);
+            $asset = Asset::find($oldSignout->csgid);
             if(!$dealer){
-                $dealer = $dealers->findByEmail('info@csgreps.com');
+                $dealer = $dealers->findByEmail('unknown@csgreps.com');
 
                 $user_model = new EloquentUserRepository(new EloquentRoleRepository());
                 $user = $user_model->findByEmail($oldSignout->username);
-                if($user)
+                if($user) {
                     $userID = $user->id;
+                    if($oldSignout->username == 'info@csgreps.com') {
+                        // West Side Storage
+                        $asset->location_id = 3;
+                        $asset->save();
+                        continue;
+                        // add logging
+                    }
+                    elseif($oldSignout->username == 'jack@csgreps.com') {
+                        // East Side Storage
+                        $asset->location_id = 4;
+                        $asset->save();
+                        continue;
+                    }
+                    elseif($oldSignout->username == 'voicemail@csgreps.com') {
+                        // Missing / Lost
+                        $asset->location_id = 2;
+                        $asset->save();
+                        continue;
+                    }
+                }
             }
 
             $checkins = [
@@ -269,6 +304,9 @@ class LegacySQLSeeder extends Seeder
             ];
 
             $insertID  = DB::table('checkouts')->insertGetId($checkins);
+
+            $asset->status = 2; // checked-out
+            $asset->save();
 
             $log->onAssetCheckout(Asset::find($oldSignout->csgid), Checkout::find($insertID));
         }
