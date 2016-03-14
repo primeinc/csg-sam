@@ -111,8 +111,11 @@
                 </div>
                 <div class="box-footer">
                     <div class="pull-right">
-                        <button type="button" class="btn btn-primary">Print</button>
+                        <button type="button" class="btn btn-primary" id="printButton">Print</button>
                     </div><!-- /.box-tools -->
+                    <div id='jobStatusDiv'>
+                        <span id='jobStatusMessageSpan'></span>
+                    </div>
                 </div><!-- box-footer -->
             </div><!-- /.box -->
         </div><!-- /right column -->
@@ -254,6 +257,9 @@
 @include('frontend.checkout._modalScripts')
 @include('frontend.location._modalScripts')
 
+@push('scripts')
+{!! Html::script('js/plugin/dymo/dymo.js') !!}
+@endpush
 {{--@push('scripts')--}}
     {{--<script type="text/javascript">--}}
         {{--jQuery(function($){--}}

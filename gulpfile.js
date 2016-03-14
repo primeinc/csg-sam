@@ -32,6 +32,10 @@ elixir(function(mix) {
          'node_modules/select2-bootstrap-theme/dist/select2-bootstrap.min.css',
          'resources/assets/css/plugin/select2/select2-bootstrap.min.css'
      )
+     .copy(
+         'resources/assets/js/plugin/dymo/Address.label',
+         'public/Address.label'
+     )
 
      /**
       * Process frontend SCSS stylesheets
@@ -93,7 +97,15 @@ elixir(function(mix) {
          'plugin/select2/select2.min.js'
      ], 'public/js/backend.js')
 
-    /**
+     /**
+      * Combine dymo scripts
+      */
+     .scripts([
+         'plugin/dymo/dymo.label.framework.js',
+         'plugin/dymo/print.js'
+     ], 'public/js/plugin/dymo/dymo.js')
+
+     /**
       * Apply version control
       */
      .version(["public/css/frontend.css", "public/js/frontend.js", "public/css/backend.css", "public/js/backend.js"]);
