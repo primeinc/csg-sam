@@ -101,5 +101,13 @@ class Asset extends Model
             ->select('asset_id', 'created_at');
     }
 
+    /**
+     * Get the location of the asset.
+     */
+    public function location()
+    {
+        return $this->belongsTo('App\Models\Location');
+    }
+
 
 }

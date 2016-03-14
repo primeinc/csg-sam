@@ -20,7 +20,9 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">CSGID: {{ $asset->id }}</h3>
                     <div class="box-tools pull-right">
-                        {{--$asset->activeCheckout--}}
+                        @if($asset->location_id != 1)
+                            <span class="label label-info">@ {!! $asset->location->name !!}</span>
+                        @endif
                         @if ($asset->status == 2 && $asset->activeCheckout)
                             <span class="label label-default">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
                             <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
@@ -60,14 +62,16 @@
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="btn-group">
+                            @if($asset->location_id == 1)
+                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Assign Location</button>
+                            @else
+                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Change Location</button>
+                            @endif
                             @if ($asset->status == 2)  <!--Checked Out-->
-                                <button type="button" class="btn btn-default">Move to Storage</button>
                                 <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->
-                                <button type="button" class="btn btn-default">Remove from Storage</button>
                                 <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                             @else
-                                <button type="button" class="btn btn-default">Move to Storage</button>
                                 <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                             @endif
                         </div>
@@ -244,6 +248,7 @@
 @endsection
 
 @include('frontend.checkout._modalScripts')
+@include('frontend.location._modalScripts')
 
 {{--@push('scripts')--}}
     {{--<script type="text/javascript">--}}

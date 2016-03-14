@@ -12,7 +12,9 @@
                     <div class="box-header with-border">
                         <h3 class="box-title">CSGID: {{ $asset->id }}</h3>
                         <div class="box-tools pull-right">
-                            {{--$asset->activeCheckout--}}
+                            @if($asset->location_id != 1)
+                                <span class="label label-info">@ {!! $asset->location->name !!}</span>
+                            @endif
                             @if ($asset->status == 2 && $asset->activeCheckout)
                                 <span class="label label-default">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
                                 <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>

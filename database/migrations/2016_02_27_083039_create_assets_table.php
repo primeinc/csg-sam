@@ -15,6 +15,7 @@ class CreateAssetsTable extends Migration
         Schema::create('assets', function (Blueprint $table) {
             $table->increments('id')->unsigned();
             $table->integer('mfr_id')->unsigned()->index();
+            $table->integer('location_id')->unsigned()->default(1)->index();
             $table->string('part', 100);
             $table->string('description', 250);
             $table->string('ack', 250);

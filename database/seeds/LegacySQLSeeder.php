@@ -85,6 +85,41 @@ class LegacySQLSeeder extends Seeder
             $log->onAssetCreate(Asset::find($oldAsset->csgid));
         }
 
+        $locations = [
+            [
+                'id'                => 1,
+                'name'              => 'Undetermined/Default',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ],
+            [
+                'id'                => 2,
+                'name'              => 'Missing/Lost',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ],
+            [
+                'id'                => 3,
+                'name'              => 'West Side Storage',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ],
+            [
+                'id'                => 4,
+                'name'              => 'East Side Storage',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ],
+            [
+                'id'                => 5,
+                'name'              => 'Redi Installations Inc',
+                'created_at'        => Carbon::now(),
+                'updated_at'        => Carbon::now(),
+            ],
+        ];
+
+        DB::table('locations')->insert($locations);
+
         $dealerships = [
             'id'                => 1,
             'name'              => 'Unknown Dealership',

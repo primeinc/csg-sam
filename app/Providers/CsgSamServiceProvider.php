@@ -54,5 +54,9 @@ class CsgSamServiceProvider extends ServiceProvider
             \App\Repositories\Frontend\Checkout\CheckoutContract::class,
             \App\Repositories\Frontend\Checkout\EloquentCheckoutRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Frontend\Location\LocationContract::class,
+            \App\Repositories\Frontend\Location\EloquentLocationRepository::class
+        );
     }
 }

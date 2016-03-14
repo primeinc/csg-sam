@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Asset;
 use App\Repositories\Frontend\Asset\AssetContract;
+use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
 use Event;
 use Illuminate\Http\Request;
@@ -28,18 +29,22 @@ class AssetController extends Controller
      */
     protected $mfrs;
 
+    protected $locations;
+
     /**
      * Create a new controller instance.
      *
      * @param  AssetContract $assets
      * @param MfrContract $mfrs
+     * @param LocationContract $locations
      */
-    public function __construct(AssetContract $assets, MfrContract $mfrs)
+    public function __construct(AssetContract $assets, MfrContract $mfrs, LocationContract $locations)
     {
         $this->middleware('auth');
 
         $this->assets = $assets;
         $this->mfrs = $mfrs;
+        $this->locations = $locations;
     }
 
     public function index() {
@@ -127,6 +132,26 @@ class AssetController extends Controller
         $asset->assetLogs->load('user', 'checkout', 'checkout.dealer', 'checkout.dealer.dealership');
 
         return view('frontend.assets.show', compact('asset'));
+    }
+
+    public function locationModal($id)
+    {
+        $asset = $this->assets->find($id);
+
+        return view('frontend.location.formModal', compact('asset'));
+    }
+
+    public function updateLocation($id, Request $request)
+    {
+        $location = $this->locations->findOrCreate($request->location['name']);
+
+        $asset = $this->assets->find($id);
+
+        $asset->location_id = $location->id;
+
+        $asset->save();
+
+        return redirect()->action('Frontend\Asset\AssetController@show', [$asset->id]);
     }
 
     public function update($id, Request $request)

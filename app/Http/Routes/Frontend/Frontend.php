@@ -24,6 +24,8 @@ Route::group(['middleware' => 'auth'], function () {
 //        Route::get('samples/edit/{asset}', 'AssetController@edit')->name('frontend.assets.edit');
 //        Route::post('samples/update/{asset}', 'AssetController@update')->name('frontend.assets.update');
 //        Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
+        Route::get('samples/{asset}/edit/location', 'AssetController@locationModal')->name('samples.edit.location');
+        Route::patch('samples/{asset}/edit/location', 'AssetController@updateLocation')->name('samples.edit.location');
         Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
         Route::post('samples/search', 'AssetController@search')->name('frontend.assets');
         Route::resource('samples', 'AssetController');
@@ -57,5 +59,8 @@ Route::group(['middleware' => 'auth'], function () {
         Route::post('samples/checkout/{asset}', 'CheckoutController@store')->name('frontend.checkout');
         Route::get('samples/checkin/{asset}', 'CheckoutController@checkinModal')->name('frontend.checkout.checkin');
         Route::post('samples/checkin/{asset}', 'CheckoutController@returnAsset');
+    });
+    Route::group(['namespace' => 'Location'], function() {
+        Route::get('locations/search/all', 'LocationController@searchAll')->name('frontend.locations.search.all');
     });
 });
