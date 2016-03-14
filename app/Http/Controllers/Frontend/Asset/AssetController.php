@@ -51,6 +51,7 @@ class AssetController extends Controller
         $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->get();
 
         $assets->load('activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+        $assets->load('location');
 
         return view('frontend.assets.samples', compact('assets'));
     }
@@ -72,7 +73,7 @@ class AssetController extends Controller
             ->orWhereIn('mfr_id', $mfrIn)
             ->get();
 
-        $assets->load('Mfr');
+        $assets->load('Mfr', 'Location');
 
         $assets->load('activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 

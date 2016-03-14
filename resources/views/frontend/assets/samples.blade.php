@@ -16,8 +16,8 @@
                                 <span class="label label-info">@ {!! $asset->location->name !!}</span>
                             @endif
                             @if ($asset->status == 2 && $asset->activeCheckout)
-                                <span class="label label-default">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
-                                <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
+                                <span class="label label-default hidden-xs">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
+                                <span class="label label-primary hidden-md">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
                                 @if($asset->activeCheckout->permanent)
                                     <span class="label label-danger">Permanently Checked Out</span>
                                 @else
