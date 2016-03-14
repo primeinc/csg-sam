@@ -47,7 +47,7 @@ class LegacySQLSeeder extends Seeder
             else {
                 $imageName = uniqid() . '.png';
                 try {
-                    $img = Image::make('1http://samples.csgreps.com/pics/' . $oldAsset->filename);
+                    $img = Image::make('http://samples.csgreps.com/pics/' . $oldAsset->filename);
                     $img->resize(300, 200, function ($constraint) {
                         $constraint->aspectRatio();
                     });
