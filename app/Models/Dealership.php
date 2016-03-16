@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Dealership extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, DealershipAttribute;
     /**
      * The attributes that are mass assignable.
      *

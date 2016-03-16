@@ -1,14 +1,13 @@
 <?php
-
 namespace App\DataTables;
 
 use App\Models\Dealership;
+use DB;
 use Yajra\Datatables\Services\DataTable;
 
 class DealershipsDataTable extends DataTable
 {
     // protected $printPreview  = 'path.to.print.preview.view';
-
     /**
      * Display ajax response.
      *
@@ -16,14 +15,11 @@ class DealershipsDataTable extends DataTable
      */
     public function ajax()
     {
-        return $this->datatables
-            ->eloquent($this->query())
-//            ->addColumn('action', 'path.to.action.view')
-            ->addColumn('action', function ($data) {
-//                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
-                return $data->action_buttons;
-            })
-            ->make(true);
+        return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
+        ->addColumn('action', function ($data) {
+            //                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+            return $data->action_buttons;
+        })->make(true);
     }
 
     /**
@@ -33,7 +29,15 @@ class DealershipsDataTable extends DataTable
      */
     public function query()
     {
-        $dealers = Dealership::query();
+        $dealers = Dealership::query()
+            ->addSelect('dealerships.id')
+            ->addSelect('dealerships.name')
+            ->addSelect(DB::raw('(SELECT SUM(x.total) FROM ( SELECT dealers.id, dealership_id,
+             ( SELECT COUNT(*) AS total FROM `checkouts` WHERE dealer_id = dealers.id and returned_date IS NULL ) AS total FROM `dealers` ) x
+              WHERE dealerships.id = x.dealership_id) AS active_checkouts'))
+            ->addSelect(DB::raw('(SELECT SUM(x.total) FROM ( SELECT dealers.id, dealership_id,
+             ( SELECT COUNT(*) AS total FROM `checkouts` WHERE dealer_id = dealers.id ) AS total FROM `dealers` ) x
+              WHERE dealerships.id = x.dealership_id) AS total_checkouts'));
 
         return $this->applyScopes($dealers);
     }
@@ -45,11 +49,7 @@ class DealershipsDataTable extends DataTable
      */
     public function html()
     {
-        return $this->builder()
-                    ->columns($this->getColumns())
-                    ->ajax('')
-                    ->addAction(['width' => '60px'])
-                    ->parameters($this->getBuilderParameters());
+        return $this->builder()->columns($this->getColumns())->ajax('')->addAction(['width' => '60px'])->parameters($this->getBuilderParameters());
     }
 
     /**
@@ -60,8 +60,25 @@ class DealershipsDataTable extends DataTable
     private function getColumns()
     {
         return [
-            'id'            => ['title' => 'ID'],
-            'name'          => ['title' => 'Dealership'],
+            'id' => ['title' => 'ID'],
+            'name' => ['title' => 'Dealership'],
+            'active_checkouts' => ['title' => 'Active'],
+            'total_checkouts' => ['title' => 'Total'],
+        ];
+    }
+
+    /**
+     * Get builder parameters.
+     *
+     * @return array
+     */
+    protected function getBuilderParameters()
+    {
+        return [
+            'lengthMenu' => [[50, 75, 100, -1], [50, 75, 100, "All"]],
+            'order' => [[0, 'desc']],
+            'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
+            'buttons' => ['excel', 'pdf', 'print'],
         ];
     }
 
@@ -73,20 +90,5 @@ class DealershipsDataTable extends DataTable
     protected function filename()
     {
         return 'dealers';
-    }
-
-    /**
-     * Get builder parameters.
-     *
-     * @return array
-     */
-    protected function getBuilderParameters()
-    {
-        return [
-            'lengthMenu' => [[50, 75, 100, -1],[50, 75, 100, "All"]],
-            'order'   => [[0, 'desc']],
-            'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
-            'buttons' => ['excel', 'pdf', 'print'],
-        ];
     }
 }

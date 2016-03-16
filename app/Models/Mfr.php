@@ -18,7 +18,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Mfr extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, MfrAttribute;
 
     /**
      * The attributes that are mass assignable.
