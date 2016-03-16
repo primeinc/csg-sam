@@ -17,7 +17,6 @@ class DealersDataTable extends DataTable
     {
         return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
         ->editColumn('dealers.dsr', function ($data) {
-            debug($data);
             $link = '<a href=' . route('dealers.show', $data->id) . '>' . $data->dsr . '</a>';
             return $link;
         })
