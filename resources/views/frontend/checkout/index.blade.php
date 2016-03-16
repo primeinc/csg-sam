@@ -140,7 +140,7 @@
         $("#checkout-dealer").select2({
             placeholder: "Select a Dealer",
             ajax: {
-                url: "{!! route('frontend.dealers.search') !!}",
+                url: "{!! route('api.dealers.search') !!}",
                 dataType: 'json',
                 delay: 250,
                 data: function (params) {
@@ -176,7 +176,7 @@
         });
         var reps;
         $(document).ready(function() {
-            reps = $.getJSON("{!! route('frontend.user.search.all') !!}");
+            reps = $.getJSON("{!! route('api.users.all') !!}");
         });
     </script>
 @endsection

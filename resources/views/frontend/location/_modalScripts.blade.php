@@ -4,7 +4,7 @@
     $(function($){
         $('button.location').click(function(ev){
             if(!locations) {
-                locations = $.getJSON("{!! route('frontend.locations.search.all') !!}");
+                locations = $.getJSON("{!! route('api.get.all', 'locations') !!}");
             }
             ev.preventDefault();
             var uid = $(this).data('id');

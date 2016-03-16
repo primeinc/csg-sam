@@ -61,7 +61,7 @@ class DealershipsDataTable extends DataTable
     {
         return [
             'id'            => ['title' => 'ID'],
-            'name'          => ['title' => 'Manufacturer Name'],
+            'name'          => ['title' => 'Dealership'],
         ];
     }
 

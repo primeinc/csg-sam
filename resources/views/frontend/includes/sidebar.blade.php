@@ -17,12 +17,11 @@
         </div>
 
         <!-- search form (Optional) -->
-        <form action="{!! url('samples/search') !!}" method="post" class="sidebar-form">
-            {{ csrf_field() }}
+        <form action="{!! url('search') !!}" method="get" class="sidebar-form">
             <div class="input-group">
                 <input type="text" name="q" class="form-control" placeholder="{{ trans('strings.frontend.general.search_placeholder') }}"/>
                   <span class="input-group-btn">
-                    <button type='submit' name='search' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
+                    <button type='submit' id='search-btn' class="btn btn-flat"><i class="fa fa-search"></i></button>
                   </span>
             </div>
         </form>
@@ -41,15 +40,15 @@
 
             <li class="{{ Active::pattern('samples/*') }} treeview">
                 <a href="#">
-                    <i class="fa fa-star"></i>
+                    <i class="fa fa-cube"></i>
                     <span>{{ trans('menus.frontend.samples.main') }}</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
                 <ul class="treeview-menu {{ Active::pattern('samples/*', 'menu-open') }}" style="display: none; {{ Active::pattern('samples/*', 'display: block;') }}">
-                    <li class="{{ Active::pattern('samples/search') }}">
-                        <a href="{!! url('samples/search') !!}">
-                            <i class="fa fa-search"></i>
-                            {{ trans('menus.frontend.samples.search') }}
+                    <li class="{{ Active::pattern('samples/recent') }}">
+                        <a href="{!! url('samples/recent') !!}">
+                            <i class="fa fa-cubes"></i>
+                            {{ trans('menus.frontend.samples.recent') }}
                         </a>
                     </li>
                     <li class="{{ Active::pattern('samples/create') }}">
@@ -58,38 +57,32 @@
                             {{ trans('menus.frontend.samples.add') }}
                         </a>
                     </li>
-                    <li class="{{ Active::pattern('samples/bulk-edit') }}">
-                        <a href="#{{-- url('samples/bulk-edit') --}}">
-                            <i class="fa fa-plus-square"></i>
-                            {{ trans('menus.frontend.samples.bulk') }}
-                        </a>
-                    </li>
                 </ul>
             </li>
 
             <li class="{{ Active::pattern('dealers/*') }} treeview">
                 <a href="#">
-                    <i class="fa fa-building"></i>
+                    <i class="fa fa-group"></i>
                     <span>{{ trans('menus.frontend.dealers.main') }}</span>
                     <i class="fa fa-angle-left pull-right"></i>
                 </a>
-                <ul class="treeview-menu {{ Active::pattern('dealers/*', 'menu-open') }}" style="display: none; {{ Active::pattern('dealers/*', 'display: block;') }}">
+                <ul class="treeview-menu {{ Active::pattern('dealers*', 'menu-open') }}" style="display: none; {{ Active::pattern('dealers*', 'display: block;') }}">
                     <li class="{{ Active::pattern('dealers/list') }}">
                         <a href="{!! url('dealers/list') !!}">
-                            <i class="fa fa-search"></i>
-                            {{ trans('menus.frontend.dealers.search') }}
+                            <i class="fa fa-user"></i>
+                            {{ trans('menus.frontend.dealers.dsr') }}
                         </a>
                     </li>
-                    <li class="{{ Active::pattern('dealers/list') }}">
-                        <a href="{!! url('dealers/list') !!}">
-                            <i class="fa fa-search"></i>
-                            {{ trans('menus.frontend.dealers.dealerships') }}
-                        </a>
-                    </li>
-                    <li class="{{ Active::pattern('dealers/add') }}">
-                        <a href="{!! url('dealers/add') !!}">
+                    <li class="{{ Active::pattern('dealers/create') }}">
+                        <a href="{!! url('dealers/create') !!}">
                             <i class="fa fa-user-plus"></i>
-                            {{ trans('menus.frontend.dealers.add') }}
+                            {{ trans('menus.frontend.dealers.createDsr') }}
+                        </a>
+                    </li>
+                    <li class="{{ Active::pattern('dealerships/list') }}">
+                        <a href="{!! url('dealerships/list') !!}">
+                            <i class="fa fa-building"></i>
+                            {{ trans('menus.frontend.dealers.dealerships') }}
                         </a>
                     </li>
                 </ul>

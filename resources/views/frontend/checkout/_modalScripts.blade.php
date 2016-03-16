@@ -8,17 +8,17 @@
     $(function($){
         $("#dynModal").on("shown.bs.modal", function () {
             if(!reps) {
-                reps = $.getJSON("{!! route('frontend.user.search.all') !!}");
+                reps = $.getJSON("{!! route('api.get.all', 'users') !!}");
             }
             $('input[name="daterange"]').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
                 startDate: "{{ Carbon\Carbon::now()->addDays(14)->format('m/d/Y') }}"
             });
-            $("#checkout-dealer").select2({
+            $("#dealer_id").select2({
                         placeholder: "Select a Dealer",
                         ajax: {
-                            url: "{!! route('frontend.dealers.search') !!}",
+                            url: "{!! route('api.dealers.search') !!}",
                             dataType: 'json',
                             delay: 250,
                             data: function (params) {
@@ -43,7 +43,7 @@
                     })
                     .on('change', function(e) {
                         item = $(this).select2('data');
-                        $("#checkout-rep")
+                        $("#user_id")
                                 .empty()
                                 .append($('<option>', {value: item[0].user_id, selected: "selected"})
                                         .text(item[0].user_name))

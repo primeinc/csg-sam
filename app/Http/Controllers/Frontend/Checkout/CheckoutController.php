@@ -76,8 +76,8 @@ class CheckoutController extends Controller
 
         $this->validate($request, [
             'daterange' => 'required|max:10',
-            'dealer' => 'required|numeric',
-            'rep' => 'required|numeric',
+            'dealer_id' => 'required|numeric',
+            'user_id' => 'required|numeric',
             'project' => 'max:255',
         ]);
 
@@ -86,21 +86,23 @@ class CheckoutController extends Controller
         // TODO: move this to an event
         $asset = $this->asset->find($request->asset);
         $asset->update([
-            'status' => '2'
+            'status' => '2',
+            'location_id' => '1'
         ]);
 
         $checkout = new Checkout;
 
         $checkout->expected_return_date = $dt;
         $checkout->asset_id = $request->asset;
-        $checkout->dealer_id = $request->dealer;
-        $checkout->user_id = $request->rep;
+        $checkout->dealer_id = $request->dealer_id;
+        $checkout->user_id = $request->user_id;
         $checkout->project = $request->project;
 
         if($request->permanent == 'on')
             $checkout->permanent = 1;
 
         $checkout->save();
+        $asset->save();
 
         Event::fire('audit.asset.checkout', [$asset, $checkout]);
 
@@ -122,7 +124,8 @@ class CheckoutController extends Controller
         // TODO: move this to an event
         $asset = $this->asset->find($request->asset);
         $asset->update([
-            'status' => '1'
+            'status' => '1',
+            'location_id' => '1'
         ]);
 
         $checkout = Checkout::where('asset_id', '=', $request->asset)->where('returned_date', '=', null)->first();
@@ -133,6 +136,7 @@ class CheckoutController extends Controller
         Event::fire('audit.asset.checkin', [$asset, $checkout]);
 
         $checkout->save();
+        $asset->save();
 
         return Redirect::route('samples.show', array('id' => $asset->id));
     }

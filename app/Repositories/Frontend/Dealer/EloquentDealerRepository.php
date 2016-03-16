@@ -2,6 +2,8 @@
 
 namespace App\Repositories\Frontend\Dealer;
 
+use App\Exceptions\GeneralException;
+use App\Models\Checkout;
 use App\Models\Dealer;
 
 class EloquentDealerRepository implements DealerContract
@@ -26,5 +28,43 @@ class EloquentDealerRepository implements DealerContract
             return $dealer;
 
         return false;
+    }
+
+    /**
+     * @param  $id
+     * @throws GeneralException
+     * @return bool
+     */
+    public function destroy($id)
+    {
+        $dealer = $this->find($id);
+
+        $checkouts = Checkout::where('dealer_id', '=', $dealer->id)->where('returned_date', '=', null);
+
+        if($checkouts->count())
+            throw new GeneralException($dealer->name . ' still has active checkouts');
+
+        if ($dealer->delete()) {
+            return true;
+        }
+
+        throw new GeneralException('Unknown Error deleting DSR');
+    }
+
+    /**
+     * @param  $id
+     * @throws GeneralException
+     * @return boolean|null
+     */
+    public function delete($id)
+    {
+        $dealer = $this->find($id);
+
+        dd($dealer);
+        try {
+            $dealer->delete();
+        } catch (\Exception $e) {
+            throw new GeneralException($e->getMessage());
+        }
     }
 }

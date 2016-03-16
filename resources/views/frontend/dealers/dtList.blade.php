@@ -10,7 +10,7 @@
         <div class="col-md-10 col-md-offset-1">
             <div class="box box-success">
                 <div class="box-header with-border">
-                    <h3 class="box-title">Active Dealers</h3>
+                    <h3 class="box-title">Active Dealer Sales Reps</h3>
 
                     <div class="box-tools pull-right">
                     </div>

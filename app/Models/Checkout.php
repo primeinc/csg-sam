@@ -48,7 +48,7 @@ class Checkout extends Model
      */
     public function user()
     {
-        return $this->belongsTo('App\Models\Access\User\User');
+        return $this->belongsTo('App\Models\Access\User\User')->withTrashed();
     }
 
     /**
@@ -56,7 +56,7 @@ class Checkout extends Model
      */
     public function dealer()
     {
-        return $this->belongsTo('App\Models\Dealer');
+        return $this->belongsTo('App\Models\Dealer')->withTrashed();
     }
 
     /**

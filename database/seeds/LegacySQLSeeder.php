@@ -134,7 +134,7 @@ class LegacySQLSeeder extends Seeder
                 'id'                => 1,
                 'user_id'           => 1,
                 'dealership_id'     => 1,
-                'employee_name'     => 'Unknown DSR',
+                'name'     => 'Unknown DSR',
                 'email'             => 'unknown@csgreps.com',
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
@@ -160,7 +160,7 @@ class LegacySQLSeeder extends Seeder
             $dealers = [
                     'user_id'           => 1,
                     'dealership_id'     => $dealership->id,
-                    'employee_name'     => $oldDealer->fullname,
+                    'name'     => $oldDealer->fullname,
                     'email'             => $oldDealer->username,
                     'created_at'        => Carbon::now(),
                     'updated_at'        => Carbon::now(),

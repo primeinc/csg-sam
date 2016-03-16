@@ -15,7 +15,7 @@ class AssetLogs extends Model
 
     public function asset()
     {
-        return $this->belongsTo('App\Models\Asset');
+        return $this->belongsTo('App\Models\Asset')->withTrashed();
     }
 
     public function checkout()
@@ -25,13 +25,14 @@ class AssetLogs extends Model
 
     public function user()
     {
-        return $this->belongsTo('App\Models\Access\User\User');
+        return $this->belongsTo('App\Models\Access\User\User')->withTrashed();
     }
 
     public function getContextAttribute($value)
     {
         $context = json_decode($value);
 
+        // TODO can we eagerload this?
         if(isset($context->location_id)){
             $context->location_name = new stdClass();
             $context->location_name->new = Location::find($context->location_id->new)->name;

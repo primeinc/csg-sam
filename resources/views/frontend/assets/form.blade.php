@@ -1,6 +1,6 @@
 <div class="box-body">
     {{ Form::bsText('part', 'Part #') }}
-    {{ Form::bsText('ack', 'ACK #') }}
+    {{ Form::bsText('ack', 'Ack #') }}
     @if(isset($asset))
         {{-- TODO: Change MFR value to MFR_ID --}}
         {{ Form::select2('mfr[name]', 'Manufacturer', [$asset->mfr->name => $asset->mfr->name], $asset->mfr->name) }}

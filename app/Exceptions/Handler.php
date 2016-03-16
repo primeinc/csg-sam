@@ -66,6 +66,13 @@ class Handler extends ExceptionHandler
         }
 
         /**
+         * All instances of GeneralException redirect back with a flash message to show a bootstrap alert-error
+         */
+        if ($e instanceof ValidationException) {
+            return redirect()->back()->withInput()->withFlashDanger($e->getMessage());
+        }
+
+        /**
          * User needs roles and none were selected
          */
         if ($e instanceof Backend\Access\User\UserNeedsRolesException) {

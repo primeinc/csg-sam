@@ -53,7 +53,7 @@ class DealersDataTable extends DataTable
         return [
             'id' => ['name' => 'dealers.id', 'title' => 'ID'],
             'dealership.name' => ['name' => 'dealership.name', 'title' => 'Dealership'],
-            'employee_name' => ['name' => 'dealers.employee_name', 'title' => 'DSR'],
+            'name' => ['name' => 'dealers.name', 'title' => 'DSR'],
             'user.name' => ['name' => 'user.name', 'title' => 'CSG Rep'],
         ];
     }

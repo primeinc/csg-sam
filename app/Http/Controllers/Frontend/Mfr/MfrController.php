@@ -32,11 +32,6 @@ class MfrController extends Controller
         $this->mfrs = $mfrs;
     }
 
-    public function add(Request $request)
-    {
-        return view('frontend.mfrs.add');
-    }
-
     /**
      * Create a new asset.
      *
@@ -68,31 +63,7 @@ class MfrController extends Controller
             'image' => $request->imageName,
         ]);
 
-        return redirect('/samples');
+        return redirect('/mfrs/list');
     }
 
-    public function search(Request $request)
-    {
-        $term = $request->q;
-
-        $results = array();
-
-        $queries = Mfr::where('name', 'LIKE', '%'.$term.'%')->get();
-
-        $results['total_count'] = $queries->count();
-        $results['incomplete_results'] = false;
-        $results['items'] = [];
-
-        foreach ($queries as $query)
-        {
-//            $results['items'][] = [ 'id' => $query->id, 'text' => $query->name ];
-            $results['items'][] = [ 'id' => $query->name, 'text' => $query->name ];
-        }
-        return Response::json($results);
-    }
-
-    public function index(MfrsDataTable $dataTable)
-    {
-        return $dataTable->render('frontend.mfrs.index');
-    }
 }

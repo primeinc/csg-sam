@@ -16,7 +16,7 @@ class CreateDealersTable extends Migration
             $table->increments('id');
             $table->integer('dealership_id')->index();
             $table->integer('user_id')->index();
-            $table->string('employee_name')->index();
+            $table->string('name')->index();
             $table->string('email');
             $table->softDeletes();
             $table->timestamps();

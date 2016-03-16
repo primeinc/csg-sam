@@ -107,22 +107,22 @@ return [
 
         'samples' => [
             'main' => 'Samples',
-            'search' => 'List Samples',
-            'add' => 'Add Samples',
+            'recent' => 'Recent Samples',
+            'add' => 'Add Sample',
             'bulk' => 'Bulk Edit',
         ],
 
 
         'dealers' => [
             'main' => 'Dealers',
-            'search' => 'List Dealer',
+            'dsr' => 'List Dealer Sales Reps',
+            'createDsr' => 'Add Dealer Sales Rep',
             'dealerships' => 'List Dealerships',
-            'add' => 'Add Dealer',
         ],
 
         'mfrs' => [
             'main' => 'Manufacturers',
-            'list' => 'Find Manufacturers',
+            'list' => 'List Manufacturers',
         ],
 
         'sidebar' => [

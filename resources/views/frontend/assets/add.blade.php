@@ -11,7 +11,7 @@
                 </div>
                 <!-- /.box-header -->
                 <!-- form start -->
-                {!! Form::open(['method' => 'POST', 'action' => 'Frontend\Asset\AssetController@store', 'files' => true, 'class' => 'form-horizontal']) !!}
+                {!! Form::open(['method' => 'POST', 'route' => 'samples.store', 'files' => true, 'class' => 'form-horizontal']) !!}
                     @include('frontend.assets.form')
                 {!! Form::close() !!}
             </div>
@@ -22,6 +22,14 @@
 @endsection
 
 @push('scripts')
+<script>
+    $("#uploadBtn")[0].onchange = function () {
+        $("#uploadFile")[0].value = this.value.replace("C:\\fakepath\\", "");
+    };
+</script>
+@endpush
+
+@push('scripts')
     <script>
         $.fn.select2.defaults.set( "theme", "bootstrap" );
         $.fn.select2.defaults.set( "width", "off" );
@@ -30,7 +38,7 @@
             placeholder: "Select or add a Manufacturer",
             tags: true,
             ajax: {
-                url: "{!! route('frontend.mfrs.search') !!}",
+                url: "{!! route('api.mfrs.search') !!}",
                 dataType: 'json',
                 delay: 500,
                 width: null,

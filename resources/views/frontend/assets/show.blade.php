@@ -1,5 +1,9 @@
 @extends('frontend.layouts.master')
 
+@push('styles')
+<link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" />
+@endpush
+
 @section('page-header')
     <h1>
         Asset Info
@@ -24,7 +28,7 @@
                             <span class="label label-info">@ {!! $asset->location->name !!}</span>
                         @endif
                         @if ($asset->status == 2 && $asset->activeCheckout)
-                            <span class="label label-default">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
+                            <span class="label label-default">{!! $asset->activeCheckout->dealer->name !!}</span>
                             <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
                                 @if($asset->activeCheckout->permanent)
                                     <span class="label label-danger">Permanently Checked Out</span>
@@ -40,10 +44,12 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="col-xs-12">
-                        <div class="col-xs-6 col-md-5" style="max-width: 250px !important;">
-                            <img class="img-responsive" src="/uploads/{{ $asset->image }}" alt="message user image">
+                        <div class="col-xs-7" style="max-width: 300px !important;">
+                            <img class="img-responsive pull-left" src="/uploads/{{ $asset->image }}" alt="asset image">
                         </div>
-                        <div class="col-xs-6 col-md-7">
+                        <div class="col-xs-5">
+                            {{--<div class="pull-right" style="width: 200px; height: 150px; background-image: url('/uploads/{{ $asset->image }}'); background-size: cover;">--}}
+                            {{--</div>--}}
                             <dl>
                                 <dt>Manufacturer</dt>
                                 <dd>{{ $asset->mfr->name }}</dd>
@@ -51,7 +57,7 @@
                                 <dd>{{ $asset->description }}</dd>
                                 <dt>Part #</dt>
                                 <dd>{{ $asset->part }}</dd>
-                                <dt>ACK #</dt>
+                                <dt>Acknowledgement #</dt>
                                 <dd>{{ $asset->ack }}</dd>
                                 <dt>List Price</dt>
                                 <dd>{{ $asset->msrp }}</dd>
@@ -147,7 +153,7 @@
                     @elseif($log->event == 'audit.asset.checkin')
                         <i class="fa fa-sign-in bg-aqua"></i>
                     @elseif($log->event == 'audit.asset.location.change')
-                        <i class="fa fa-location-arrow bg-purple"></i>
+                        <i class="glyphicon glyphicon-map-marker bg-purple"></i>
                     @endif
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> {{ $log->created_at->diffForHumans() }}</span>
@@ -165,7 +171,7 @@
                                     @if($log->user->id != $log->checkout->user_id)
                                         (on behalf of <a href="#">{{ $log->checkout->user->name }}</a>)
                                     @endif
-                                    checked out this asset to {{ $log->checkout->dealer->employee_name }} @ {{ $log->checkout->dealer->dealership->name }}
+                                    checked out this asset to {{ $log->checkout->dealer->name }} @ {{ $log->checkout->dealer->dealership->name }}
                                 @endif
                             @elseif($log->event == 'audit.asset.checkin')
                                 checked in this asset
@@ -187,7 +193,7 @@
                                     {{--{{ debug($changed) }}--}}
                                 {{--@endforeach--}}
                             {{--@elseif($log->event == 'audit.asset.checkout')--}}
-                                {{--checked out this asset to {{ $log->checkout->dealer->employee_name }}--}}
+                                {{--checked out this asset to {{ $log->checkout->dealer->name }}--}}
                             {{--@elseif($log->event == 'audit.asset.checkin')--}}
                                 {{--checked in this asset--}}
                             {{--@endif--}}
@@ -222,7 +228,7 @@
             placeholder: "Select or add a Manufacturer",
             tags: true,
             ajax: {
-                url: "{!! route('frontend.mfrs.search') !!}",
+                url: "{!! route('api.mfrs.search') !!}",
                 dataType: 'json',
                 delay: 500,
                 width: null,
@@ -259,18 +265,9 @@
 
 @push('scripts')
 {!! Html::script('js/plugin/dymo/dymo.js') !!}
+<script>
+    $("#uploadBtn")[0].onchange = function () {
+        $("#uploadFile")[0].value = this.value.replace("C:\\fakepath\\", "");
+    };
+</script>
 @endpush
-{{--@push('scripts')--}}
-    {{--<script type="text/javascript">--}}
-        {{--jQuery(function($){--}}
-            {{--$('button.checkin').click(function(ev){--}}
-                {{--ev.preventDefault();--}}
-                {{--var uid = $(this).data('id');--}}
-                {{--$.get('/samples/checkin/' + uid, function(html){--}}
-                    {{--$('#dynModal .modal-content').html(html);--}}
-                    {{--$('#dynModal').modal('show', {backdrop: 'static'});--}}
-                {{--});--}}
-            {{--});--}}
-        {{--});--}}
-    {{--</script>--}}
-{{--@stop--}}

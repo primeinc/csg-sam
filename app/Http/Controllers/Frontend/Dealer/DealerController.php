@@ -1,17 +1,13 @@
 <?php
 namespace App\Http\Controllers\Frontend\Dealer;
 
-use App\DataTables\DealersDataTable;
-use App\Models\Access\User\User;
-use App\Models\Dealer;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use App\Http\Requests;
+use App\Models\Dealer;
 use App\Repositories\Frontend\Dealer\DealerContract;
 use App\Repositories\Frontend\Dealership\DealershipContract;
 use App\Repositories\Frontend\User\UserContract;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use Response;
 
 class DealerController extends Controller
 {
@@ -36,9 +32,27 @@ class DealerController extends Controller
         $this->dealership = $dealership;
     }
 
-    public function add(Request $request)
+    public function create()
     {
-        return view('frontend.dealers.add');
+        return view('frontend.dealers.create');
+    }
+
+    public function edit($id)
+    {
+        $dealer = $this->dealers->find($id);
+
+        return view('frontend.dealers.edit', compact('dealer'));
+    }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function destroy($id)
+    {
+        $this->dealers->destroy($id);
+        return redirect()->back()->withFlashSuccess('The DSR was successfully deleted.');
     }
 
     /**
@@ -52,53 +66,32 @@ class DealerController extends Controller
     public function store(UserContract $user, Request $request)
     {
         $this->validate($request, [
-            'dealership_id' => 'required',
-            'employee_name' => 'required|max:255',
-            'user_id' => 'numeric',
+            'dealership.*.name' => 'required',
+            'name' => 'required|max:255',
+            'user.*.id' => 'numeric',
         ]);
-        $dealer = new Dealer();
-        if (!is_numeric($request->dealership_id)) {
-            $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership_id)->id;
-        } else {
-            $dealer->dealership_id = $request->dealership_id;
-        }
-        $dealer->employee_name = $request->employee_name;
-        $dealer->user_id       = $user->find($request->user_id)->id;
+        $dealer                = new Dealer();
+        $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership['name'])->id;
+        $dealer->name          = $request->name;
+        $dealer->user_id       = $user->find($request->user['id'])->id;
         $dealer->save();
 
-        return redirect('/dealers');
+        return redirect('/dealers/list')->withFlashSuccess('DSR successfully created');
     }
 
-    public function index(DealersDataTable $dataTable)
+    public function update($id, UserContract $user, Request $request)
     {
-        return $dataTable->render('frontend.dealers.index');
-    }
+        $this->validate($request, [
+            'dealership.*.name' => 'required',
+            'name' => 'required|max:255',
+            'user.*.id' => 'numeric',
+        ]);
+        $dealer                = $this->dealers->find($id);
+        $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership['name'])->id;
+        $dealer->name          = $request->name;
+        $dealer->user_id       = $user->find($request->user['id'])->id;
+        $dealer->save();
 
-    public function search(Request $request)
-    {
-        $term    = $request->q;
-        $results = array();
-
-        $dealershipList = $this->dealership->findByNameAll($term);
-        $dealershipIn = array();
-        foreach ($dealershipList as $dealership){
-            $dealershipIn[] = $dealership->id;
-        }
-
-        $queries = Dealer::where('employee_name', 'LIKE', '%' . $term . '%')->orWhereIn('dealership_id', $dealershipIn)->with('user')->with('dealership')->get();
-
-        $results['total_count']        = $queries->count();
-        $results['incomplete_results'] = false;
-        $results['items']              = [];
-        foreach ($queries as $query) {
-            $results['items'][] = [
-                'id' => $query->id,
-                'text' => $query->employee_name . ' @ ' . $query->dealership->name,
-                'user_id' => $query->user_id,
-                'user_name' => $query->user->name
-            ];
-        }
-
-        return Response::json($results);
+        return redirect('/dealers/list')->withFlashSuccess('DSR successfully edited');
     }
 }

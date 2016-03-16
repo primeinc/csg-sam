@@ -11,7 +11,7 @@ trait DealerAttribute
     {
         if (access()->allow('edit-dealers')) {
 
-            return '<a href="' . route('admin.access.users.edit', $this->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> ';
+            return '<a href="' . route('dealers.edit', $this->id) . '" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a> ';
         }
 
         return '';
@@ -23,7 +23,7 @@ trait DealerAttribute
     public function getDeleteButtonAttribute()
     {
         if (access()->allow('delete-dealers')) {
-            return '<a href="' . route('admin.access.users.destroy', $this->id) . '"
+            return '<a href="' . route('dealers.destroy', $this->id) . '"
                  data-method="delete"
                  data-trans-button-cancel="'.trans('buttons.general.cancel').'"
                  data-trans-button-confirm="'.trans('buttons.general.crud.delete').'"

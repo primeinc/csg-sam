@@ -48,10 +48,9 @@ class AssetController extends Controller
     }
 
     public function index() {
-        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->get();
+        $assets = Asset::orderBy('updated_at', 'desc')->take(60)->get();
 
-        $assets->load('activeCheckout.dealer', 'activeCheckout.dealer.dealership');
-        $assets->load('location');
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
         return view('frontend.assets.samples', compact('assets'));
     }
@@ -73,9 +72,7 @@ class AssetController extends Controller
             ->orWhereIn('mfr_id', $mfrIn)
             ->get();
 
-        $assets->load('Mfr', 'Location');
-
-        $assets->load('activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
         return view('frontend.assets.samples', compact('assets'));
     }
@@ -101,23 +98,23 @@ class AssetController extends Controller
             'msrp' => 'numeric',
         ]);
 
+        $asset = new Asset;
+
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
             $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
             Image::make($request->file('image'))->orientate()->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
             $request->merge(['imageName' => $imageName] );
+            $asset->image = $imageName;
         }
         else
-            $request->merge(['imageName' => 'asset-placeholder.png'] );
+            $asset->image = 'asset-placeholder.png';
 
-        $mfr = $this->mfrs->findOrCreate($request->mfr['name']);
+        $asset->mfr_id = $this->mfrs->findOrCreate($request->mfr['name'])->id;
 
-        $asset = new Asset;
         $asset->part = $request->part;
         $asset->ack = $request->ack;
-        $asset->mfr_id = $mfr->id;
         $asset->description = $request->description;
         $asset->msrp = $request->msrp;
-        $asset->image = $request->imageName;
 
         $asset->save();
 
@@ -169,7 +166,8 @@ class AssetController extends Controller
         ]);
 
         $asset = $this->assets->find($id);
-        $mfr = $this->mfrs->findOrCreate($request->mfr['name']);
+
+        $asset->mfr_id = $this->mfrs->findOrCreate($request->mfr['name'])->id;
 
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
             $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
@@ -180,7 +178,6 @@ class AssetController extends Controller
         }
 
         $asset->part = $request->part;
-        $asset->mfr_id = $mfr->id;
         $asset->description = $request->description;
         $asset->msrp = $request->msrp;
         $asset->ack = $request->ack;

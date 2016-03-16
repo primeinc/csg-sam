@@ -1,11 +1,12 @@
 <?php
 namespace App\Http\Controllers\Frontend\Dealership;
 
+use App\DataTables\DealershipsDataTable;
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Repositories\Frontend\Dealership\DealershipContract;
 
-class DealershipController extends Controller
+class DataTablesController extends Controller
 {
     /**
      * The asset repository instance.
@@ -25,8 +26,8 @@ class DealershipController extends Controller
         $this->dealerships = $dealerships;
     }
 
-    public function add()
+    public function index(DealershipsDataTable $dataTable)
     {
-        return view('frontend.dealerships.add');
+        return $dataTable->render('frontend.dealerships.dtList');
     }
 }

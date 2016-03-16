@@ -10,57 +10,42 @@ Route::get('macros', 'FrontendController@macros')->name('frontend.macros');
  * These frontend controllers require the user to be logged in
  */
 Route::group(['middleware' => 'auth'], function () {
+    Route::get('search', 'Asset\AssetController@search')->name('frontend.search');
+    Route::group(['namespace' => 'Api'], function() {
+        Route::get('api/{model}/all', 'ApiController@getAll')->name('api.get.all');
+    });
     Route::group(['namespace' => 'User'], function() {
         Route::get('dashboard', 'DashboardController@index')->name('frontend.user.dashboard');
         Route::get('profile/edit', 'ProfileController@edit')->name('frontend.user.profile.edit');
         Route::patch('profile/update', 'ProfileController@update')->name('frontend.user.profile.update');
-        Route::get('user/search', 'SearchController@search')->name('frontend.user.search');
-        Route::get('user/search/all', 'SearchController@searchAll')->name('frontend.user.search.all');
     });
     Route::group(['namespace' => 'Asset'], function() {
-//        Route::get('samples', 'AssetController@index')->name('frontend.assets');
-//        Route::get('samples/add', 'AssetController@add')->name('frontend.assets.add');
-//        Route::post('samples/add', 'AssetController@store')->name('frontend.assets.add');
-//        Route::get('samples/edit/{asset}', 'AssetController@edit')->name('frontend.assets.edit');
-//        Route::post('samples/update/{asset}', 'AssetController@update')->name('frontend.assets.update');
-//        Route::delete('samples/{asset}', 'AssetController@destroy')->name('frontend.assets');
         Route::get('samples/{asset}/edit/location', 'AssetController@locationModal')->name('samples.edit.location');
         Route::patch('samples/{asset}/edit/location', 'AssetController@updateLocation')->name('samples.edit.location');
-        Route::get('samples/search', 'AssetController@index')->name('frontend.assets');
-        Route::post('samples/search', 'AssetController@search')->name('frontend.assets');
+        Route::get('samples/recent', 'AssetController@index')->name('samples.recent');
         Route::resource('samples', 'AssetController');
     });
     Route::group(['namespace' => 'Dealership'], function() {
-        Route::resource('dealerships/list', 'DealershipController');
-        Route::get('dealerships/add', 'DealershipController@add')->name('frontend.dealerships.add');
-        Route::post('dealerships/add', 'DealershipController@store')->name('frontend.dealerships.add');
-        Route::delete('dealerships/{mfr}', 'DealershipController@destroy')->name('frontend.dealerships');
-        Route::get('dealerships/search', 'DealershipController@search')->name('frontend.dealerships.search');
-        Route::get('dealerships/search/all', 'DealershipController@searchAll')->name('frontend.dealerships.search.all');
+        Route::resource('dealerships/list', 'DataTablesController');
+        Route::resource('dealerships', 'DealershipController');
     });
     Route::group(['namespace' => 'Dealer'], function() {
-        Route::resource('dealers/list', 'DealerController');
-        Route::get('dealers/search', 'DealerController@search')->name('frontend.dealers.search');
-        Route::get('dealers/add', 'DealerController@add')->name('frontend.dealers.add');
-        Route::post('dealers/add', 'DealerController@store')->name('frontend.dealers.add');
-        Route::delete('dealers/{dealer}', 'DealerController@destroy')->name('frontend.dealers');
+        Route::get('api/dealers/search', 'DealerApiController@search')->name('api.dealers.search');
+        Route::resource('dealers/list', 'DataTablesController');
+        Route::resource('dealers', 'DealerController');
     });
     Route::group(['namespace' => 'Mfr'], function() {
-        Route::resource('mfrs/list', 'MfrController');
-        Route::get('mfrs/add', 'MfrController@add')->name('frontend.mfrs.add');
-        Route::post('mfrs/add', 'MfrController@store')->name('frontend.mfrs.add');
-        Route::delete('mfrs/{mfr}', 'MfrController@destroy')->name('frontend.mfrs');
-        Route::get('mfrs/search', 'MfrController@search')->name('frontend.mfrs.search');
+        Route::get('api/mfrs/search', 'MfrApiController@search')->name('api.mfrs.search');
+        Route::resource('mfrs/list', 'DataTablesController');
+        Route::resource('mfrs', 'MfrController');
     });
     Route::group(['namespace' => 'Checkout'], function() {
-        Route::get('checkout/{asset}', 'CheckoutController@index')->name('frontend.checkout');
-        Route::post('checkout/{asset}', 'CheckoutController@store')->name('frontend.checkout');
-        Route::get('samples/checkout/{asset}', 'CheckoutController@checkoutModal')->name('frontend.checkout');
-        Route::post('samples/checkout/{asset}', 'CheckoutController@store')->name('frontend.checkout');
-        Route::get('samples/checkin/{asset}', 'CheckoutController@checkinModal')->name('frontend.checkout.checkin');
-        Route::post('samples/checkin/{asset}', 'CheckoutController@returnAsset');
+        Route::get('samples/checkout/{asset}', 'CheckoutController@checkoutModal')->name('checkout.create');
+        Route::post('samples/checkout/{asset}', 'CheckoutController@store')->name('checkout.store');
+        Route::get('samples/checkin/{asset}', 'CheckoutController@checkinModal')->name('checkout.checkin');
+        Route::post('samples/checkin/{asset}', 'CheckoutController@returnAsset')->name('checkout.return');
     });
     Route::group(['namespace' => 'Location'], function() {
-        Route::get('locations/search/all', 'LocationController@searchAll')->name('frontend.locations.search.all');
+        //
     });
 });

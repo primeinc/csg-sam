@@ -40,7 +40,7 @@ class Asset extends Model
      *
      * @var array
      */
-    protected $fillable = ['mfr_id', 'part', 'description', 'msrp', 'image', 'status'];
+    protected $fillable = ['mfr_id', 'location_id', 'part', 'description', 'msrp', 'image', 'status'];
 
 //    public static function create(array $attributes = [])
 //    {

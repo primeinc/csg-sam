@@ -53,7 +53,7 @@ $factory->define(App\Models\Dealer::class, function (Faker\Generator $faker) use
     return [
         'user_id' => factory(App\Models\Access\User\User::class)->create()->id,
         'company_name' => $faker->company,
-        'employee_name' => $faker->name,
+        'name' => $faker->name,
     ];
 });
 

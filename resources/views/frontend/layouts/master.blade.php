@@ -63,12 +63,11 @@
 
 <!-- Modal -->
 <div class="modal fade" id="dynModal" role="dialog" aria-hidden="true">
-    <div class="vertical-alignment-helper">
-        <div class="modal-dialog vertical-align-center">
-            <div class="modal-content">
-            </div>
+    <div class="modal-dialog">
+        <div class="modal-content">
         </div>
     </div>
 </div>
+<!-- /Modal -->
 </body>
 </html>

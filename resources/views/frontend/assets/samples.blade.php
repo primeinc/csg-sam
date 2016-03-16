@@ -16,7 +16,7 @@
                                 <span class="label label-info">@ {!! $asset->location->name !!}</span>
                             @endif
                             @if ($asset->status == 2 && $asset->activeCheckout)
-                                <span class="label label-default hidden-xs">{!! $asset->activeCheckout->dealer->employee_name !!}</span>
+                                <span class="label label-default hidden-xs">{!! $asset->activeCheckout->dealer->name !!}</span>
                                 <span class="label label-primary hidden-md">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
                                 @if($asset->activeCheckout->permanent)
                                     <span class="label label-danger">Permanently Checked Out</span>
@@ -38,13 +38,13 @@
                             <div class="col-xs-6 col-md-7">
                                 <dl>
                                     <dt>Manufacturer</dt>
-                                    <dd>{{ $asset->Mfr->name }}</dd>
+                                    <dd class="hideOverflow-1">{{ $asset->mfr->name }}</dd>
                                     <dt>Description</dt>
-                                    <dd>{{ $asset->description }}</dd>
+                                    <dd class="hideOverflow-1">{{ $asset->description }}</dd>
                                     <dt>Part #</dt>
-                                    <dd>{{ $asset->part }}</dd>
+                                    <dd class="hideOverflow-1">{{ $asset->part }}</dd>
                                     <dt>List Price</dt>
-                                    <dd>{{ $asset->msrp }}</dd>
+                                    <dd class="hideOverflow-1">{{ $asset->msrp }}</dd>
                                 </dl>
                             </div>
                         </div>
