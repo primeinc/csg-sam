@@ -19,7 +19,7 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $checkouts = Checkout::where('user_id', '=', auth()->user()->id, 'returned_date', '=', null)->get();
+        $checkouts = Checkout::where('user_id', '=', auth()->user()->id)->where('returned_date', '=', null)->get();
         $assetsIn = [];
         foreach ($checkouts as $checkout){
             $assetsIn[] = $checkout->asset_id;
