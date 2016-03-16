@@ -146,6 +146,7 @@
             </div><!-- col-md-10 -->
         @endif
 
+        @if (access()->hasPermission(1))
         <div class="col-md-10 col-md-offset-1">
 
             <div class="panel panel-default">
@@ -157,6 +158,7 @@
             </div><!-- panel -->
 
         </div><!-- col-md-10 -->
+        @endif
 
     </div><!--row-->
 @endsection
