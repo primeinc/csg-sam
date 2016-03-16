@@ -3,6 +3,8 @@ namespace App\Http\Controllers\Frontend\Dealer;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
+use App\Models\Asset;
+use App\Models\Checkout;
 use App\Models\Dealer;
 use App\Repositories\Frontend\Dealer\DealerContract;
 use App\Repositories\Frontend\Dealership\DealershipContract;
@@ -30,6 +32,19 @@ class DealerController extends Controller
         $this->middleware('auth');
         $this->dealers    = $dealers;
         $this->dealership = $dealership;
+    }
+
+    public function show($id)
+    {
+        $checkouts = Checkout::where('dealer_id', '=', $id)->where('returned_date', '=', null)->get();
+        $assetsIn = [];
+        foreach ($checkouts as $checkout){
+            $assetsIn[] = $checkout->asset_id;
+        }
+
+        $assets = Asset::whereIn('id', $assetsIn)->get();
+
+        return view('frontend.assets.samples', compact('assets'));
     }
 
     public function create()

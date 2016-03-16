@@ -60,7 +60,7 @@ class AssetController extends Controller
         $term = $request->q;
 
         $mfrList = $this->mfrs->findByNameAll($term);
-        $mfrIn = array();
+        $mfrIn = [];
         foreach ($mfrList as $mfr){
             $mfrIn[] = $mfr->id;
         }

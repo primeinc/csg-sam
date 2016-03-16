@@ -2,6 +2,7 @@
 namespace App\DataTables;
 
 use App\Models\Dealer;
+use DB;
 use Yajra\Datatables\Services\DataTable;
 
 class DealersDataTable extends DataTable
@@ -15,6 +16,11 @@ class DealersDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
+        ->editColumn('dealers.dsr', function ($data) {
+            debug($data);
+            $link = '<a href=' . route('dealers.show', $data->id) . '>' . $data->dsr . '</a>';
+            return $link;
+        })
         ->addColumn('action', function ($data) {
             //                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
             return $data->action_buttons;
@@ -28,7 +34,14 @@ class DealersDataTable extends DataTable
      */
     public function query()
     {
-        $dealers = Dealer::query()->with('user')->with('dealership');
+        $dealers = Dealer::query()
+            ->addSelect('dealers.id')
+            ->addSelect('dealership_id')
+            ->addSelect('user_id')
+            ->addSelect('dealers.name as dsr')
+            ->addSelect(DB::raw('(select count(*) from checkouts where dealer_id = dealers.id and returned_date is null) as active_checkouts'))
+            ->addSelect(DB::raw('(select count(*) from checkouts where dealer_id = dealers.id) as total_checkouts'))
+            ->with('user')->with('dealership');
 
         return $this->applyScopes($dealers);
     }
@@ -53,8 +66,10 @@ class DealersDataTable extends DataTable
         return [
             'id' => ['name' => 'dealers.id', 'title' => 'ID'],
             'dealership.name' => ['name' => 'dealership.name', 'title' => 'Dealership'],
-            'name' => ['name' => 'dealers.name', 'title' => 'DSR'],
+            'dealers.dsr' => ['name' => 'dsr', 'title' => 'DSR'],
             'user.name' => ['name' => 'user.name', 'title' => 'CSG Rep'],
+            'active_checkouts' => ['name' => 'active_checkouts', 'title' => 'Active'],
+            'total_checkouts' => ['name' => 'total_checkouts', 'title' => 'Total'],
         ];
     }
 
