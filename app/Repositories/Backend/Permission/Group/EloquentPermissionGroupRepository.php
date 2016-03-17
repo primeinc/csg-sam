@@ -6,8 +6,7 @@ use App\Exceptions\GeneralException;
 use App\Models\Access\Permission\PermissionGroup;
 
 /**
- * Class EloquentPermissionGroupRepository
- * @package App\Repositories\Backend\Permission\Group
+ * Class EloquentPermissionGroupRepository.
  */
 class EloquentPermissionGroupRepository implements PermissionGroupRepositoryContract
 {
@@ -54,8 +53,9 @@ class EloquentPermissionGroupRepository implements PermissionGroupRepositoryCont
      */
     public function store($input)
     {
-        $group       = new PermissionGroup;
+        $group = new PermissionGroup;
         $group->name = $input['name'];
+
         return $group->save();
     }
 
@@ -106,7 +106,7 @@ class EloquentPermissionGroupRepository implements PermissionGroupRepositoryCont
     public function updateSort($hierarchy)
     {
         $parent_sort = 1;
-        $child_sort  = 1;
+        $child_sort = 1;
 
         foreach ($hierarchy as $group) {
             $this->find((int) $group['id'])->update([

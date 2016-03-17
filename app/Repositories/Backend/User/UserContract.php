@@ -3,8 +3,7 @@
 namespace App\Repositories\Backend\User;
 
 /**
- * Interface UserContract
- * @package App\Repositories\User
+ * Interface UserContract.
  */
 interface UserContract
 {

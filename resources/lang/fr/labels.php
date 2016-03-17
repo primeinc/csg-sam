@@ -127,7 +127,7 @@ return [
 
         'auth' => [
             'login_box_title' => 'Connexion',
-            'login_button' => "Entrer",
+            'login_button' => 'Entrer',
             'login_with' => "S'enregistrer avec :social_media",
             'register_box_title' => "S'enregistrer",
             'register_button' => 'Créer le compte',

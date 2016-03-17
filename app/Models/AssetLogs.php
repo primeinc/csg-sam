@@ -12,7 +12,6 @@ class AssetLogs extends Model
 
     protected $table = 'asset_logs';
 
-
     public function asset()
     {
         return $this->belongsTo('App\Models\Asset')->withTrashed();
@@ -33,13 +32,13 @@ class AssetLogs extends Model
         $context = json_decode($value);
 
         // TODO can we eagerload this?
-        if(isset($context->location_id)){
+        if (isset($context->location_id)) {
             $context->location_name = new stdClass();
             $context->location_name->new = Location::withTrashed()->find($context->location_id->new)->name;
             $context->location_name->old = Location::withTrashed()->find($context->location_id->old)->name;
         }
 
-        if(isset($context->mfr_id)){
+        if (isset($context->mfr_id)) {
             $context->manufacturer = new stdClass();
             $context->manufacturer->new = Mfr::withTrashed()->find($context->mfr_id->new)->name;
             $context->manufacturer->old = Mfr::withTrashed()->find($context->mfr_id->old)->name;
@@ -48,5 +47,4 @@ class AssetLogs extends Model
 
         return $context;
     }
-
 }

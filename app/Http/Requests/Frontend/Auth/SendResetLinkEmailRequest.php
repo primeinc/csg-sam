@@ -5,8 +5,7 @@ namespace App\Http\Requests\Frontend\Auth;
 use App\Http\Requests\Request;
 
 /**
- * Class SendResetLinkEmailRequest
- * @package App\Http\Requests\Frontend\Access
+ * Class SendResetLinkEmailRequest.
  */
 class SendResetLinkEmailRequest extends Request
 {

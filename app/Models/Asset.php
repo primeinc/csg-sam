@@ -7,17 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Asset
+ * App\Models\Asset.
  *
  * @property-read \App\Models\Mfr $mfr
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Checkout[] $checkouts
- * @property integer $id
- * @property integer $mfr_id
+ * @property int $id
+ * @property int $mfr_id
  * @property string $part
  * @property string $description
  * @property float $msrp
  * @property string $image
- * @property boolean $status
+ * @property bool $status
  * @property string $statusNotes
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
@@ -80,7 +80,6 @@ class Asset extends Model
         return $this->hasOne('App\Models\Checkout')->whereNull('returned_date');
     }
 
-
     /**
      * Get the Logs for an asset.
      */
@@ -108,6 +107,4 @@ class Asset extends Model
     {
         return $this->belongsTo('App\Models\Location');
     }
-
-
 }

@@ -13,8 +13,7 @@ use App\Repositories\Backend\Permission\PermissionRepositoryContract;
 use App\Repositories\Backend\Permission\Group\PermissionGroupRepositoryContract;
 
 /**
- * Class RoleController
- * @package App\Http\Controllers\Access
+ * Class RoleController.
  */
 class RoleController extends Controller
 {
@@ -35,9 +34,8 @@ class RoleController extends Controller
     public function __construct(
         RoleRepositoryContract $roles,
         PermissionRepositoryContract $permissions
-    )
-    {
-        $this->roles       = $roles;
+    ) {
+        $this->roles = $roles;
         $this->permissions = $permissions;
     }
 
@@ -69,6 +67,7 @@ class RoleController extends Controller
     public function store(StoreRoleRequest $request)
     {
         $this->roles->create($request->all());
+
         return redirect()->route('admin.access.roles.index')->withFlashSuccess(trans('alerts.backend.roles.created'));
     }
 
@@ -81,6 +80,7 @@ class RoleController extends Controller
     public function edit($id, PermissionGroupRepositoryContract $group, EditRoleRequest $request)
     {
         $role = $this->roles->findOrThrowException($id, true);
+
         return view('backend.access.roles.edit')
             ->withRole($role)
             ->withRolePermissions($role->permissions->lists('id')->all())
@@ -96,6 +96,7 @@ class RoleController extends Controller
     public function update($id, UpdateRoleRequest $request)
     {
         $this->roles->update($id, $request->all());
+
         return redirect()->route('admin.access.roles.index')->withFlashSuccess(trans('alerts.backend.roles.updated'));
     }
 
@@ -107,6 +108,7 @@ class RoleController extends Controller
     public function destroy($id, DeleteRoleRequest $request)
     {
         $this->roles->destroy($id);
+
         return redirect()->route('admin.access.roles.index')->withFlashSuccess(trans('alerts.backend.roles.deleted'));
     }
 }

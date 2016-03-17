@@ -3,8 +3,7 @@
 namespace App\Services\Access\Traits;
 
 /**
- * Class AuthenticatesAndRegistersUsers
- * @package App\Services\Access\Traits
+ * Class AuthenticatesAndRegistersUsers.
  */
 trait AuthenticatesAndRegistersUsers
 {

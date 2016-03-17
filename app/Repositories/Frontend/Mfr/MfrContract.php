@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Repositories\Frontend\Mfr;
 
 /**
- * Interface MfrContract
- * @package App\Repositories\Frontend\Mfr
+ * Interface MfrContract.
  */
 interface MfrContract
 {

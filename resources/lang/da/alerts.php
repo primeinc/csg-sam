@@ -40,7 +40,7 @@ return [
             'deleted_permanently' => 'Brugeren er slettet permanent.',
             'restored' => 'Brugeren blev genskabt.',
             'updated' => 'Brugeren blev opdateret.',
-            'updated_password' => "Brugerens kodeord blev opdateret.",
-        ]
+            'updated_password' => 'Brugerens kodeord blev opdateret.',
+        ],
     ],
 ];

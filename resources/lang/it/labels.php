@@ -117,7 +117,7 @@ return [
                     'no_deleted' => 'Nessun utente eliminato',
                     'other_permissions' => 'Altri permessi',
                     'roles' => 'Ruoli',
-                    'total' => 'utente(i) totali', # TODO: pluralization
+                    'total' => 'utente(i) totali', // TODO: pluralization
                 ],
             ],
         ],

@@ -7,8 +7,7 @@ use App\Events\Frontend\Auth\UserRegistered;
 use App\Http\Requests\Frontend\Auth\RegisterRequest;
 
 /**
- * Class RegistersUsers
- * @package App\Services\Access\Traits
+ * Class RegistersUsers.
  */
 trait RegistersUsers
 {
@@ -31,10 +30,12 @@ trait RegistersUsers
         if (config('access.users.confirm_email')) {
             $user = $this->user->create($request->all());
             event(new UserRegistered($user));
+
             return redirect()->route('frontend.index')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.created_confirm'));
         } else {
             auth()->login($this->user->create($request->all()));
             event(new UserRegistered(access()->user()));
+
             return redirect($this->redirectPath());
         }
     }

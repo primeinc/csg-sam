@@ -5,8 +5,7 @@ namespace App\Http\Requests\Frontend\Auth;
 use App\Http\Requests\Request;
 
 /**
- * Class ResetPasswordRequest
- * @package App\Http\Requests\Frontend\Access
+ * Class ResetPasswordRequest.
  */
 class ResetPasswordRequest extends Request
 {

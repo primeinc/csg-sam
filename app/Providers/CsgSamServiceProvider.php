@@ -2,12 +2,10 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class AccessServiceProvider
- * @package App\Providers
+ * Class AccessServiceProvider.
  */
 class CsgSamServiceProvider extends ServiceProvider
 {
@@ -28,9 +26,8 @@ class CsgSamServiceProvider extends ServiceProvider
         $this->registerBindings();
     }
 
-
     /**
-     * Register service provider bindings
+     * Register service provider bindings.
      */
     public function registerBindings()
     {

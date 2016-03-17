@@ -13,11 +13,11 @@ class EventServiceProvider extends ServiceProvider
      * @var array
      */
     protected $listen = [
-        /**
+        /*
          * Frontend Events
          */
 
-        /**
+        /*
          * Authentication Events
          */
         \App\Events\Frontend\Auth\UserLoggedIn::class  => [

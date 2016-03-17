@@ -1,13 +1,12 @@
 <?php
+
 namespace App\Classes;
 
 use App\Models\AssetLogs;
 use Auth;
-use DB;
 
 class AuditLogHandler
 {
-
     public function handle($data)
     {
         dd($data);
@@ -80,8 +79,8 @@ class AuditLogHandler
 
     public function getChanges($model)
     {
-        $changes = array();
-        foreach($model->getDirty() as $key => $value){
+        $changes = [];
+        foreach ($model->getDirty() as $key => $value) {
             $original = $model->getOriginal($key);
             $changes[$key] = [
                 'old' => $original,

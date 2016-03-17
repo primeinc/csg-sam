@@ -3,8 +3,7 @@
 namespace App\Repositories\Frontend\Location;
 
 /**
- * Interface LocationContract
- * @package App\Repositories\Frontend\Location
+ * Interface LocationContract.
  */
 interface LocationContract
 {
@@ -25,5 +24,4 @@ interface LocationContract
     public function findByNameAll($name);
 
     public function findOrCreate($nameOrId);
-
 }

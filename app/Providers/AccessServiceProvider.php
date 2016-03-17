@@ -7,8 +7,7 @@ use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 /**
- * Class AccessServiceProvider
- * @package App\Providers
+ * Class AccessServiceProvider.
  */
 class AccessServiceProvider extends ServiceProvider
 {
@@ -20,7 +19,7 @@ class AccessServiceProvider extends ServiceProvider
     protected $defer = false;
 
     /**
-     * Package boot method
+     * Package boot method.
      */
     public function boot()
     {
@@ -65,7 +64,7 @@ class AccessServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register service provider bindings
+     * Register service provider bindings.
      */
     public function registerBindings()
     {
@@ -101,11 +100,11 @@ class AccessServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the blade extender to use new blade sections
+     * Register the blade extender to use new blade sections.
      */
     protected function registerBladeExtensions()
     {
-        /**
+        /*
          * Role based blade extensions
          * Accepts either string of Role Name or Role ID
          */
@@ -113,7 +112,7 @@ class AccessServiceProvider extends ServiceProvider
             return "<?php if (access()->hasRole{$role}): ?>";
         });
 
-        /**
+        /*
          * Accepts array of names or id's
          */
         Blade::directive('roles', function ($roles) {
@@ -121,10 +120,10 @@ class AccessServiceProvider extends ServiceProvider
         });
 
         Blade::directive('needsroles', function ($roles) {
-            return '<?php if (access()->hasRoles(' . $roles . ', true)): ?>';
+            return '<?php if (access()->hasRoles('.$roles.', true)): ?>';
         });
 
-        /**
+        /*
          * Permission based blade extensions
          * Accepts wither string of Permission Name or Permission ID
          */
@@ -132,7 +131,7 @@ class AccessServiceProvider extends ServiceProvider
             return "<?php if (access()->allow{$permission}): ?>";
         });
 
-        /**
+        /*
          * Accepts array of names or id's
          */
         Blade::directive('permissions', function ($permissions) {
@@ -140,10 +139,10 @@ class AccessServiceProvider extends ServiceProvider
         });
 
         Blade::directive('needspermissions', function ($permissions) {
-            return '<?php if (access()->allowMultiple(' . $permissions . ', true)): ?>';
+            return '<?php if (access()->allowMultiple('.$permissions.', true)): ?>';
         });
 
-        /**
+        /*
          * Generic if closer to not interfere with built in blade
          */
         Blade::directive('endauth', function () {

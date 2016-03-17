@@ -5,8 +5,7 @@ namespace App\Exceptions\Backend\Access\User;
 use Exception;
 
 /**
- * Class UserNeedsRolesException
- * @package App\Exceptions\Access
+ * Class UserNeedsRolesException.
  */
 class UserNeedsRolesException extends Exception
 {

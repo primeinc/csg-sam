@@ -1,11 +1,11 @@
 <?php
 
 /**
- * Frontend Access Controllers
+ * Frontend Access Controllers.
  */
 Route::group(['namespace' => 'Auth'], function () {
 
-    /**
+    /*
      * These routes require the user to be logged in
      */
     Route::group(['middleware' => 'auth'], function () {
@@ -16,7 +16,7 @@ Route::group(['namespace' => 'Auth'], function () {
         Route::post('password/change', 'PasswordController@changePassword')->name('auth.password.update');
     });
 
-    /**
+    /*
      * These routes require the user NOT be logged in
      */
     Route::group(['middleware' => 'guest'], function () {

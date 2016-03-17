@@ -21,11 +21,13 @@ class EloquentDealerRepository implements DealerContract
      * @param $email
      * @return mixed
      */
-    public function findByEmail($email) {
+    public function findByEmail($email)
+    {
         $dealer = Dealer::where('email', $email)->first();
 
-        if ($dealer instanceof Dealer)
+        if ($dealer instanceof Dealer) {
             return $dealer;
+        }
 
         return false;
     }
@@ -41,8 +43,9 @@ class EloquentDealerRepository implements DealerContract
 
         $checkouts = Checkout::where('dealer_id', '=', $dealer->id)->where('returned_date', '=', null);
 
-        if($checkouts->count())
-            throw new GeneralException($dealer->name . ' still has active checkouts');
+        if ($checkouts->count()) {
+            throw new GeneralException($dealer->name.' still has active checkouts');
+        }
 
         if ($dealer->delete()) {
             return true;
@@ -50,5 +53,4 @@ class EloquentDealerRepository implements DealerContract
 
         throw new GeneralException('Unknown Error deleting DSR');
     }
-
 }

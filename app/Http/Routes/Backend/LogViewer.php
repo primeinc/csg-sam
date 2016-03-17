@@ -2,11 +2,11 @@
 
 /**
  * This overwrites the Log Viewer Package routes so we can use middleware to protect it the way we want
- * You shouldn't have to change anything
+ * You shouldn't have to change anything.
  */
 Route::group([
     'prefix'     => 'log-viewer',
-], function() {
+], function () {
     Route::get('/', [
         'as'   => 'log-viewer::dashboard',
         'uses' => '\Arcanedev\LogViewer\Http\Controllers\LogViewerController@index',
@@ -14,7 +14,7 @@ Route::group([
 
     Route::group([
         'prefix' => 'logs',
-    ], function() {
+    ], function () {
         Route::get('/', [
             'as'   => 'log-viewer::logs.list',
             'uses' => '\Arcanedev\LogViewer\Http\Controllers\LogViewerController@listLogs',
@@ -27,7 +27,7 @@ Route::group([
 
     Route::group([
         'prefix' => '{date}',
-    ], function() {
+    ], function () {
         Route::get('/', [
             'as'   => 'log-viewer::logs.show',
             'uses' => '\Arcanedev\LogViewer\Http\Controllers\LogViewerController@show',

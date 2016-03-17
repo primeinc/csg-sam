@@ -83,7 +83,7 @@ class MfrsDataTable extends DataTable
     protected function getBuilderParameters()
     {
         return [
-            'lengthMenu' => [[50, 75, 100, -1],[50, 75, 100, "All"]],
+            'lengthMenu' => [[50, 75, 100, -1], [50, 75, 100, 'All']],
             'order'   => [[0, 'desc']],
             'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
             'buttons' => ['excel', 'pdf', 'print'],

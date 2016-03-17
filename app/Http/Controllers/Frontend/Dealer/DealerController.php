@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Http\Controllers\Frontend\Dealer;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use App\Models\Asset;
 use App\Models\Checkout;
 use App\Models\Dealer;
@@ -30,7 +30,7 @@ class DealerController extends Controller
     public function __construct(DealerContract $dealers, DealershipContract $dealership)
     {
         $this->middleware('auth');
-        $this->dealers    = $dealers;
+        $this->dealers = $dealers;
         $this->dealership = $dealership;
     }
 
@@ -38,7 +38,7 @@ class DealerController extends Controller
     {
         $checkouts = Checkout::where('dealer_id', '=', $id)->where('returned_date', '=', null)->get();
         $assetsIn = [];
-        foreach ($checkouts as $checkout){
+        foreach ($checkouts as $checkout) {
             $assetsIn[] = $checkout->asset_id;
         }
 
@@ -67,6 +67,7 @@ class DealerController extends Controller
     public function destroy($id)
     {
         $this->dealers->destroy($id);
+
         return redirect()->back()->withFlashSuccess('The DSR was successfully deleted.');
     }
 
@@ -85,10 +86,10 @@ class DealerController extends Controller
             'name' => 'required|max:255',
             'user.*.id' => 'numeric',
         ]);
-        $dealer                = new Dealer();
+        $dealer = new Dealer();
         $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership['name'])->id;
-        $dealer->name          = $request->name;
-        $dealer->user_id       = $user->find($request->user['id'])->id;
+        $dealer->name = $request->name;
+        $dealer->user_id = $user->find($request->user['id'])->id;
         $dealer->save();
 
         return redirect('/dealers/list')->withFlashSuccess('DSR successfully created');
@@ -101,10 +102,10 @@ class DealerController extends Controller
             'name' => 'required|max:255',
             'user.*.id' => 'numeric',
         ]);
-        $dealer                = $this->dealers->find($id);
+        $dealer = $this->dealers->find($id);
         $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership['name'])->id;
-        $dealer->name          = $request->name;
-        $dealer->user_id       = $user->find($request->user['id'])->id;
+        $dealer->name = $request->name;
+        $dealer->user_id = $user->find($request->user['id'])->id;
         $dealer->save();
 
         return redirect('/dealers/list')->withFlashSuccess('DSR successfully edited');

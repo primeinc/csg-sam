@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Frontend\Mfr;
 
 use App\Http\Controllers\Frontend\Api\ApiController;
@@ -20,7 +21,6 @@ class MfrApiController extends ApiController
      * Create a new controller instance.
      *
      * @param MfrContract $mfrs
-     *
      */
     public function __construct(MfrContract $mfrs)
     {
@@ -30,12 +30,12 @@ class MfrApiController extends ApiController
 
     public function search(Request $request)
     {
-        $term                          = $request->q;
-        $results                       = array();
-        $queries                       = Mfr::where('name', 'LIKE', '%' . $term . '%')->get();
-        $results['total_count']        = $queries->count();
+        $term = $request->q;
+        $results = [];
+        $queries = Mfr::where('name', 'LIKE', '%'.$term.'%')->get();
+        $results['total_count'] = $queries->count();
         $results['incomplete_results'] = false;
-        $results['items']              = [];
+        $results['items'] = [];
         foreach ($queries as $query) {
             $results['items'][] = ['id' => $query->id, 'text' => $query->name];
         }

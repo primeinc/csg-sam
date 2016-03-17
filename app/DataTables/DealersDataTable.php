@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataTables;
 
 use App\Models\Dealer;
@@ -8,6 +9,7 @@ use Yajra\Datatables\Services\DataTable;
 class DealersDataTable extends DataTable
 {
     // protected $printPreview  = 'path.to.print.preview.view';
+
     /**
      * Display ajax response.
      *
@@ -17,7 +19,8 @@ class DealersDataTable extends DataTable
     {
         return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
         ->editColumn('dealers.dsr', function ($data) {
-            $link = '<a href=' . route('dealers.show', $data->id) . '>' . $data->dsr . '</a>';
+            $link = '<a href='.route('dealers.show', $data->id).'>'.$data->dsr.'</a>';
+
             return $link;
         })
         ->addColumn('action', function ($data) {
@@ -80,7 +83,7 @@ class DealersDataTable extends DataTable
     protected function getBuilderParameters()
     {
         return [
-            'lengthMenu' => [[25, 50, 75, 100, -1], [25, 50, 75, 100, "All"]],
+            'lengthMenu' => [[25, 50, 75, 100, -1], [25, 50, 75, 100, 'All']],
             'order' => [[0, 'desc']],
             'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
             'buttons' => ['excel', 'pdf', 'print'],

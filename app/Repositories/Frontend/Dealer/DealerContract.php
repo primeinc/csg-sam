@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Repositories\Frontend\Dealer;
 
 /**
- * Interface DealerContract
- * @package App\Repositories\Frontend\Dealer
+ * Interface DealerContract.
  */
 interface DealerContract
 {

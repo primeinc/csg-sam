@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Mfr
+ * App\Models\Mfr.
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Asset[] $assets
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $deleted_at
  * @property \Carbon\Carbon $created_at
@@ -42,6 +42,4 @@ class Mfr extends Model
     {
         return $this->hasManyThrough('Checkout', 'Asset');
     }
-
-
 }

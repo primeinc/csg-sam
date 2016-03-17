@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Language;
 use App\Http\Controllers\Controller;
 
 /**
- * Class LanguageController
- * @package App\Http\Controllers
+ * Class LanguageController.
  */
 class LanguageController extends Controller
 {
@@ -17,6 +16,7 @@ class LanguageController extends Controller
     public function swap($lang)
     {
         session()->put('locale', $lang);
+
         return redirect()->back();
     }
 }

@@ -1,4 +1,5 @@
 <?php
+
 use App\Classes\AuditLogHandler;
 use App\Models\Asset;
 use App\Models\AssetLogs;
@@ -14,8 +15,8 @@ use Illuminate\Support\Facades\DB;
 
 class LegacySQLSeeder extends Seeder
 {
-    public function run() {
-
+    public function run()
+    {
         $log = new AuditLogHandler;
 
         if (env('DB_CONNECTION') == 'mysql') {
@@ -29,34 +30,34 @@ class LegacySQLSeeder extends Seeder
             Schema::drop('reserved_old');
             Schema::drop('signout_old');
             Schema::drop('users_old');
-        }
-        catch (Exception $e) {
+        } catch (Exception $e) {
         }
 
         DB::unprepared(file_get_contents(storage_path('app/thecsg_assets_old.sql')));
 
         $oldAssets = DB::table('assets_old')->get();
 
-        foreach ($oldAssets as $oldAsset){
-            if($oldAsset->status == 'Available')
+        foreach ($oldAssets as $oldAsset) {
+            if ($oldAsset->status == 'Available') {
                 $oldAsset->status = 1;
-            elseif($oldAsset->status == "Checked Out")
+            } elseif ($oldAsset->status == 'Checked Out') {
                 $oldAsset->status = 2;
-            if($oldAsset->filename == 'placeholder.png')
+            }
+            if ($oldAsset->filename == 'placeholder.png') {
                 $imageName = 'asset-placeholder.png';
-            else {
-                $imageName = uniqid() . '.jpg';
+            } else {
+                $imageName = uniqid().'.jpg';
                 try {
-                    $img = Image::make('http://samples.csgreps.com/pics/' . $oldAsset->filename);
+                    $img = Image::make('http://samples.csgreps.com/pics/'.$oldAsset->filename);
                     $img->orientate()->fit(450, 600);
-                    $img->save(public_path() . '/uploads/' . $imageName);
+                    $img->save(public_path().'/uploads/'.$imageName);
                 } catch (Exception $e) {
                     $imageName = 'asset-placeholder.png';
                 }
             }
-            $oldAsset->ack = "";
+            $oldAsset->ack = '';
             preg_match("/(.*)\s([SOso]+#)\s?(.*)/i", $oldAsset->company, $cleanCompany);
-            if(is_array($cleanCompany) && !empty($cleanCompany)) {
+            if (is_array($cleanCompany) && ! empty($cleanCompany)) {
                 $oldAsset->company = $cleanCompany[1];
                 $oldAsset->ack = $cleanCompany[3];
             }
@@ -141,15 +142,15 @@ class LegacySQLSeeder extends Seeder
         DB::table('dealers')->insert($dealers);
 
         $oldDealers = DB::table('users_old')
-            ->where('email', 'NOT LIKE' , '%csgreps.com%')
-            ->where('company', 'NOT LIKE' , '%google%')
-            ->where('company', 'NOT LIKE' , '%Yaho%')
-            ->where('company', 'NOT LIKE' , '%Lovecats%')
-            ->where('company', 'NOT LIKE' , '%rZNEIKcXFtCrPJFmyqe%')
-            ->where('company', 'NOT LIKE' , '%TPmOizpvnk%')
+            ->where('email', 'NOT LIKE', '%csgreps.com%')
+            ->where('company', 'NOT LIKE', '%google%')
+            ->where('company', 'NOT LIKE', '%Yaho%')
+            ->where('company', 'NOT LIKE', '%Lovecats%')
+            ->where('company', 'NOT LIKE', '%rZNEIKcXFtCrPJFmyqe%')
+            ->where('company', 'NOT LIKE', '%TPmOizpvnk%')
             ->get();
 
-        foreach ($oldDealers as $oldDealer){
+        foreach ($oldDealers as $oldDealer) {
             //TODO change username
 
             $dealerships = new EloquentDealershipRepository;
@@ -168,10 +169,10 @@ class LegacySQLSeeder extends Seeder
         }
 
         $oldUsers = DB::table('users_old')
-            ->where('email', 'LIKE' , '%@csgreps.com%')
+            ->where('email', 'LIKE', '%@csgreps.com%')
             ->get();
 
-        foreach ($oldUsers as $oldUser){
+        foreach ($oldUsers as $oldUser) {
             //TODO change username
             $users = [
                 'name'              => $oldUser->fullname,
@@ -181,7 +182,7 @@ class LegacySQLSeeder extends Seeder
                 'created_at'        => Carbon::now(),
                 'updated_at'        => Carbon::now(),
             ];
-            $insertID  = DB::table(config('access.users_table'))->insertGetId($users);
+            $insertID = DB::table(config('access.users_table'))->insertGetId($users);
             $user_model = config('auth.providers.users.model');
             $user_model = new $user_model;
             $user_model::find($insertID)->attachRole(2);
@@ -194,19 +195,19 @@ class LegacySQLSeeder extends Seeder
 
         $oldCheckins = DB::table('checkin_old')->get();
 
-        foreach ($oldCheckins as $oldCheckin){
+        foreach ($oldCheckins as $oldCheckin) {
             $userID = 1;
             $dealers = new EloquentDealerRepository();
             $dealer = $dealers->findByEmail($oldCheckin->username);
             $asset = Asset::find($oldCheckin->csgid);
-            if(!$dealer){
+            if (! $dealer) {
                 $dealer = $dealers->findByEmail('unknown@csgreps.com');
 
                 $user_model = new EloquentUserRepository(new EloquentRoleRepository());
                 $user = $user_model->findByEmail($oldCheckin->username);
-                if($user) {
+                if ($user) {
                     $userID = $user->id;
-                    if($oldCheckin->username == 'info@csgreps.com') {
+                    if ($oldCheckin->username == 'info@csgreps.com') {
                         // West Side Storage
                         $asset->location_id = 3;
                         // log storage change
@@ -220,8 +221,7 @@ class LegacySQLSeeder extends Seeder
                         $manualLog->save();
                         // log storage change
                         continue;
-                    }
-                    elseif($oldCheckin->username == 'jack@csgreps.com') {
+                    } elseif ($oldCheckin->username == 'jack@csgreps.com') {
                         // East Side Storage
                         $asset->location_id = 4;
                         // log storage change
@@ -235,8 +235,7 @@ class LegacySQLSeeder extends Seeder
                         $manualLog->save();
                         // log storage change
                         continue;
-                    }
-                    elseif($oldCheckin->username == 'voicemail@csgreps.com') {
+                    } elseif ($oldCheckin->username == 'voicemail@csgreps.com') {
                         // Missing / Lost
                         $asset->location_id = 2;
                         // log storage change
@@ -268,7 +267,7 @@ class LegacySQLSeeder extends Seeder
                     'updated_at'             => $oldCheckin->date,
                 ];
 
-            $insertID  = DB::table('checkouts')->insertGetId($checkins);
+            $insertID = DB::table('checkouts')->insertGetId($checkins);
 
             $log->onAssetCheckout(Asset::find($oldCheckin->csgid), Checkout::find($insertID));
 
@@ -292,19 +291,19 @@ class LegacySQLSeeder extends Seeder
 
         $oldSignouts = DB::table('signout_old')->get();
 
-        foreach ($oldSignouts as $oldSignout){
+        foreach ($oldSignouts as $oldSignout) {
             $userID = 1;
             $dealers = new EloquentDealerRepository();
             $dealer = $dealers->findByEmail($oldSignout->username);
             $asset = Asset::find($oldSignout->csgid);
-            if(!$dealer){
+            if (! $dealer) {
                 $dealer = $dealers->findByEmail('unknown@csgreps.com');
 
                 $user_model = new EloquentUserRepository(new EloquentRoleRepository());
                 $user = $user_model->findByEmail($oldSignout->username);
-                if($user) {
+                if ($user) {
                     $userID = $user->id;
-                    if($oldSignout->username == 'info@csgreps.com') {
+                    if ($oldSignout->username == 'info@csgreps.com') {
                         // West Side Storage
                         $asset->location_id = 3;
                         // log storage change
@@ -320,8 +319,7 @@ class LegacySQLSeeder extends Seeder
                         $asset->save();
                         continue;
                         // add logging
-                    }
-                    elseif($oldSignout->username == 'jack@csgreps.com') {
+                    } elseif ($oldSignout->username == 'jack@csgreps.com') {
                         // East Side Storage
                         $asset->location_id = 4;
                         // log storage change
@@ -336,8 +334,7 @@ class LegacySQLSeeder extends Seeder
                         // log storage change
                         $asset->save();
                         continue;
-                    }
-                    elseif($oldSignout->username == 'voicemail@csgreps.com') {
+                    } elseif ($oldSignout->username == 'voicemail@csgreps.com') {
                         // Missing / Lost
                         $asset->location_id = 2;
                         // log storage change
@@ -367,7 +364,7 @@ class LegacySQLSeeder extends Seeder
                 'updated_at'             => $oldSignout->date,
             ];
 
-            $insertID  = DB::table('checkouts')->insertGetId($checkins);
+            $insertID = DB::table('checkouts')->insertGetId($checkins);
 
             $asset->status = 2; // checked-out
             $asset->save();

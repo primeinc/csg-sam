@@ -8,18 +8,17 @@ use App\Models\Access\Role\Traits\Attribute\RoleAttribute;
 use App\Models\Access\Role\Traits\Relationship\RoleRelationship;
 
 /**
- * Class Role
+ * Class Role.
  *
- * @package App\Models\Access\Role
  * @property-read mixed $edit_button
  * @property-read mixed $delete_button
  * @property-read mixed $action_buttons
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\User\User[] $users
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Permission\Permission[] $permissions
- * @property integer $id
+ * @property int $id
  * @property string $name
- * @property boolean $all
- * @property integer $sort
+ * @property bool $all
+ * @property int $sort
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -41,9 +40,6 @@ class Role extends Model
      */
     protected $guarded = ['id'];
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->table = config('access.roles_table');

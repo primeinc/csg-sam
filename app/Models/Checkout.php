@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
- * App\Models\Checkout
+ * App\Models\Checkout.
  *
  * @property-read \App\Models\Asset $asset
  * @property-read \App\Models\Access\User\User $user
  * @property-read \App\Models\Dealer $dealer
- * @property integer $id
- * @property integer $asset_id
- * @property integer $user_id
- * @property integer $dealer_id
+ * @property int $id
+ * @property int $asset_id
+ * @property int $user_id
+ * @property int $dealer_id
  * @property string $notes
  * @property string $expectedReturnDate
  * @property string $returnedDate
@@ -33,9 +33,9 @@ class Checkout extends Model
      * @var array
      */
     protected $fillable = ['asset_id', 'user_id', 'dealer_id',
-        'notes', 'expected_return_date', 'returned_date'];
+        'notes', 'expected_return_date', 'returned_date', ];
 
-    protected  $dates = ['expected_return_date', 'returned_date'];
+    protected $dates = ['expected_return_date', 'returned_date'];
 
     /**
      * Get the Asset checked out.

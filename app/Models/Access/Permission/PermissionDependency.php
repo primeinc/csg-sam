@@ -6,13 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Access\Permission\Traits\Relationship\PermissionDependencyRelationship;
 
 /**
- * Class PermissionDependency
+ * Class PermissionDependency.
  *
- * @package App\Models\Access\Permission
  * @property-read \App\Models\Access\Permission\Permission $permission
- * @property integer $id
- * @property integer $permission_id
- * @property integer $dependency_id
+ * @property int $id
+ * @property int $permission_id
+ * @property int $dependency_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -34,9 +33,6 @@ class PermissionDependency extends Model
      */
     protected $guarded = ['id'];
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->table = config('access.permission_dependencies_table');

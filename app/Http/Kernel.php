@@ -5,8 +5,7 @@ namespace App\Http;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 /**
- * Class Kernel
- * @package App\Http
+ * Class Kernel.
  */
 class Kernel extends HttpKernel
 {
@@ -60,7 +59,7 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
 
-        /**
+        /*
          * Access Middleware
          */
         'access.routeNeedsRole' => \App\Http\Middleware\RouteNeedsRole::class,

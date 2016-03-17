@@ -109,7 +109,7 @@ return [
     |
     */
 
-    /**
+    /*
      * We changed the name of this session from laravel_session
      * The reason being is there are many browser extensions to check to see what
      * software your website is built with, most check for the Set-Cookie header to be 'laravel_session'

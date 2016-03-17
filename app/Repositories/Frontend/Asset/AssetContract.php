@@ -3,8 +3,7 @@
 namespace App\Repositories\Frontend\Asset;
 
 /**
- * Interface AssetContract
- * @package App\Repositories\Frontend\Asset
+ * Interface AssetContract.
  */
 interface AssetContract
 {
@@ -13,5 +12,4 @@ interface AssetContract
      * @return mixed
      */
     public function find($id);
-
 }

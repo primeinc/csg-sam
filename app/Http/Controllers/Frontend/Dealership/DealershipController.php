@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers\Frontend\Dealership;
 
 use App\Http\Controllers\Controller;
@@ -43,11 +44,12 @@ class DealershipController extends Controller
     {
         $dealership = $this->dealerships->find($id);
         $dealershipReq = Dealership::find($request->name);
-        if($dealershipReq){
+        if ($dealershipReq) {
             DB::table('dealers')
                 ->where('dealership_id', $id)
                 ->update(['dealership_id' => $dealershipReq->id]);
             $dealership->delete();
+
             return redirect('/dealerships/list')->withFlashSuccess('Dealership successfully merged');
         }
 
@@ -65,6 +67,7 @@ class DealershipController extends Controller
     public function destroy($id)
     {
         $this->dealerships->destroy($id);
+
         return redirect()->back()->withFlashSuccess('Dealership was successfully deleted.');
     }
 }

@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend\Asset;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use App\Models\Asset;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Location\LocationContract;
@@ -45,7 +44,8 @@ class AssetController extends Controller
         $this->locations = $locations;
     }
 
-    public function index() {
+    public function index()
+    {
         $assets = Asset::orderBy('updated_at', 'desc')->take(60)->get();
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
@@ -53,28 +53,29 @@ class AssetController extends Controller
         return view('frontend.assets.samples', compact('assets'));
     }
 
-    public function out() {
+    public function out()
+    {
         $assets = Asset::where('status', '=', 2)->get();
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
 //        $assets->sortByDesc('activeCheckout.expected_return_date');
 
-        $assets = $assets->sortBy(function($asset)
-        {
+        $assets = $assets->sortBy(function ($asset) {
             return $asset->activeCheckout->expected_return_date;
         });
 
         return view('frontend.assets.samples', compact('assets'));
     }
 
-    public function search(Request $request) {
-//        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
+    public function search(Request $request)
+    {
+        //        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
         $term = $request->q;
 
         $mfrList = $this->mfrs->findByNameAll($term);
         $mfrIn = [];
-        foreach ($mfrList as $mfr){
+        foreach ($mfrList as $mfr) {
             $mfrIn[] = $mfr->id;
         }
 
@@ -113,19 +114,19 @@ class AssetController extends Controller
 
         $asset = new Asset;
 
-        if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
-            $imageName = uniqid() . '.jpg';
+        if (! is_null($request->file('image')) && $request->file('image')->isValid()) {
+            $imageName = uniqid().'.jpg';
             $img = Image::make($request->file('image'));
             $img->orientate();
-            $img->save(public_path() . '/uploads/original/' . $imageName);
+            $img->save(public_path().'/uploads/original/'.$imageName);
             $img->fit(450, 600);
-            $img->save(public_path() . '/uploads/' . $imageName);
+            $img->save(public_path().'/uploads/'.$imageName);
 
-            $request->merge(['imageName' => $imageName] );
+            $request->merge(['imageName' => $imageName]);
             $asset->image = $request->imageName;
-        }
-        else
+        } else {
             $asset->image = 'asset-placeholder.png';
+        }
 
         $asset->mfr_id = $this->mfrs->findOrCreate($request->mfr['name'])->id;
 
@@ -187,15 +188,15 @@ class AssetController extends Controller
 
         $asset->mfr_id = $this->mfrs->findOrCreate($request->mfr['name'])->id;
 
-        if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
-            $imageName = uniqid() . '.jpg';
+        if (! is_null($request->file('image')) && $request->file('image')->isValid()) {
+            $imageName = uniqid().'.jpg';
             $img = Image::make($request->file('image'));
             $img->orientate();
-            $img->save(public_path() . '/uploads/original/' . $imageName);
+            $img->save(public_path().'/uploads/original/'.$imageName);
             $img->fit(450, 600);
-            $img->save(public_path() . '/uploads/' . $imageName);
+            $img->save(public_path().'/uploads/'.$imageName);
 
-            $request->merge(['imageName' => $imageName] );
+            $request->merge(['imageName' => $imageName]);
             $asset->image = $request->imageName;
         }
 
@@ -214,6 +215,6 @@ class AssetController extends Controller
 
     public function getMfrIdAttribute($value)
     {
-        return 'wow - ' . $value;
+        return 'wow - '.$value;
     }
 }

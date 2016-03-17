@@ -10,8 +10,7 @@ use Illuminate\Foundation\Auth\ThrottlesLogins;
 use App\Http\Requests\Frontend\Auth\LoginRequest;
 
 /**
- * Class AuthenticatesUsers
- * @package App\Services\Access\Traits
+ * Class AuthenticatesUsers.
  */
 trait AuthenticatesUsers
 {
@@ -66,7 +65,7 @@ trait AuthenticatesUsers
      */
     public function logout()
     {
-        /**
+        /*
          * Remove the socialite session variable if exists
          */
         if (app('session')->has(config('access.socialite_session_name'))) {
@@ -75,11 +74,12 @@ trait AuthenticatesUsers
 
         event(new UserLoggedOut(access()->user()));
         auth()->logout();
+
         return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
 
     /**
-     * This is here so we can use the default Laravel ThrottlesLogins trait
+     * This is here so we can use the default Laravel ThrottlesLogins trait.
      *
      * @return string
      */
@@ -100,7 +100,7 @@ trait AuthenticatesUsers
             $this->clearLoginAttempts($request);
         }
 
-        /**
+        /*
          * Check to see if the users account is confirmed and active
          */
         if (! access()->user()->isConfirmed()) {
@@ -113,6 +113,7 @@ trait AuthenticatesUsers
         }
 
         event(new UserLoggedIn(access()->user()));
+
         return redirect()->intended($this->redirectPath());
     }
 }

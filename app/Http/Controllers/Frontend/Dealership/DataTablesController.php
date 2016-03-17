@@ -1,9 +1,9 @@
 <?php
+
 namespace App\Http\Controllers\Frontend\Dealership;
 
 use App\DataTables\DealershipsDataTable;
 use App\Http\Controllers\Controller;
-use App\Http\Requests;
 use App\Repositories\Frontend\Dealership\DealershipContract;
 
 class DataTablesController extends Controller

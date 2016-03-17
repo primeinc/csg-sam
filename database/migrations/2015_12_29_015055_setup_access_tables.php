@@ -24,7 +24,7 @@ class SetupAccessTables extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at');
 
-            /**
+            /*
              * Add Foreign/Unique/Index
              */
             $table->unique('name');
@@ -35,7 +35,7 @@ class SetupAccessTables extends Migration
             $table->integer('user_id')->unsigned();
             $table->integer('role_id')->unsigned();
 
-            /**
+            /*
              * Add Foreign/Unique/Index
              */
             $table->foreign('user_id')
@@ -59,7 +59,7 @@ class SetupAccessTables extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at');
 
-            /**
+            /*
              * Add Foreign/Unique/Index
              */
             $table->unique('name');
@@ -79,7 +79,7 @@ class SetupAccessTables extends Migration
             $table->integer('permission_id')->unsigned();
             $table->integer('role_id')->unsigned();
 
-            /**
+            /*
              * Add Foreign/Unique/Index
              */
             $table->foreign('permission_id')
@@ -100,7 +100,7 @@ class SetupAccessTables extends Migration
             $table->timestamp('created_at')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->timestamp('updated_at');
 
-            /**
+            /*
              * Add Foreign/Unique/Index
              */
             $table->foreign('permission_id')
@@ -119,7 +119,7 @@ class SetupAccessTables extends Migration
             $table->integer('permission_id')->unsigned();
             $table->integer('user_id')->unsigned();
 
-            /**
+            /*
              * Add Foreign/Unique/Index
              */
             $table->foreign('permission_id')
@@ -145,30 +145,30 @@ class SetupAccessTables extends Migration
             $table->dropColumn('status');
         });
 
-        /**
+        /*
          * Remove Foreign/Unique/Index
          */
         Schema::table(config('access.roles_table'), function (Blueprint $table) {
-            $table->dropUnique(config('access.roles_table') . '_name_unique');
+            $table->dropUnique(config('access.roles_table').'_name_unique');
         });
 
         Schema::table(config('access.assigned_roles_table'), function (Blueprint $table) {
-            $table->dropForeign(config('access.assigned_roles_table') . '_user_id_foreign');
-            $table->dropForeign(config('access.assigned_roles_table') . '_role_id_foreign');
+            $table->dropForeign(config('access.assigned_roles_table').'_user_id_foreign');
+            $table->dropForeign(config('access.assigned_roles_table').'_role_id_foreign');
         });
 
         Schema::table(config('access.permissions_table'), function (Blueprint $table) {
-            $table->dropUnique(config('access.permissions_table') . '_name_unique');
+            $table->dropUnique(config('access.permissions_table').'_name_unique');
         });
 
         Schema::table(config('access.permission_role_table'), function (Blueprint $table) {
-            $table->dropForeign(config('access.permission_role_table') . '_permission_id_foreign');
-            $table->dropForeign(config('access.permission_role_table') . '_role_id_foreign');
+            $table->dropForeign(config('access.permission_role_table').'_permission_id_foreign');
+            $table->dropForeign(config('access.permission_role_table').'_role_id_foreign');
         });
 
         Schema::table(config('access.permission_user_table'), function (Blueprint $table) {
-            $table->dropForeign(config('access.permission_user_table') . '_permission_id_foreign');
-            $table->dropForeign(config('access.permission_user_table') . '_user_id_foreign');
+            $table->dropForeign(config('access.permission_user_table').'_permission_id_foreign');
+            $table->dropForeign(config('access.permission_user_table').'_user_id_foreign');
         });
 
         Schema::table(config('access.permission_dependencies_table'), function (Blueprint $table) {
@@ -176,7 +176,7 @@ class SetupAccessTables extends Migration
             $table->dropForeign('permission_dependencies_dependency_id_foreign');
         });
 
-        /**
+        /*
          * Drop tables
          */
         Schema::drop(config('access.assigned_roles_table'));

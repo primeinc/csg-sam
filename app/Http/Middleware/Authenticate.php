@@ -6,8 +6,7 @@ use Closure;
 use Illuminate\Support\Facades\Auth;
 
 /**
- * Class Authenticate
- * @package App\Http\Middleware
+ * Class Authenticate.
  */
 class Authenticate
 {

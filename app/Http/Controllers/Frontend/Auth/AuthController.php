@@ -10,12 +10,10 @@ use App\Repositories\Frontend\User\UserContract;
 use App\Services\Access\Traits\AuthenticatesAndRegistersUsers;
 
 /**
- * Class AuthController
- * @package App\Http\Controllers\Frontend\Auth
+ * Class AuthController.
  */
 class AuthController extends Controller
 {
-
     use AuthenticatesAndRegistersUsers, ConfirmUsers, ThrottlesLogins, UseSocialite;
 
     /**
@@ -26,7 +24,7 @@ class AuthController extends Controller
     protected $redirectTo = '/dashboard';
 
     /**
-     * Where to redirect users after they logout
+     * Where to redirect users after they logout.
      *
      * @var string
      */

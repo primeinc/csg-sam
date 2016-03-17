@@ -10,12 +10,10 @@ use App\Models\Access\User\SocialLogin;
 use App\Repositories\Backend\Role\RoleRepositoryContract;
 
 /**
- * Class EloquentUserRepository
- * @package App\Repositories\Frontend\User
+ * Class EloquentUserRepository.
  */
 class EloquentUserRepository implements UserContract
 {
-
     /**
      * @var RoleRepositoryContract
      */
@@ -42,11 +40,13 @@ class EloquentUserRepository implements UserContract
      * @param $email
      * @return bool
      */
-    public function findByEmail($email) {
+    public function findByEmail($email)
+    {
         $user = User::where('email', $email)->first();
 
-        if ($user instanceof User)
+        if ($user instanceof User) {
             return $user;
+        }
 
         return false;
     }
@@ -55,11 +55,13 @@ class EloquentUserRepository implements UserContract
      * @param $name
      * @return mixed
      */
-    public function findByName($name) {
+    public function findByName($name)
+    {
         $users = User::where('name', $name);
 
-        if ($users instanceof User)
+        if ($users instanceof User) {
             return $users;
+        }
 
         return false;
     }
@@ -69,11 +71,13 @@ class EloquentUserRepository implements UserContract
      * @return mixed
      * @throws GeneralException
      */
-    public function findByToken($token) {
+    public function findByToken($token)
+    {
         $user = User::where('confirmation_code', $token)->first();
 
-        if (! $user instanceof User)
+        if (! $user instanceof User) {
             throw new GeneralException(trans('exceptions.frontend.auth.confirmation.not_found'));
+        }
 
         return $user;
     }
@@ -105,12 +109,12 @@ class EloquentUserRepository implements UserContract
             ]);
         }
 
-        /**
+        /*
          * Add the default site role to the new user
          */
         $user->attachRole($this->role->getDefaultUserRole());
 
-        /**
+        /*
          * If users have to confirm their email and this is not a social account,
          * send the confirmation email
          *
@@ -120,7 +124,7 @@ class EloquentUserRepository implements UserContract
             $this->sendConfirmationEmail($user);
         }
 
-        /**
+        /*
          * Return the user object
          */
         return $user;
@@ -133,12 +137,12 @@ class EloquentUserRepository implements UserContract
      */
     public function findOrCreateSocial($data, $provider)
     {
-        /**
+        /*
          * Check to see if there is a user with this email first
          */
         $user = $this->findByEmail($data->email);
 
-        /**
+        /*
          * If the user does not exist create them
          * The true flag indicate that it is a social account
          * Which triggers the script to use some default values in the create method
@@ -150,11 +154,11 @@ class EloquentUserRepository implements UserContract
             ], true);
         }
 
-        /**
+        /*
          * See if the user has logged in with this social account before
          */
         if (! $user->hasProvider($provider)) {
-            /**
+            /*
              * Gather the provider data for saving and associate it with the user
              */
             $user->providers()->save(new SocialLogin([
@@ -166,7 +170,7 @@ class EloquentUserRepository implements UserContract
 
         // TODO update avatar from social login
 
-        /**
+        /*
          * Return the user object
          */
         return $user;
@@ -187,6 +191,7 @@ class EloquentUserRepository implements UserContract
 
         if ($user->confirmation_code == $token) {
             $user->confirmed = 1;
+
             return $user->save();
         }
 
@@ -205,7 +210,7 @@ class EloquentUserRepository implements UserContract
         }
 
         return Mail::send('frontend.auth.emails.confirm', ['token' => $user->confirmation_code], function ($message) use ($user) {
-            $message->to($user->email, $user->name)->subject(app_name() . ': ' . trans('exceptions.frontend.auth.confirmation.confirm'));
+            $message->to($user->email, $user->name)->subject(app_name().': '.trans('exceptions.frontend.auth.confirmation.confirm'));
         });
     }
 
@@ -214,7 +219,8 @@ class EloquentUserRepository implements UserContract
      * @return mixed
      * @throws GeneralException
      */
-    public function resendConfirmationEmail($token) {
+    public function resendConfirmationEmail($token)
+    {
         return $this->sendConfirmationEmail($this->findByToken($token));
     }
 
@@ -255,6 +261,7 @@ class EloquentUserRepository implements UserContract
 
         if (Hash::check($input['old_password'], $user->password)) {
             $user->password = bcrypt($input['password']);
+
             return $user->save();
         }
 

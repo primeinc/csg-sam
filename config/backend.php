@@ -2,7 +2,7 @@
 
 return [
 
-    /**
+    /*
      * Skin for Admin LTE backend theme
      *
      * Available options:

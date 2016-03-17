@@ -1,4 +1,5 @@
 <?php
+
 namespace App\DataTables;
 
 use App\Models\Dealership;
@@ -8,6 +9,7 @@ use Yajra\Datatables\Services\DataTable;
 class DealershipsDataTable extends DataTable
 {
     // protected $printPreview  = 'path.to.print.preview.view';
+
     /**
      * Display ajax response.
      *
@@ -75,7 +77,7 @@ class DealershipsDataTable extends DataTable
     protected function getBuilderParameters()
     {
         return [
-            'lengthMenu' => [[50, 75, 100, -1], [50, 75, 100, "All"]],
+            'lengthMenu' => [[50, 75, 100, -1], [50, 75, 100, 'All']],
             'order' => [[0, 'desc']],
             'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
             'buttons' => ['excel', 'pdf', 'print'],
