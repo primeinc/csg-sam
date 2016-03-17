@@ -84,11 +84,13 @@ class DealerController extends Controller
         $this->validate($request, [
             'dealership.*.name' => 'required',
             'name' => 'required|max:255',
+            'email' => 'required|email',
             'user.*.id' => 'numeric',
         ]);
         $dealer = new Dealer();
         $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership['name'])->id;
         $dealer->name = $request->name;
+        $dealer->email = $request->email;
         $dealer->user_id = $user->find($request->user['id'])->id;
         $dealer->save();
 
@@ -100,11 +102,13 @@ class DealerController extends Controller
         $this->validate($request, [
             'dealership.*.name' => 'required',
             'name' => 'required|max:255',
+            'email' => 'required|email',
             'user.*.id' => 'numeric',
         ]);
         $dealer = $this->dealers->find($id);
         $dealer->dealership_id = $this->dealership->findOrCreate($request->dealership['name'])->id;
         $dealer->name = $request->name;
+        $dealer->email = $request->email;
         $dealer->user_id = $user->find($request->user['id'])->id;
         $dealer->save();
 

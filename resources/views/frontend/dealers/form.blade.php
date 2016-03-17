@@ -1,5 +1,6 @@
 <div class="box-body">
     {{ Form::bsText('name', 'Dealer Sales Rep') }}
+    {{ Form::bsText('email') }}
     @if(isset($dealer))
         {{ Form::select2('dealership[name]', 'Dealership', [$dealer->dealership->id => $dealer->dealership->name], $dealer->dealership->name) }}
         {{ Form::select2('user[id]', 'Assigned Rep', [$dealer->user->id => $dealer->user->name], $dealer->user->name) }}
