@@ -1,16 +1,5 @@
 <?php
 
-Route::get('/test', function () {
-    $beautymail = app()->make(Snowfire\Beautymail\Beautymail::class);
-    $beautymail->send('emails.welcome', [], function ($message) {
-        $message
-            ->from('will@csgreps.com', 'Will CSG Peters')
-            ->to('will.peters@gmail.com', 'Will Peters')
-            ->subject('Welcome!');
-    });
-
-});
-
 Route::group(['middleware' => 'web'], function () {
     /*
      * Switch between the included languages

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Frontend\Checkout;
 
-use App\Models\Asset;
 use App\Models\Checkout;
 use App\Http\Controllers\Controller;
 use App\Repositories\Frontend\Asset\AssetContract;
@@ -11,6 +10,7 @@ use Carbon\Carbon;
 use Event;
 use Illuminate\Http\Request;
 use Redirect;
+use Snowfire\Beautymail\Beautymail;
 
 class CheckoutController extends Controller
 {
@@ -139,5 +139,21 @@ class CheckoutController extends Controller
         $asset->save();
 
         return Redirect::route('samples.show', ['id' => $asset->id]);
+    }
+
+    public function sendReminder($id)
+    {
+        $checkout = Checkout::find($id);
+
+        $beautymail = app()->make(Beautymail::class);
+        $beautymail->send('emails.reminder', compact('checkout'), function ($message) use ($checkout) {
+            $message
+                ->from(auth()->user()->email, auth()->user()->name)
+                ->to(auth()->user()->email, auth()->user()->name) // TODO change this in production
+                ->cc(auth()->user()->email, auth()->user()->name)
+                ->subject('Sample #' . $checkout->asset->id . ' Overdue');
+        });
+
+        return redirect()->back()->withFlashSuccess('The reminder was successfully sent.');
     }
 }

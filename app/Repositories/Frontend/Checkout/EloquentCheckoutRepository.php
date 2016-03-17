@@ -4,7 +4,7 @@ namespace App\Repositories\Frontend\Checkout;
 
 use App\Models\Checkout;
 
-class EloquentDealerRepository implements CheckoutContract
+class EloquentCheckoutRepository implements CheckoutContract
 {
     /**
      * @param $id

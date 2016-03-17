@@ -24,13 +24,13 @@ return [
         'address'     => null,
 
         'logo'        => [
-            'path'   => '%PUBLIC%/vendor/Beautymail/assets/images/sunny/logo.png',
+            'path'   => '%PUBLIC%/logo.png',
             'width'  => '',
             'height' => '',
         ],
 
-        'twitter'  => null,
-        'facebook' => null,
+        'twitter'  => 'CSGreps',
+        'facebook' => 'CSGreps',
         'flickr'   => null,
     ],
 

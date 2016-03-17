@@ -84,8 +84,8 @@
                             @endif
                             @if ($asset->status == 2)  <!--Checked Out-->
                                 @if(!$asset->activeCheckout->permanent)
-                                    <button type="button" class="btn bg-teal reminder hidden-xs" data-id="{{ $asset->id }}" >Send Reminder</button>
-                                    <button type="button" class="btn bg-teal reminder hidden-sm hidden-md hidden-lg" data-id="{{ $asset->id }}" >Reminder</button>
+                                    <a href="{{ route('checkout.remind', $asset->activeCheckout->id) }}" type="button" class="btn bg-teal reminder hidden-xs" data-id="{{ $asset->id }}" >Send Reminder</a>
+                                    <a href="{{ route('checkout.remind', $asset->activeCheckout->id) }}" type="button" class="btn bg-teal reminder hidden-sm hidden-md hidden-lg" data-id="{{ $asset->id }}" >Reminder</a>
                                 @endif
                                 <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->
