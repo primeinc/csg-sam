@@ -35,7 +35,7 @@
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="col-xs-12">
-                            <div class="col-xs-12 col-sm-6 col-md-5" style="max-width: 200px !important;">
+                            <div class="col-xs-12 col-sm-6 col-md-5" >  {{--style="max-width: 200px !important;"--}}
                                 <img class="img-responsive" src="/uploads/{{ $asset->image }}" alt="message user image">
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-7">
