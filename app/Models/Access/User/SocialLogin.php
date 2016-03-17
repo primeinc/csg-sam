@@ -5,11 +5,10 @@ namespace App\Models\Access\User;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * Class SocialLogin
+ * Class SocialLogin.
  *
- * @package App\Models\Access\User
- * @property integer $id
- * @property integer $user_id
+ * @property int $id
+ * @property int $user_id
  * @property string $provider
  * @property string $provider_id
  * @property string $avatar

@@ -7,8 +7,7 @@ use App\Repositories\Frontend\User\UserContract;
 use App\Http\Requests\Frontend\User\UpdateProfileRequest;
 
 /**
- * Class ProfileController
- * @package App\Http\Controllers\Frontend
+ * Class ProfileController.
  */
 class ProfileController extends Controller
 {
@@ -29,6 +28,7 @@ class ProfileController extends Controller
     public function update(UserContract $user, UpdateProfileRequest $request)
     {
         $user->updateProfile(access()->id(), $request->all());
+
         return redirect()->route('frontend.user.dashboard')->withFlashSuccess(trans('strings.frontend.user.profile_updated'));
     }
 }

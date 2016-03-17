@@ -16,12 +16,12 @@ return [
     'env' => env('APP_ENV', 'production'),
 
     /*
-	|--------------------------------------------------------------------------
-	| Application Name
-	|--------------------------------------------------------------------------
-	|
-	| The application name for use within the UI of the application
-	*/
+    |--------------------------------------------------------------------------
+    | Application Name
+    |--------------------------------------------------------------------------
+    |
+    | The application name for use within the UI of the application
+    */
     'name' => 'CSG:SAM',
 
     /*

@@ -2,7 +2,7 @@
 
 return [
 
-    /**
+    /*
      * Whether or not to show the language picker, or just default to the default
      * locale specified in the app config file
      *
@@ -10,7 +10,7 @@ return [
      */
     'status' => true,
 
-    /**
+    /*
      * Available languages
      *
      * Add your language code to this array.
@@ -23,7 +23,7 @@ return [
      * @var array
      */
     'languages' => [
-        /**
+        /*
          * Key is the Laravel locale code
          * Index 0 of sub-array is the Carbon locale code
          * Index 1 of sub-array is the PHP locale code for setlocale()

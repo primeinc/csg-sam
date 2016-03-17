@@ -13,8 +13,7 @@ use App\Http\Requests\Backend\Access\Permission\UpdatePermissionRequest;
 use App\Repositories\Backend\Permission\Group\PermissionGroupRepositoryContract;
 
 /**
- * Class PermissionController
- * @package App\Http\Controllers\Access
+ * Class PermissionController.
  */
 class PermissionController extends Controller
 {
@@ -42,11 +41,10 @@ class PermissionController extends Controller
         RoleRepositoryContract $roles,
         PermissionRepositoryContract $permissions,
         PermissionGroupRepositoryContract $groups
-    )
-    {
-        $this->roles       = $roles;
+    ) {
+        $this->roles = $roles;
         $this->permissions = $permissions;
-        $this->groups      = $groups;
+        $this->groups = $groups;
     }
 
     /**
@@ -78,6 +76,7 @@ class PermissionController extends Controller
     public function store(StorePermissionRequest $request)
     {
         $this->permissions->create($request->except('permission_roles'), $request->only('permission_roles'));
+
         return redirect()->route('admin.access.roles.permissions.index')->withFlashSuccess(trans('alerts.backend.permissions.created'));
     }
 
@@ -89,6 +88,7 @@ class PermissionController extends Controller
     public function edit($id, EditPermissionRequest $request)
     {
         $permission = $this->permissions->findOrThrowException($id, true);
+
         return view('backend.access.roles.permissions.edit')
             ->withPermission($permission)
             ->withPermissionRoles($permission->roles->lists('id')->all())
@@ -106,6 +106,7 @@ class PermissionController extends Controller
     public function update($id, UpdatePermissionRequest $request)
     {
         $this->permissions->update($id, $request->except('permission_roles'), $request->only('permission_roles'));
+
         return redirect()->route('admin.access.roles.permissions.index')->withFlashSuccess(trans('alerts.backend.permissions.updated'));
     }
 
@@ -117,6 +118,7 @@ class PermissionController extends Controller
     public function destroy($id, DeletePermissionRequest $request)
     {
         $this->permissions->destroy($id);
+
         return redirect()->route('admin.access.roles.permissions.index')->withFlashSuccess(trans('alerts.backend.permissions.deleted'));
     }
 }

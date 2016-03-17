@@ -3,8 +3,7 @@
 namespace App\Models\Access\Permission\Traits\Attribute;
 
 /**
- * Class PermissionAttribute
- * @package App\Models\Access\Permission\Traits\Attribute
+ * Class PermissionAttribute.
  */
 trait PermissionAttribute
 {
@@ -21,9 +20,11 @@ trait PermissionAttribute
      */
     public function getSystemLabelAttribute()
     {
-        if ($this->isSystem())
-            return '<span class="label label-danger">'. trans('labels.general.yes') .'</span>';
-        return '<span class="label label-success">'. trans('labels.general.yes') .'</span>';
+        if ($this->isSystem()) {
+            return '<span class="label label-danger">'.trans('labels.general.yes').'</span>';
+        }
+
+        return '<span class="label label-success">'.trans('labels.general.yes').'</span>';
     }
 
     /**
@@ -32,7 +33,7 @@ trait PermissionAttribute
     public function getEditButtonAttribute()
     {
         if (access()->allow('edit-permissions')) {
-            return '<a href="' . route('admin.access.roles.permissions.edit', $this->id) . '" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="' . trans('buttons.general.crud.edit') . '"></i></a>';
+            return '<a href="'.route('admin.access.roles.permissions.edit', $this->id).'" class="btn btn-xs btn-primary"><i class="fa fa-pencil" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.edit').'"></i></a>';
         }
 
         return '';
@@ -44,7 +45,7 @@ trait PermissionAttribute
     public function getDeleteButtonAttribute()
     {
         if (access()->allow('delete-permissions')) {
-            return '<a href="' . route('admin.access.roles.permissions.destroy', $this->id) . '" class="btn btn-xs btn-danger" data-method="delete"><i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="' . trans('buttons.general.crud.delete') . '"></i></a>';
+            return '<a href="'.route('admin.access.roles.permissions.destroy', $this->id).'" class="btn btn-xs btn-danger" data-method="delete"><i class="fa fa-times" data-toggle="tooltip" data-placement="top" title="'.trans('buttons.general.crud.delete').'"></i></a>';
         }
 
         return '';
@@ -60,7 +61,7 @@ trait PermissionAttribute
 
         //If the permission is not a system item it can be deleted
         if (! $this->isSystem()) {
-            $buttons .= ' ' . $this->getDeleteButtonAttribute();
+            $buttons .= ' '.$this->getDeleteButtonAttribute();
         }
 
         return $buttons;

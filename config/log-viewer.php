@@ -18,7 +18,7 @@ return [
      |  Route
      | ------------------------------------------------------------------------------------------------
      */
-    /**
+    /*
      * Do not change this, log viewer routes for this application are overwritten in
      * app/Http/Routes/Backend/LogViewer
      */
@@ -54,7 +54,7 @@ return [
      */
     'menu'  => [
         'filter-route'  => 'log-viewer::logs.filter',
-        
+
         'icons-enabled' => true,
     ],
 
@@ -63,7 +63,7 @@ return [
      | ------------------------------------------------------------------------------------------------
      */
     'icons' =>  [
-        /**
+        /*
          * Font awesome >= 4.3
          * http://fontawesome.io/icons/
          */

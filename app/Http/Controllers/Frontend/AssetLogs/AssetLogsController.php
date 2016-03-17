@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Frontend\AssetLogs;
 
 use App\Models\AssetLogs;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Models\Mfr;
 use App\Repositories\Frontend\AssetLogs\AssetLogsContract;
@@ -31,9 +30,9 @@ class AssetLogsController extends Controller
         $this->assetLogs = $assetLogs;
     }
 
-
-    public function index() {
-//        $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
+    public function index()
+    {
+        //        $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('Checkouts')->get();
 //        $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
         $assetLogs = AssetLogs::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
 
@@ -59,16 +58,15 @@ class AssetLogsController extends Controller
             'msrp' => 'numeric',
         ]);
 
-        if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
-            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            Image::make($request->file('image'))->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
-            $request->merge(['imageName' => $imageName] );
+        if (! is_null($request->file('image')) && $request->file('image')->isValid()) {
+            $imageName = uniqid().'.'.$request->file('image')->getClientOriginalExtension();
+            Image::make($request->file('image'))->resize(300, 200)->save(public_path().'/uploads/'.$imageName);
+            $request->merge(['imageName' => $imageName]);
+        } else {
+            $request->merge(['imageName' => 'asset-placeholder.png']);
         }
-        else
-            $request->merge(['imageName' => 'asset-placeholder.png'] );
 
         $mfr = Mfr::findOrCreate($request->mfr);
-
 
         AssetLogs::create([
             'part' => $request->part,

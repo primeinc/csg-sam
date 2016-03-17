@@ -1,8 +1,8 @@
 <?php
+
 namespace App\Repositories\Frontend\Dealership;
 
 use App\Exceptions\GeneralException;
-use App\Models\Checkout;
 use App\Models\Dealer;
 use App\Models\Dealership;
 
@@ -15,7 +15,7 @@ class EloquentDealershipRepository implements DealershipContract
      */
     public function findByNameAll($name)
     {
-        $dealership = Dealership::where('name', 'LIKE', '%' . $name . '%')->get();
+        $dealership = Dealership::where('name', 'LIKE', '%'.$name.'%')->get();
 
         return $dealership;
     }
@@ -27,24 +27,24 @@ class EloquentDealershipRepository implements DealershipContract
      */
     public function findOrCreate($nameOrId)
     {
-        /**
+        /*
          * Check to see if Dealership exists already
          */
-        if (!is_numeric($nameOrId)) {
+        if (! is_numeric($nameOrId)) {
             $dealership = $this->findByName($nameOrId);
         } else {
             $dealership = $this->find($nameOrId);
         }
-        /**
+        /*
          * If the Dealership does not exist create them
          */
-        if (!$dealership) {
+        if (! $dealership) {
             $dealership = $this->create([
                 'name' => $nameOrId,
             ]);
         }
 
-        /**
+        /*
          * Return the Dealership object
          */
         return $dealership;
@@ -100,7 +100,7 @@ class EloquentDealershipRepository implements DealershipContract
         $dealership = $this->find($id);
         $dealers = Dealer::where('dealership_id', '=', $dealership->id);
         if ($dealers->count()) {
-            throw new GeneralException($dealership->name . ' still has active Dealer Sales Reps');
+            throw new GeneralException($dealership->name.' still has active Dealer Sales Reps');
         }
         if ($dealership->delete()) {
             return true;

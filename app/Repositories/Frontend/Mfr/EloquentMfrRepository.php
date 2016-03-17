@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Repositories\Frontend\Mfr;
 
 use App\Exceptions\GeneralException;
@@ -14,7 +15,7 @@ class EloquentMfrRepository implements MfrContract
      */
     public function findByNameAll($name)
     {
-        $mfr = Mfr::where('name', 'LIKE', '%' . $name . '%')->get();
+        $mfr = Mfr::where('name', 'LIKE', '%'.$name.'%')->get();
 
         return $mfr;
     }
@@ -26,24 +27,24 @@ class EloquentMfrRepository implements MfrContract
      */
     public function findOrCreate($nameOrId)
     {
-        /**
+        /*
          * Check to see if manufacturer exists already
          */
-        if (!is_numeric($nameOrId)) {
+        if (! is_numeric($nameOrId)) {
             $mfr = $this->findByName($nameOrId);
         } else {
             $mfr = $this->find($nameOrId);
         }
-        /**
+        /*
          * If the Mfr does not exist create them
          */
-        if (!$mfr) {
+        if (! $mfr) {
             $mfr = $this->create([
                 'name' => $nameOrId,
             ]);
         }
 
-        /**
+        /*
          * Return the mfr object
          */
         return $mfr;
@@ -99,7 +100,7 @@ class EloquentMfrRepository implements MfrContract
         $mfr = $this->find($id);
         $assets = Asset::where('mfr_id', '=', $mfr->id);
         if ($assets->count()) {
-            throw new GeneralException($mfr->name . ' still has active samples');
+            throw new GeneralException($mfr->name.' still has active samples');
         }
         if ($mfr->delete()) {
             return true;

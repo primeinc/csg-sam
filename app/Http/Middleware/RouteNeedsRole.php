@@ -5,8 +5,7 @@ namespace App\Http\Middleware;
 use Closure;
 
 /**
- * Class RouteNeedsRole
- * @package App\Http\Middleware
+ * Class RouteNeedsRole.
  */
 class RouteNeedsRole
 {

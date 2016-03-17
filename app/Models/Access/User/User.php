@@ -9,9 +9,8 @@ use App\Models\Access\User\Traits\Attribute\UserAttribute;
 use App\Models\Access\User\Traits\Relationship\UserRelationship;
 
 /**
- * Class User
+ * Class User.
  *
- * @package App\Models\Access\User
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Dealer[] $dealers
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Checkout[] $checkouts
  * @property-read mixed $confirmed_label
@@ -25,13 +24,13 @@ use App\Models\Access\User\Traits\Relationship\UserRelationship;
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Role\Role[] $roles
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Permission\Permission[] $permissions
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\User\SocialLogin[] $providers
- * @property integer $id
+ * @property int $id
  * @property string $name
  * @property string $email
  * @property string $password
- * @property boolean $status
+ * @property bool $status
  * @property string $confirmation_code
- * @property boolean $confirmed
+ * @property bool $confirmed
  * @property string $remember_token
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
@@ -39,7 +38,6 @@ use App\Models\Access\User\Traits\Relationship\UserRelationship;
  */
 class User extends Authenticatable
 {
-
     use SoftDeletes, UserAccess, UserAttribute, UserRelationship;
 
     /**
@@ -76,5 +74,4 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Models\Checkout');
     }
-
 }

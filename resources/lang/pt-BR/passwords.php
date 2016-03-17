@@ -19,5 +19,4 @@ return [
     'token'    => 'Este código de recuperação de senha é inválido.',
     'user'     => 'Não conseguimos encontrar nenhum usuário com o endereço de e-mail especificado.',
 
-
 ];

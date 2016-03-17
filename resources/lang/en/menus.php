@@ -113,7 +113,6 @@ return [
             'bulk' => 'Bulk Edit',
         ],
 
-
         'dealers' => [
             'main' => 'Dealers',
             'dsr' => 'List Dealer Sales Reps',
@@ -135,7 +134,7 @@ return [
 
     'language-picker' => [
         'language' => 'Language',
-        /**
+        /*
          * Add the new language to this array.
          * The key should have the same language code as the folder name.
          * The string should be: 'Language-name-in-your-own-language (Language-name-in-English)'.

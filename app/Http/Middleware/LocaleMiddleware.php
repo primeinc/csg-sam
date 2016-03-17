@@ -6,8 +6,7 @@ use Closure;
 use Carbon\Carbon;
 
 /**
- * Class LocaleMiddleware
- * @package App\Http\Middleware
+ * Class LocaleMiddleware.
  */
 class LocaleMiddleware
 {
@@ -20,29 +19,27 @@ class LocaleMiddleware
      */
     public function handle($request, Closure $next)
     {
-        /**
+        /*
          * Locale is enabled and allowed to be changed
          */
         if (config('locale.status')) {
-
             if (session()->has('locale') && in_array(session()->get('locale'), array_keys(config('locale.languages')))) {
 
-                /**
+                /*
                  * Set the Laravel locale
                  */
                 app()->setLocale(session()->get('locale'));
 
-                /**
+                /*
                  * setLocale for php. Enables ->formatLocalized() with localized values for dates
                  */
-                setLocale(LC_TIME, config('locale.languages')[session()->get('locale')][1]);
+                setlocale(LC_TIME, config('locale.languages')[session()->get('locale')][1]);
 
-                /**
+                /*
                  * setLocale to use Carbon source locales. Enables diffForHumans() localized
                  */
                 Carbon::setLocale(config('locale.languages')[session()->get('locale')][0]);
             }
-
         }
 
         return $next($request);

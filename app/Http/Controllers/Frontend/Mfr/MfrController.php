@@ -2,17 +2,11 @@
 
 namespace App\Http\Controllers\Frontend\Mfr;
 
-use App\DataTables\MfrsDataTable;
-use App\Exceptions\GeneralException;
 use App\Models\Mfr;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use App\Repositories\Frontend\Mfr\MfrContract;
 use DB;
-use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
-use Response;
 
 class MfrController extends Controller
 {
@@ -46,11 +40,12 @@ class MfrController extends Controller
     {
         $mfr = $this->mfrs->find($id);
         $mfrReq = Mfr::find($request->name);
-        if($mfrReq){
+        if ($mfrReq) {
             DB::table('assets')
                 ->where('mfr_id', $id)
                 ->update(['mfr_id' => $mfrReq->id]);
             $mfr->delete();
+
             return redirect('/mfrs/list')->withFlashSuccess('Manufacturer successfully merged');
         }
 
@@ -68,6 +63,7 @@ class MfrController extends Controller
     public function destroy($id)
     {
         $this->mfrs->destroy($id);
+
         return redirect()->back()->withFlashSuccess('Manufacturer was successfully deleted.');
     }
 }

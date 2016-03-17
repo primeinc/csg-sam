@@ -3,8 +3,7 @@
 namespace App\Repositories\Frontend\Checkout;
 
 /**
- * Interface DealerContract
- * @package App\Repositories\Frontend\Checkout
+ * Interface DealerContract.
  */
 interface CheckoutContract
 {
@@ -13,5 +12,4 @@ interface CheckoutContract
      * @return mixed
      */
     public function find($id);
-
 }

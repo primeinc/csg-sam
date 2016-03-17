@@ -3,8 +3,7 @@
 namespace App\Repositories\Frontend\AssetLogs;
 
 /**
- * Interface AssetLogsContract
- * @package App\Repositories\Frontend\AssetLogs
+ * Interface AssetLogsContract.
  */
 interface AssetLogsContract
 {
@@ -13,5 +12,4 @@ interface AssetLogsContract
      * @return mixed
      */
     public function find($id);
-
 }

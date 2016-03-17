@@ -8,16 +8,14 @@ use App\Services\Access\Traits\ResetsPasswords;
 use App\Repositories\Frontend\User\UserContract;
 
 /**
- * Class PasswordController
- * @package App\Http\Controllers\Frontend\Auth
+ * Class PasswordController.
  */
 class PasswordController extends Controller
 {
-
     use ChangePasswords, ResetsPasswords;
 
     /**
-     * Where to redirect the user after their password has been successfully reset
+     * Where to redirect the user after their password has been successfully reset.
      *
      * @var string
      */

@@ -5,8 +5,7 @@ namespace App\Http\Controllers\Frontend;
 use App\Http\Controllers\Controller;
 
 /**
- * Class FrontendController
- * @package App\Http\Controllers
+ * Class FrontendController.
  */
 class FrontendController extends Controller
 {

@@ -12,8 +12,7 @@ use App\Http\Requests\Backend\Access\Permission\Group\DeletePermissionGroupReque
 use App\Http\Requests\Backend\Access\Permission\Group\UpdatePermissionGroupRequest;
 
 /**
- * Class PermissionGroupController
- * @package App\Http\Controllers\Access
+ * Class PermissionGroupController.
  */
 class PermissionGroupController extends Controller
 {
@@ -46,6 +45,7 @@ class PermissionGroupController extends Controller
     public function store(StorePermissionGroupRequest $request)
     {
         $this->groups->store($request->all());
+
         return redirect()->route('admin.access.roles.permissions.index')->withFlashSuccess(trans('alerts.backend.permissions.groups.created'));
     }
 
@@ -68,6 +68,7 @@ class PermissionGroupController extends Controller
     public function update($id, UpdatePermissionGroupRequest $request)
     {
         $this->groups->update($id, $request->all());
+
         return redirect()->route('admin.access.roles.permissions.index')->withFlashSuccess(trans('alerts.backend.permissions.groups.created'));
     }
 
@@ -79,6 +80,7 @@ class PermissionGroupController extends Controller
     public function destroy($id, DeletePermissionGroupRequest $request)
     {
         $this->groups->destroy($id);
+
         return redirect()->route('admin.access.roles.permissions.index')->withFlashSuccess(trans('alerts.backend.permissions.groups.deleted'));
     }
 
@@ -89,6 +91,7 @@ class PermissionGroupController extends Controller
     public function updateSort(SortPermissionGroupRequest $request)
     {
         $this->groups->updateSort($request->get('data'));
+
         return response()->json(['status' => 'OK']);
     }
 }

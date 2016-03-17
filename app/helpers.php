@@ -1,13 +1,11 @@
 <?php
 
 /**
- * Global helpers file with misc functions
- *
+ * Global helpers file with misc functions.
  */
-
 if (! function_exists('app_name')) {
     /**
-     * Helper to grab the application name
+     * Helper to grab the application name.
      *
      * @return mixed
      */
@@ -19,7 +17,7 @@ if (! function_exists('app_name')) {
 
 if (! function_exists('access')) {
     /**
-     * Access (lol) the Access:: facade as a simple function
+     * Access (lol) the Access:: facade as a simple function.
      */
     function access()
     {
@@ -29,7 +27,7 @@ if (! function_exists('access')) {
 
 if (! function_exists('javascript')) {
     /**
-     * Access the javascript helper
+     * Access the javascript helper.
      */
     function javascript()
     {
@@ -39,7 +37,7 @@ if (! function_exists('javascript')) {
 
 if (! function_exists('gravatar')) {
     /**
-     * Access the gravatar helper
+     * Access the gravatar helper.
      */
     function gravatar()
     {
@@ -49,7 +47,7 @@ if (! function_exists('gravatar')) {
 
 if (! function_exists('getFallbackLocale')) {
     /**
-     * Get the fallback locale
+     * Get the fallback locale.
      *
      * @return \Illuminate\Foundation\Application|mixed
      */
@@ -62,7 +60,7 @@ if (! function_exists('getFallbackLocale')) {
 if (! function_exists('getLanguageBlock')) {
 
     /**
-     * Get the language block with a fallback
+     * Get the language block with a fallback.
      *
      * @param $view
      * @param array $data
@@ -70,9 +68,9 @@ if (! function_exists('getLanguageBlock')) {
      */
     function getLanguageBlock($view, $data = [])
     {
-        $components = explode("lang", $view);
-        $current  = $components[0]."lang.".app()->getLocale().".".$components[1];
-        $fallback  = $components[0]."lang.".getFallbackLocale().".".$components[1];
+        $components = explode('lang', $view);
+        $current = $components[0].'lang.'.app()->getLocale().'.'.$components[1];
+        $fallback = $components[0].'lang.'.getFallbackLocale().'.'.$components[1];
 
         if (view()->exists($current)) {
             return view($current, $data);

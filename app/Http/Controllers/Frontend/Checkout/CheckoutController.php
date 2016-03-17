@@ -4,15 +4,12 @@ namespace App\Http\Controllers\Frontend\Checkout;
 
 use App\Models\Asset;
 use App\Models\Checkout;
-use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use App\Models\Dealer;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Checkout\CheckoutContract;
 use Carbon\Carbon;
 use Event;
 use Illuminate\Http\Request;
-use Intervention\Image\Facades\Image;
 use Redirect;
 
 class CheckoutController extends Controller
@@ -46,14 +43,15 @@ class CheckoutController extends Controller
         $this->asset = $asset;
     }
 
-
-    public function index(Request $request) {
+    public function index(Request $request)
+    {
         $asset = $this->asset->find($request->asset);
 
         return view('frontend.checkout.index', compact('asset'));
     }
 
-    public function checkoutModal(Request $request) {
+    public function checkoutModal(Request $request)
+    {
         $asset = $this->asset->find($request->asset);
 
         return view('frontend.checkout.checkoutModal', compact('asset'));
@@ -81,13 +79,13 @@ class CheckoutController extends Controller
             'project' => 'max:255',
         ]);
 
-        $dt = \Carbon\Carbon::createFromFormat('m/d/Y',$request->daterange)->toDateString();
+        $dt = \Carbon\Carbon::createFromFormat('m/d/Y', $request->daterange)->toDateString();
 
         // TODO: move this to an event
         $asset = $this->asset->find($request->asset);
         $asset->update([
             'status' => '2',
-            'location_id' => '1'
+            'location_id' => '1',
         ]);
 
         $checkout = new Checkout;
@@ -98,25 +96,27 @@ class CheckoutController extends Controller
         $checkout->user_id = $request->user_id;
         $checkout->project = $request->project;
 
-        if($request->permanent == 'on')
+        if ($request->permanent == 'on') {
             $checkout->permanent = 1;
+        }
 
         $checkout->save();
         $asset->save();
 
         Event::fire('audit.asset.checkout', [$asset, $checkout]);
 
-        return Redirect::route('samples.show', array('id' => $asset->id));
+        return Redirect::route('samples.show', ['id' => $asset->id]);
     }
 
-    public function checkinModal(Request $request) {
+    public function checkinModal(Request $request)
+    {
         $asset = $this->asset->find($request->asset);
 
         return view('frontend.checkout.checkinModal', compact('asset'));
     }
 
-    public function returnAsset(Request $request) {
-
+    public function returnAsset(Request $request)
+    {
         $this->validate($request, [
             'notes' => 'max:255',
         ]);
@@ -125,7 +125,7 @@ class CheckoutController extends Controller
         $asset = $this->asset->find($request->asset);
         $asset->update([
             'status' => '1',
-            'location_id' => '1'
+            'location_id' => '1',
         ]);
 
         $checkout = Checkout::where('asset_id', '=', $request->asset)->where('returned_date', '=', null)->first();
@@ -138,6 +138,6 @@ class CheckoutController extends Controller
         $checkout->save();
         $asset->save();
 
-        return Redirect::route('samples.show', array('id' => $asset->id));
+        return Redirect::route('samples.show', ['id' => $asset->id]);
     }
 }

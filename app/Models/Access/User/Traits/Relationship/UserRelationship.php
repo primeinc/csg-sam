@@ -5,12 +5,10 @@ namespace App\Models\Access\User\Traits\Relationship;
 use App\Models\Access\User\SocialLogin;
 
 /**
- * Class UserRelationship
- * @package App\Models\Access\User\Traits\Relationship
+ * Class UserRelationship.
  */
 trait UserRelationship
 {
-
     /**
      * Many-to-Many relations with Role.
      *
@@ -23,7 +21,7 @@ trait UserRelationship
 
     /**
      * Many-to-Many relations with Permission.
-     * ONLY GETS PERMISSIONS ARE NOT ASSOCIATED WITH A ROLE
+     * ONLY GETS PERMISSIONS ARE NOT ASSOCIATED WITH A ROLE.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */

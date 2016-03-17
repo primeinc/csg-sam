@@ -20,7 +20,7 @@ use App\Repositories\Frontend\User\UserContract as FrontendUserContract;
 use App\Http\Requests\Backend\Access\User\ResendConfirmationEmailRequest;
 
 /**
- * Class UserController
+ * Class UserController.
  */
 class UserController extends Controller
 {
@@ -48,10 +48,9 @@ class UserController extends Controller
         UserContract $users,
         RoleRepositoryContract $roles,
         PermissionRepositoryContract $permissions
-    )
-    {
-        $this->users       = $users;
-        $this->roles       = $roles;
+    ) {
+        $this->users = $users;
+        $this->roles = $roles;
         $this->permissions = $permissions;
     }
 
@@ -86,6 +85,7 @@ class UserController extends Controller
             $request->only('assignees_roles'),
             $request->only('permission_user')
         );
+
         return redirect()->route('admin.access.users.index')->withFlashSuccess(trans('alerts.backend.users.created'));
     }
 
@@ -97,6 +97,7 @@ class UserController extends Controller
     public function edit($id, EditUserRequest $request)
     {
         $user = $this->users->findOrThrowException($id, true);
+
         return view('backend.access.edit')
             ->withUser($user)
             ->withUserRoles($user->roles->lists('id')->all())
@@ -117,6 +118,7 @@ class UserController extends Controller
             $request->only('assignees_roles'),
             $request->only('permission_user')
         );
+
         return redirect()->route('admin.access.users.index')->withFlashSuccess(trans('alerts.backend.users.updated'));
     }
 
@@ -128,6 +130,7 @@ class UserController extends Controller
     public function destroy($id, DeleteUserRequest $request)
     {
         $this->users->destroy($id);
+
         return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.deleted'));
     }
 
@@ -139,6 +142,7 @@ class UserController extends Controller
     public function delete($id, PermanentlyDeleteUserRequest $request)
     {
         $this->users->delete($id);
+
         return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.deleted_permanently'));
     }
 
@@ -150,6 +154,7 @@ class UserController extends Controller
     public function restore($id, RestoreUserRequest $request)
     {
         $this->users->restore($id);
+
         return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.restored'));
     }
 
@@ -162,6 +167,7 @@ class UserController extends Controller
     public function mark($id, $status, MarkUserRequest $request)
     {
         $this->users->mark($id, $status);
+
         return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.updated'));
     }
 
@@ -202,6 +208,7 @@ class UserController extends Controller
     public function updatePassword($id, UpdateUserPasswordRequest $request)
     {
         $this->users->updatePassword($id, $request->all());
+
         return redirect()->route('admin.access.users.index')->withFlashSuccess(trans('alerts.backend.users.updated_password'));
     }
 
@@ -214,6 +221,7 @@ class UserController extends Controller
     public function resendConfirmationEmail($user_id, FrontendUserContract $user, ResendConfirmationEmailRequest $request)
     {
         $user->sendConfirmationEmail($user_id);
+
         return redirect()->back()->withFlashSuccess(trans('alerts.backend.users.confirmation_email'));
     }
 }

@@ -5,7 +5,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
 /**
- * Class PermissionDependencyTableSeeder
+ * Class PermissionDependencyTableSeeder.
  */
 class PermissionDependencyTableSeeder extends Seeder
 {
@@ -18,16 +18,16 @@ class PermissionDependencyTableSeeder extends Seeder
         if (env('DB_CONNECTION') == 'mysql') {
             DB::table(config('access.permission_dependencies_table'))->truncate();
         } elseif (env('DB_CONNECTION') == 'sqlite') {
-            DB::statement('DELETE FROM ' . config('access.permission_dependencies_table'));
+            DB::statement('DELETE FROM '.config('access.permission_dependencies_table'));
         } else {
             //For PostgreSQL or anything else
-            DB::statement('TRUNCATE TABLE ' . config('access.permission_dependencies_table') . ' CASCADE');
+            DB::statement('TRUNCATE TABLE '.config('access.permission_dependencies_table').' CASCADE');
         }
-        
+
         $permission1Id = DB::table('permissions')->where('name', 'view-backend')->first()->id;
         $permission2Id = DB::table('permissions')->where('name', 'view-access-management')->first()->id;
 
-        /**
+        /*
          * View access management needs view backend
          */
         DB::table(config('access.permission_dependencies_table'))->insert([
@@ -37,12 +37,12 @@ class PermissionDependencyTableSeeder extends Seeder
             'updated_at'    => Carbon::now(),
         ]);
 
-        /**
+        /*
          * All of the access permissions need view access management and view backend
          * Starts at id = 3 to skip view-backend, view-access-management
          */
         $remainingPermissionsIds = DB::table('permissions')->whereBetween('id', [3, 21])->pluck('id');
-        
+
         foreach ($remainingPermissionsIds as $remainingPermissionId) {
             DB::table(config('access.permission_dependencies_table'))->insert([
                 'permission_id' => $remainingPermissionId,
@@ -59,7 +59,7 @@ class PermissionDependencyTableSeeder extends Seeder
             ]);
         }
 
-        /**
+        /*
          * Other dependencies here, follow above structure
          * If you have many it would be a good idea to break this up into different files and require them here
          */
@@ -67,7 +67,7 @@ class PermissionDependencyTableSeeder extends Seeder
         $permission1Id = DB::table('permissions')->where('name', 'edit-dealers')->first()->id;
         $permission2Id = DB::table('permissions')->where('name', 'delete-dealers')->first()->id;
 
-        /**
+        /*
          * View access management needs view backend
          */
         DB::table(config('access.permission_dependencies_table'))->insert([
@@ -77,7 +77,7 @@ class PermissionDependencyTableSeeder extends Seeder
             'updated_at'    => Carbon::now(),
         ]);
 
-        /**
+        /*
          * End other dependencies
          */
 

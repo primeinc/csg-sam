@@ -9,8 +9,7 @@ use App\Exceptions\Backend\Access\User\UserNeedsRolesException;
 use App\Repositories\Frontend\User\UserContract as FrontendUserContract;
 
 /**
- * Class EloquentUserRepository
- * @package App\Repositories\User
+ * Class EloquentUserRepository.
  */
 class EloquentUserRepository implements UserContract
 {
@@ -31,8 +30,7 @@ class EloquentUserRepository implements UserContract
     public function __construct(
         RoleRepositoryContract $role,
         FrontendUserContract $user
-    )
-    {
+    ) {
         $this->role = $role;
         $this->user = $user;
     }
@@ -51,7 +49,7 @@ class EloquentUserRepository implements UserContract
             $user = User::withTrashed()->find($id);
         }
 
-        if (!is_null($user)) {
+        if (! is_null($user)) {
             return $user;
         }
 
@@ -141,7 +139,7 @@ class EloquentUserRepository implements UserContract
 
         if ($user->update($input)) {
             //For whatever reason this just wont work in the above call, so a second is needed for now
-            $user->status    = isset($input['status']) ? 1 : 0;
+            $user->status = isset($input['status']) ? 1 : 0;
             $user->confirmed = isset($input['confirmed']) ? 1 : 0;
             $user->save();
 
@@ -196,7 +194,7 @@ class EloquentUserRepository implements UserContract
     /**
      * @param  $id
      * @throws GeneralException
-     * @return boolean|null
+     * @return bool|null
      */
     public function delete($id)
     {
@@ -241,7 +239,7 @@ class EloquentUserRepository implements UserContract
             throw new GeneralException(trans('exceptions.backend.access.users.cant_deactivate_self'));
         }
 
-        $user         = $this->findOrThrowException($id);
+        $user = $this->findOrThrowException($id);
         $user->status = $status;
 
         if ($user->save()) {
@@ -252,7 +250,7 @@ class EloquentUserRepository implements UserContract
     }
 
     /**
-     * Check to make sure at lease one role is being applied or deactivate user
+     * Check to make sure at lease one role is being applied or deactivate user.
      *
      * @param  $user
      * @param  $roles
@@ -290,7 +288,6 @@ class EloquentUserRepository implements UserContract
             if (User::where('email', '=', $input['email'])->first()) {
                 throw new GeneralException(trans('exceptions.backend.access.users.email_error'));
             }
-
         }
     }
 
@@ -316,7 +313,6 @@ class EloquentUserRepository implements UserContract
         if (count($permissions['permission_user']) > 0) {
             $user->attachPermissions($permissions['permission_user']);
         }
-
     }
 
     /**
@@ -330,7 +326,6 @@ class EloquentUserRepository implements UserContract
         if (count($roles['assignees_roles']) == 0) {
             throw new GeneralException(trans('exceptions.backend.access.users.role_needed'));
         }
-
     }
 
     /**
@@ -339,13 +334,14 @@ class EloquentUserRepository implements UserContract
      */
     private function createUserStub($input)
     {
-        $user                    = new User;
-        $user->name              = $input['name'];
-        $user->email             = $input['email'];
-        $user->password          = bcrypt($input['password']);
-        $user->status            = isset($input['status']) ? 1 : 0;
+        $user = new User;
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->password = bcrypt($input['password']);
+        $user->status = isset($input['status']) ? 1 : 0;
         $user->confirmation_code = md5(uniqid(mt_rand(), true));
-        $user->confirmed         = isset($input['confirmed']) ? 1 : 0;
+        $user->confirmed = isset($input['confirmed']) ? 1 : 0;
+
         return $user;
     }
 }

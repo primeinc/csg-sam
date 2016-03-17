@@ -3,8 +3,7 @@
 namespace App\Models\Access\Permission\Traits\Relationship;
 
 /**
- * Class PermissionGroupRelationship
- * @package App\Models\Access\Permission\Traits\Relationship
+ * Class PermissionGroupRelationship.
  */
 trait PermissionGroupRelationship
 {

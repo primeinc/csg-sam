@@ -3,14 +3,12 @@
 namespace App\Services\Access\Traits;
 
 /**
- * Class ConfirmUsers
- * @package App\Services\Access\Traits
+ * Class ConfirmUsers.
  */
 trait ConfirmUsers
 {
-
     /**
-     * Confirms the users account by their token
+     * Confirms the users account by their token.
      *
      * @param $token
      * @return mixed
@@ -18,6 +16,7 @@ trait ConfirmUsers
     public function confirmAccount($token)
     {
         $this->user->confirmAccount($token);
+
         return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.success'));
     }
 
@@ -28,6 +27,7 @@ trait ConfirmUsers
     public function resendConfirmationEmail($token)
     {
         $this->user->resendConfirmationEmail($token);
+
         return redirect()->route('auth.login')->withFlashSuccess(trans('exceptions.frontend.auth.confirmation.resent'));
     }
 }

@@ -3,13 +3,12 @@
 namespace App\Services\Access;
 
 /**
- * Class Access
- * @package App\Services\Access
+ * Class Access.
  */
 class Access
 {
     /**
-     * Laravel application
+     * Laravel application.
      *
      * @var \Illuminate\Foundation\Application
      */
@@ -34,7 +33,7 @@ class Access
     }
 
     /**
-     * Get the currently authenticated user's id
+     * Get the currently authenticated user's id.
      * @return mixed
      */
     public function id()
@@ -43,7 +42,7 @@ class Access
     }
 
     /**
-     * Checks if the current user has a Role by its name or id
+     * Checks if the current user has a Role by its name or id.
      *
      * @param  string $role Role name.
      * @return bool
@@ -58,7 +57,7 @@ class Access
     }
 
     /**
-     * Checks if the user has either one or more, or all of an array of roles
+     * Checks if the user has either one or more, or all of an array of roles.
      * @param  $roles
      * @param  bool     $needsAll
      * @return bool
@@ -67,8 +66,8 @@ class Access
     {
         if ($user = $this->user()) {
             //If not an array, make a one item array
-            if (!is_array($roles)) {
-                $roles = array($roles);
+            if (! is_array($roles)) {
+                $roles = [$roles];
             }
 
             return $user->hasRoles($roles, $needsAll);
@@ -78,7 +77,7 @@ class Access
     }
 
     /**
-     * Check if the current user has a permission by its name or id
+     * Check if the current user has a permission by its name or id.
      *
      * @param  string $permission Permission name or id.
      * @return bool
@@ -93,7 +92,7 @@ class Access
     }
 
     /**
-     * Check an array of permissions and whether or not all are required to continue
+     * Check an array of permissions and whether or not all are required to continue.
      * @param  $permissions
      * @param  $needsAll
      * @return bool
@@ -102,8 +101,8 @@ class Access
     {
         if ($user = $this->user()) {
             //If not an array, make a one item array
-            if (!is_array($permissions)) {
-                $permissions = array($permissions);
+            if (! is_array($permissions)) {
+                $permissions = [$permissions];
             }
 
             return $user->allowMultiple($permissions, $needsAll);

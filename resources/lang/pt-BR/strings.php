@@ -97,7 +97,7 @@ return [
                 'permission_name'            => 'Usando o "Access Helper" com o Nome da Permissão',
                 'role_id'                    => 'Usando o "Access Helper" com o ID do Papel',
                 'role_name'                  => 'Usando o "Access Helper" com o Nome do Papel',
-                
+
             ],
 
             'view_console_it_works' => 'Veja o console, você deverá ver a mensagem \'it works!\' que está vindo de FrontendController@index',

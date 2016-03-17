@@ -11,8 +11,7 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 /**
- * Class Handler
- * @package App\Exceptions
+ * Class Handler.
  */
 class Handler extends ExceptionHandler
 {
@@ -50,7 +49,7 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        /**
+        /*
          * Redirect if token mismatch error
          * Usually because user stayed on the same screen too long and their session expired
          */
@@ -58,35 +57,32 @@ class Handler extends ExceptionHandler
             return redirect('/login');
         }
 
-        /**
+        /*
          * All instances of GeneralException redirect back with a flash message to show a bootstrap alert-error
          */
         if ($e instanceof GeneralException) {
             return redirect()->back()->withInput()->withFlashDanger($e->getMessage());
         }
 
-        /**
+        /*
          * All instances of GeneralException redirect back with a flash message to show a bootstrap alert-error
          */
         if ($e instanceof ValidationException) {
             return redirect()->back()->withInput()->withFlashDanger($e->getMessage());
         }
 
-        /**
+        /*
          * User needs roles and none were selected
          */
         if ($e instanceof Backend\Access\User\UserNeedsRolesException) {
             return redirect()->route('admin.access.users.edit', $e->userID())->withInput()->withFlashDanger($e->validationErrors());
         }
 
-        if ($this->isHttpException($e))
-        {
+        if ($this->isHttpException($e)) {
             return $this->renderHttpException($e);
         }
 
-
-        if (config('app.debug'))
-        {
+        if (config('app.debug')) {
             return $this->renderExceptionWithWhoops($e);
         }
 

@@ -9,8 +9,7 @@ use App\Http\Requests\Frontend\Auth\ResetPasswordRequest;
 use App\Http\Requests\Frontend\Auth\SendResetLinkEmailRequest;
 
 /**
- * Class ResetsPasswords
- * @package App\Services\Access\Traits
+ * Class ResetsPasswords.
  */
 trait ResetsPasswords
 {

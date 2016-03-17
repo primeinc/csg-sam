@@ -7,9 +7,8 @@ use App\Models\Access\Permission\Traits\Attribute\PermissionAttribute;
 use App\Models\Access\Permission\Traits\Relationship\PermissionRelationship;
 
 /**
- * Class Permission
+ * Class Permission.
  *
- * @package App\Models\Access\Permission
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\Role\Role[] $roles
  * @property-read \App\Models\Access\Permission\PermissionGroup $group
  * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Access\User\User[] $users
@@ -18,12 +17,12 @@ use App\Models\Access\Permission\Traits\Relationship\PermissionRelationship;
  * @property-read mixed $edit_button
  * @property-read mixed $delete_button
  * @property-read mixed $action_buttons
- * @property integer $id
- * @property integer $group_id
+ * @property int $id
+ * @property int $group_id
  * @property string $name
  * @property string $display_name
- * @property boolean $system
- * @property integer $sort
+ * @property bool $system
+ * @property int $sort
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  */
@@ -45,9 +44,6 @@ class Permission extends Model
      */
     protected $guarded = ['id'];
 
-    /**
-     *
-     */
     public function __construct()
     {
         $this->table = config('access.permissions_table');

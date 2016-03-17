@@ -76,7 +76,6 @@ return [
     'unique'           => 'O valor indicado para o campo :attribute já se encontra utilizado.',
     'url'              => 'O formato da URL indicada para o campo :attribute é inválido.',
 
-
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines

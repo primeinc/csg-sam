@@ -21,6 +21,5 @@ class AccessTableSeeder extends Seeder
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
-
     }
 }

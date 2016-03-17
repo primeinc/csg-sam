@@ -3,8 +3,7 @@
 namespace App\Models\Access\Permission\Traits\Relationship;
 
 /**
- * Class PermissionDependencyRelationship
- * @package App\Models\Access\Permission\Traits\Relationship
+ * Class PermissionDependencyRelationship.
  */
 trait PermissionDependencyRelationship
 {

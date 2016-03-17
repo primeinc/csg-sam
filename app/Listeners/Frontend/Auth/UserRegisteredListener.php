@@ -7,8 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use App\Events\Frontend\Auth\UserRegistered;
 
 /**
- * Class UserRegisteredListener
- * @package App\Listeners\Frontend\Auth
+ * Class UserRegisteredListener.
  */
 class UserRegisteredListener implements ShouldQueue
 {
@@ -32,6 +31,6 @@ class UserRegisteredListener implements ShouldQueue
      */
     public function handle(UserRegistered $event)
     {
-        \Log::info('User Registered: ' . $event->user->name);
+        \Log::info('User Registered: '.$event->user->name);
     }
 }

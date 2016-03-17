@@ -3,8 +3,7 @@
 namespace App\Repositories\Backend\Role;
 
 /**
- * Interface RoleRepositoryContract
- * @package App\Repositories\Role
+ * Interface RoleRepositoryContract.
  */
 interface RoleRepositoryContract
 {

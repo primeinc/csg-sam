@@ -3,8 +3,7 @@
 namespace App\Models\Access\Role\Traits;
 
 /**
- * Class RoleAccess
- * @package App\Models\Access\Role\Traits
+ * Class RoleAccess.
  */
 trait RoleAccess
 {
@@ -16,7 +15,7 @@ trait RoleAccess
      */
     public function savePermissions($inputPermissions)
     {
-        if (!empty($inputPermissions)) {
+        if (! empty($inputPermissions)) {
             $this->permissions()->sync($inputPermissions);
         } else {
             $this->permissions()->detach();
@@ -75,7 +74,7 @@ trait RoleAccess
     }
 
     /**
-     * Detach multiple permissions from current role
+     * Detach multiple permissions from current role.
      *
      * @param  mixed  $permissions
      * @return void

@@ -3,8 +3,7 @@
 namespace App\Repositories\Backend\Permission;
 
 /**
- * Interface PermissionRepositoryContract
- * @package App\Repositories\Permission
+ * Interface PermissionRepositoryContract.
  */
 interface PermissionRepositoryContract
 {

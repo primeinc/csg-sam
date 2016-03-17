@@ -7,8 +7,7 @@ use Collective\Html\HtmlServiceProvider;
 use Form;
 
 /**
- * Class MacroServiceProvider
- * @package App\Providers
+ * Class MacroServiceProvider.
  */
 class MacroServiceProvider extends HtmlServiceProvider
 {
@@ -39,6 +38,7 @@ class MacroServiceProvider extends HtmlServiceProvider
 
         $this->app->singleton('form', function ($app) {
             $form = new Macros($app['html'], $app['url'], $app['view'], $app['session.store']->getToken());
+
             return $form->setSessionStore($app['session.store']);
         });
     }

@@ -4,7 +4,7 @@ namespace App\Repositories\Frontend\AssetLogs;
 
 use App\Models\AssetLogs;
 
-class EloquentAssetLogsRepository implements AssetLogsContract
+class EloquentAssetLogRepository implements AssetLogsContract
 {
     /**
      * @param $id
