@@ -76,9 +76,11 @@
                             <button type="button" class="btn btn-default edit" data-toggle="modal" data-target="#editModal">Edit</button>
                             <button type="button" class="btn btn-default print" data-toggle="modal" data-target="#printModal">Print Label</button>
                             @if($asset->location_id == 1 && $asset->status != 2)
-                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Assign Storage Location</button>
+                                <button type="button" class="btn btn-default location hidden-xs" data-id="{{ $asset->id }}">Assign Storage Location</button>
+                                <button type="button" class="btn btn-default location hidden-sm hidden-md hidden-lg" data-id="{{ $asset->id }}">Location</button>
                             @elseif($asset->status != 2)
-                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Change Storage Location</button>
+                                <button type="button" class="btn btn-default location hidden-xs" data-id="{{ $asset->id }}">Change Storage Location</button>
+                                <button type="button" class="btn btn-default location hidden-sm hidden-md hidden-lg" data-id="{{ $asset->id }}">Location</button>
                             @endif
                             @if ($asset->status == 2)  <!--Checked Out-->
                                 @if(!$asset->activeCheckout->permanent)
