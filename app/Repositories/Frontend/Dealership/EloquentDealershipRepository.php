@@ -1,6 +1,9 @@
 <?php
 namespace App\Repositories\Frontend\Dealership;
 
+use App\Exceptions\GeneralException;
+use App\Models\Checkout;
+use App\Models\Dealer;
 use App\Models\Dealership;
 
 class EloquentDealershipRepository implements DealershipContract
@@ -84,5 +87,24 @@ class EloquentDealershipRepository implements DealershipContract
         ]);
 
         return $dealership;
+    }
+
+    /**
+     * @param  $id
+     *
+     * @throws GeneralException
+     * @return bool
+     */
+    public function destroy($id)
+    {
+        $dealership = $this->find($id);
+        $dealers = Dealer::where('dealership_id', '=', $dealership->id);
+        if ($dealers->count()) {
+            throw new GeneralException($dealership->name . ' still has active Dealer Sales Reps');
+        }
+        if ($dealership->delete()) {
+            return true;
+        }
+        throw new GeneralException('Unknown Error deleting DSR');
     }
 }

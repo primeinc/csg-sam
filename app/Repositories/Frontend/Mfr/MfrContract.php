@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Repositories\Frontend\Mfr;
 
 /**
@@ -10,12 +9,14 @@ interface MfrContract
 {
     /**
      * @param $data
+     *
      * @return mixed
      */
     public function create(array $data);
 
     /**
      * @param $id
+     *
      * @return mixed
      */
     public function find($id);
@@ -26,4 +27,5 @@ interface MfrContract
 
     public function findOrCreate($nameOrId);
 
+    public function destroy($id);
 }

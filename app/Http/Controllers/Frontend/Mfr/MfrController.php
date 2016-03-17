@@ -60,4 +60,14 @@ class MfrController extends Controller
         return redirect('/mfrs/list')->withFlashSuccess('Manufacturer successfully edited');
     }
 
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function destroy($id)
+    {
+        $this->mfrs->destroy($id);
+        return redirect()->back()->withFlashSuccess('Manufacturer was successfully deleted.');
+    }
 }

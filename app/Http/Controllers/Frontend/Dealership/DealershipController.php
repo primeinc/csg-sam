@@ -56,4 +56,15 @@ class DealershipController extends Controller
 
         return redirect('/dealerships/list')->withFlashSuccess('Dealership successfully edited');
     }
+
+    /**
+     * @param $id
+     *
+     * @return mixed
+     */
+    public function destroy($id)
+    {
+        $this->dealerships->destroy($id);
+        return redirect()->back()->withFlashSuccess('Dealership was successfully deleted.');
+    }
 }

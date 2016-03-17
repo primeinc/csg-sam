@@ -51,20 +51,4 @@ class EloquentDealerRepository implements DealerContract
         throw new GeneralException('Unknown Error deleting DSR');
     }
 
-    /**
-     * @param  $id
-     * @throws GeneralException
-     * @return boolean|null
-     */
-    public function delete($id)
-    {
-        $dealer = $this->find($id);
-
-        dd($dealer);
-        try {
-            $dealer->delete();
-        } catch (\Exception $e) {
-            throw new GeneralException($e->getMessage());
-        }
-    }
 }
