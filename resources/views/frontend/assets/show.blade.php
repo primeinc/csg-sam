@@ -128,6 +128,8 @@
                         <i class="fa fa-sign-in bg-aqua"></i>
                     @elseif($log->event == 'audit.asset.location.change')
                         <i class="glyphicon glyphicon-map-marker bg-purple"></i>
+                    @elseif($log->event == 'audit.asset.checkout.reminder')
+                        <i class="fa fa-envelope bg-orange"></i>
                     @endif
                     <div class="timeline-item">
                         <span class="time"><i class="fa fa-clock-o"></i> {{ $log->created_at->diffForHumans() }}</span>
@@ -151,6 +153,8 @@
                                 checked in this asset
                             @elseif($log->event == 'audit.asset.location.change')
                                 changed the location to {{ $log->context->location_name->new }}
+                            @elseif($log->event == 'audit.asset.checkout.reminder')
+                                sent a reminder email to {{ $log->context->reminderLog->dealer_name }}
                             @endif
                         </h3>
 

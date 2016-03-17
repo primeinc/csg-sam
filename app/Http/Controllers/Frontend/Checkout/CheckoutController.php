@@ -154,6 +154,8 @@ class CheckoutController extends Controller
                 ->subject('Sample #' . $checkout->asset->id . ' Overdue');
         });
 
+        Event::fire('audit.asset.checkout.reminder', $checkout);
+
         return redirect()->back()->withFlashSuccess('The reminder was successfully sent.');
     }
 }

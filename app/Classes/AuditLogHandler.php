@@ -77,6 +77,19 @@ class AuditLogHandler
         $log->save();
     }
 
+    public function onAssetCheckoutReminder($checkout)
+    {
+        $log = new AssetLogs;
+
+        $log->asset_id = $checkout->asset->id;
+        $log->user_id = Auth::user() ? Auth::user()->id : 1;
+        $log->event = 'audit.asset.checkout.reminder';
+        $context['reminderLog']['dealer_name'] = $checkout->dealer->name;
+        $log->context = json_encode($context);
+
+        $log->save();
+    }
+
     public function getChanges($model)
     {
         $changes = [];

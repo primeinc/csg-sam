@@ -50,5 +50,6 @@ class EventServiceProvider extends ServiceProvider
         $events->listen('audit.asset.checkout', 'App\Classes\AuditLogHandler@onAssetCheckout');
         $events->listen('audit.asset.checkin', 'App\Classes\AuditLogHandler@onAssetCheckin');
         $events->listen('audit.asset.location.change', 'App\Classes\AuditLogHandler@onAssetLocationChange');
+        $events->listen('audit.asset.checkout.reminder', 'App\Classes\AuditLogHandler@onAssetCheckoutReminder');
     }
 }
