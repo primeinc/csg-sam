@@ -6,7 +6,7 @@
 
 @section('page-header')
     <h1>
-        Sample Info
+        CSG # {{ $asset->id }}
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
@@ -22,14 +22,14 @@
         <div class="col-md-12"><!-- left column -->
             <div class="box box-default">
                 <div class="box-header with-border">
-                    <h3 class="box-title">CSGID: {{ $asset->id }}</h3>
+                    <h3 class="box-title"></h3>
                     <div class="box-tools pull-right">
                         @if($asset->location_id != 1)
                             <span class="label label-info">@ {!! $asset->location->name !!}</span>
                         @endif
                         @if ($asset->status == 2 && $asset->activeCheckout)
                             <span class="label label-default">{!! $asset->activeCheckout->dealer->name !!}</span>
-                            <span class="label label-primary">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
+                            <span class="label label-primary hidden-xs">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
                                 @if($asset->activeCheckout->permanent)
                                     <span class="label label-danger">Permanently Checked Out</span>
                                 @else
@@ -45,10 +45,10 @@
                 </div><!-- /.box-header -->
                 <div class="box-body">
                     <div class="col-xs-12">
-                        <div class="col-xs-7" style="max-width: 300px !important;">
+                        <div class="col-xs-12 col-sm-6 col-md-7" style="max-width: 300px !important;">
                             <img class="img-responsive pull-left" src="/uploads/{{ $asset->image }}" alt="asset image">
                         </div>
-                        <div class="col-xs-5">
+                        <div class="col-xs-12 col-sm-6 col-md-5">
                             {{--<div class="pull-right" style="width: 200px; height: 150px; background-image: url('/uploads/{{ $asset->image }}'); background-size: cover;">--}}
                             {{--</div>--}}
                             <dl>
@@ -58,7 +58,7 @@
                                 <dd>{{ $asset->description }}</dd>
                                 <dt>Part #</dt>
                                 <dd>{{ $asset->part }}</dd>
-                                <dt>Acknowledgement #</dt>
+                                <dt>Ack #</dt>
                                 <dd>{{ $asset->ack }}</dd>
                                 <dt>List Price</dt>
                                 <dd>{{ $asset->msrp }}</dd>
@@ -82,7 +82,8 @@
                             @endif
                             @if ($asset->status == 2)  <!--Checked Out-->
                                 @if(!$asset->activeCheckout->permanent)
-                                    <button type="button" class="btn bg-teal reminder" data-id="{{ $asset->id }}" >Send Reminder</button>
+                                    <button type="button" class="btn bg-teal reminder hidden-xs" data-id="{{ $asset->id }}" >Send Reminder</button>
+                                    <button type="button" class="btn bg-teal reminder hidden-sm hidden-md hidden-lg" data-id="{{ $asset->id }}" >Reminder</button>
                                 @endif
                                 <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->

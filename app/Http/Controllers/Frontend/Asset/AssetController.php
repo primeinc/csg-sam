@@ -10,9 +10,7 @@ use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
 use Event;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
-use Intervention\Image\Facades\Image;
-use Redirect;
+use Image;
 
 class AssetController extends Controller
 {
@@ -116,10 +114,15 @@ class AssetController extends Controller
         $asset = new Asset;
 
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
-            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            Image::make($request->file('image'))->orientate()->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
+            $imageName = uniqid() . '.jpg';
+            $img = Image::make($request->file('image'));
+            $img->orientate();
+            $img->save(public_path() . '/uploads/original/' . $imageName);
+            $img->fit(450, 600);
+            $img->save(public_path() . '/uploads/' . $imageName);
+
             $request->merge(['imageName' => $imageName] );
-            $asset->image = $imageName;
+            $asset->image = $request->imageName;
         }
         else
             $asset->image = 'asset-placeholder.png';
@@ -185,8 +188,12 @@ class AssetController extends Controller
         $asset->mfr_id = $this->mfrs->findOrCreate($request->mfr['name'])->id;
 
         if (!is_null($request->file('image')) && $request->file('image')->isValid()) {
-            $imageName = uniqid() . '.' . $request->file('image')->getClientOriginalExtension();
-            Image::make($request->file('image'))->orientate()->resize(300, 200)->save(public_path() . '/uploads/' . $imageName);
+            $imageName = uniqid() . '.jpg';
+            $img = Image::make($request->file('image'));
+            $img->orientate();
+            $img->save(public_path() . '/uploads/original/' . $imageName);
+            $img->fit(450, 600);
+            $img->save(public_path() . '/uploads/' . $imageName);
 
             $request->merge(['imageName' => $imageName] );
             $asset->image = $request->imageName;

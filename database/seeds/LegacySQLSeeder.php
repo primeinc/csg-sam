@@ -45,12 +45,10 @@ class LegacySQLSeeder extends Seeder
             if($oldAsset->filename == 'placeholder.png')
                 $imageName = 'asset-placeholder.png';
             else {
-                $imageName = uniqid() . '.png';
+                $imageName = uniqid() . '.jpg';
                 try {
                     $img = Image::make('http://samples.csgreps.com/pics/' . $oldAsset->filename);
-                    $img->resize(300, 200, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
+                    $img->orientate()->fit(450, 600);
                     $img->save(public_path() . '/uploads/' . $imageName);
                 } catch (Exception $e) {
                     $imageName = 'asset-placeholder.png';

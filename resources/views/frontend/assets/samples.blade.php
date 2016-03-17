@@ -5,24 +5,26 @@
 @endpush
 
 @section('content')
+    @foreach ($assets->chunk(2) as $chunk)
     <div class="row">
-        @foreach($assets as $asset)
+        @foreach($chunk as $asset)
             <div class="col-md-6">
                 <div class="box box-default">
                     <div class="box-header with-border">
-                        <h3 class="box-title">CSGID: {{ $asset->id }}</h3>
+                        <h3 class="box-title">#{{ $asset->id }}</h3>
                         <div class="box-tools pull-right">
                             @if($asset->location_id != 1)
                                 <span class="label label-info">@ {!! $asset->location->name !!}</span>
                             @endif
                             @if ($asset->status == 2 && $asset->activeCheckout)
-                                <span class="label label-default hidden-xs">{!! $asset->activeCheckout->dealer->name !!}</span>
-                                <span class="label label-primary hidden-md">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
+                                <span class="label label-default ">{!! $asset->activeCheckout->dealer->name !!}</span>
+                                <span class="label label-primary hidden-xs">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
                                 @if($asset->activeCheckout->permanent)
                                     <span class="label label-danger">Permanently Checked Out</span>
                                 @else
-                                    <span class="label label-warning">Checked Out</span>
-                                    <span class="label label-default">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
+                                    <span class="label label-warning hidden-xs hidden-sm">Checked Out</span>
+                                    <span class="label label-default hidden-xs hidden-sm">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
+                                    <span class="label label-warning hidden-md hidden-lg">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
                                 @endif
                             @elseif ($asset->status == 3)
                                 <span class="label label-info">In-Storage</span>
@@ -33,10 +35,10 @@
                     </div><!-- /.box-header -->
                     <div class="box-body">
                         <div class="col-xs-12">
-                            <div class="col-xs-6 col-md-5" style="max-width: 250px !important;">
+                            <div class="col-xs-12 col-sm-6 col-md-5" style="max-width: 200px !important;">
                                 <img class="img-responsive" src="/uploads/{{ $asset->image }}" alt="message user image">
                             </div>
-                            <div class="col-xs-6 col-md-7">
+                            <div class="col-xs-12 col-sm-6 col-md-7">
                                 <dl>
                                     <dt>Manufacturer</dt>
                                     <dd class="hideOverflow-1">{{ $asset->mfr->name }}</dd>
@@ -46,6 +48,10 @@
                                     <dd class="hideOverflow-1">{{ $asset->part }}</dd>
                                     <dt>List Price</dt>
                                     <dd class="hideOverflow-1">{{ $asset->msrp }}</dd>
+                                    @if ($asset->status == 2 && !$asset->activeCheckout->permanent)  <!--Checked Out-->
+                                    <dt>Expected Return</dt>
+                                    <dd>{!! $asset->activeCheckout->expected_return_date->diffForHumans() !!}</dd>
+                                    @endif
                                 </dl>
                             </div>
                         </div>
@@ -71,6 +77,8 @@
         </div>
         @endforeach
     </div>
+    <div class="clearfix"></div>
+    @endforeach
     {{--<div class='row'>--}}
         {{--<div class='col-md-8'>--}}
 
