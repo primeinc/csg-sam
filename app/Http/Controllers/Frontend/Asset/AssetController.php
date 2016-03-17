@@ -55,6 +55,21 @@ class AssetController extends Controller
         return view('frontend.assets.samples', compact('assets'));
     }
 
+    public function out() {
+        $assets = Asset::where('status', '=', 2)->get();
+
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+
+//        $assets->sortByDesc('activeCheckout.expected_return_date');
+
+        $assets = $assets->sortBy(function($asset)
+        {
+            return $asset->activeCheckout->expected_return_date;
+        });
+
+        return view('frontend.assets.samples', compact('assets'));
+    }
+
     public function search(Request $request) {
 //        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
         $term = $request->q;

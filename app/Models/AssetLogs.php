@@ -35,8 +35,15 @@ class AssetLogs extends Model
         // TODO can we eagerload this?
         if(isset($context->location_id)){
             $context->location_name = new stdClass();
-            $context->location_name->new = Location::find($context->location_id->new)->name;
-            $context->location_name->old = Location::find($context->location_id->old)->name;
+            $context->location_name->new = Location::withTrashed()->find($context->location_id->new)->name;
+            $context->location_name->old = Location::withTrashed()->find($context->location_id->old)->name;
+        }
+
+        if(isset($context->mfr_id)){
+            $context->manufacturer = new stdClass();
+            $context->manufacturer->new = Mfr::withTrashed()->find($context->mfr_id->new)->name;
+            $context->manufacturer->old = Mfr::withTrashed()->find($context->mfr_id->old)->name;
+            unset($context->mfr_id);
         }
 
         return $context;

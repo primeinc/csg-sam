@@ -1,7 +1,7 @@
 @push('scripts')
 <script>
     $(function($){
-        $('button.location').click(function(ev){
+        $('button.location,a.location').click(function(ev){
             ev.preventDefault();
             var uid = $(this).data('id');
             $.get('/samples/' + uid + '/edit/location', function(html){

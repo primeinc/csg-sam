@@ -35,6 +35,8 @@ class Checkout extends Model
     protected $fillable = ['asset_id', 'user_id', 'dealer_id',
         'notes', 'expected_return_date', 'returned_date'];
 
+    protected  $dates = ['expected_return_date', 'returned_date'];
+
     /**
      * Get the Asset checked out.
      */

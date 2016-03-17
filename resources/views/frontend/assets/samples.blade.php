@@ -22,6 +22,7 @@
                                     <span class="label label-danger">Permanently Checked Out</span>
                                 @else
                                     <span class="label label-warning">Checked Out</span>
+                                    <span class="label label-default">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
                                 @endif
                             @elseif ($asset->status == 3)
                                 <span class="label label-info">In-Storage</span>

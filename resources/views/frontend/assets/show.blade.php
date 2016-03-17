@@ -6,12 +6,12 @@
 
 @section('page-header')
     <h1>
-        Asset Info
+        Sample Info
     </h1>
     <ol class="breadcrumb">
         <li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>
         <li><a href="#">Samples</a></li>
-        <li class="active">Edit</li>
+        <li class="active">Details</li>
     </ol>
 @endsection
 
@@ -34,6 +34,7 @@
                                     <span class="label label-danger">Permanently Checked Out</span>
                                 @else
                                     <span class="label label-warning">Checked Out</span>
+                                    <span class="label label-default">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
                                 @endif
                         @elseif ($asset->status == 3)
                             <span class="label label-info">In-Storage</span>
@@ -61,6 +62,10 @@
                                 <dd>{{ $asset->ack }}</dd>
                                 <dt>List Price</dt>
                                 <dd>{{ $asset->msrp }}</dd>
+                                @if ($asset->status == 2 && !$asset->activeCheckout->permanent)  <!--Checked Out-->
+                                <dt>Expected Return</dt>
+                                <dd>{!! $asset->activeCheckout->expected_return_date->diffForHumans() !!}</dd>
+                                @endif
                             </dl>
                         </div>
                     </div>
@@ -68,12 +73,17 @@
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="btn-group">
-                            @if($asset->location_id == 1)
-                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Assign Location</button>
-                            @else
-                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Change Location</button>
+                            <button type="button" class="btn btn-default edit" data-toggle="modal" data-target="#editModal">Edit</button>
+                            <button type="button" class="btn btn-default print" data-toggle="modal" data-target="#printModal">Print Label</button>
+                            @if($asset->location_id == 1 && $asset->status != 2)
+                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Assign Storage Location</button>
+                            @elseif($asset->status != 2)
+                                <button type="button" class="btn btn-default location" data-id="{{ $asset->id }}">Change Storage Location</button>
                             @endif
                             @if ($asset->status == 2)  <!--Checked Out-->
+                                @if(!$asset->activeCheckout->permanent)
+                                    <button type="button" class="btn bg-teal reminder" data-id="{{ $asset->id }}" >Send Reminder</button>
+                                @endif
                                 <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->
                                 <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
@@ -86,45 +96,6 @@
             </div><!-- /.box -->
 
         </div><!-- /left column -->
-    </div>
-
-    <div class="row">
-        <div class="col-md-6"><!-- left column -->
-            <!-- Horizontal Form -->
-            <div class="box box-info">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Edit Asset</h3>
-                </div>
-                <!-- /.box-header -->
-                <!-- form start -->
-                {!! Form::model($asset, ['method' => 'PATCH', 'action' => ['Frontend\Asset\AssetController@update', $asset->id], 'files' => true, 'class' => 'form-horizontal']) !!}
-                    @include('frontend.assets.form')
-                {!! Form::close() !!}
-            </div>
-            <!-- /.box -->
-        </div><!-- /left column -->
-        <div class="col-md-6"><!-- right column -->
-
-            <div class="box box-default ">
-                <div class="box-header with-border">
-                    <h3 class="box-title">Print Label</h3>
-                </div><!-- /.box-header -->
-                <div class="box-body">
-                    <div class="form-group">
-                        <label for="labelTextArea" class="control-label">Text on the chair label</label>
-                        <textarea class="form-control" name="labelTextArea" id="labelTextArea" rows="5">CSG ID # {{ $asset->id }}&#13;&#10;Manufacturer: {{ $asset->mfr->name }}&#13;&#10;Description: {{ $asset->id }}&#13;&#10;Part # {{ $asset->part }}</textarea>
-                    </div>
-                </div>
-                <div class="box-footer">
-                    <div class="pull-right">
-                        <button type="button" class="btn btn-primary" id="printButton">Print</button>
-                    </div><!-- /.box-tools -->
-                    <div id='jobStatusDiv'>
-                        <span id='jobStatusMessageSpan'></span>
-                    </div>
-                </div><!-- box-footer -->
-            </div><!-- /.box -->
-        </div><!-- /right column -->
     </div>
 
     <div class="row">
@@ -180,24 +151,31 @@
                             @endif
                         </h3>
 
-                        {{--<div class="timeline-body">--}}
-                            {{--@if($log->event == 'audit.asset.create')--}}
-                                {{--created this asset--}}
-                            {{--@elseif($log->event == 'audit.asset.edit')--}}
-                                {{--@foreach(json_decode($log->context) as $field => $changed)--}}
-                                    {{--<p>--}}
-                                    {{--{{ $field }} | {{ $changed->old }} => {{ $changed->new }}--}}
-                                    {{--</p>--}}
 
-                                    {{--{{ debug($field) }}--}}
-                                    {{--{{ debug($changed) }}--}}
-                                {{--@endforeach--}}
-                            {{--@elseif($log->event == 'audit.asset.checkout')--}}
-                                {{--checked out this asset to {{ $log->checkout->dealer->name }}--}}
-                            {{--@elseif($log->event == 'audit.asset.checkin')--}}
-                                {{--checked in this asset--}}
-                            {{--@endif--}}
-                        {{--</div>--}}
+                        @if($log->event == 'audit.asset.edit')
+                            <div class="timeline-body">
+                                @foreach($log->context as $field => $changed)
+                                    <p>
+                                    <code>{{ ucfirst($field) }}</code> has changed from  <code>{{ $changed->old }}</code> to <code>{{ $changed->new }}</code>
+                                    </p>
+                                @endforeach
+                            </div>
+                        @elseif($log->event == 'audit.asset.checkout' && !empty($log->checkout->project))
+                            <div class="timeline-body">
+                                    <p>
+                                        <code>Expected Return Date</code> {{ $log->checkout->expected_return_date->toFormattedDateString() }}
+                                    </p>
+                                    <p class="no-margin">
+                                        <code>Project</code> {{ $log->checkout->project }}
+                                    </p>
+                            </div>
+                        @elseif($log->event == 'audit.asset.checkin' && !empty($log->checkout->notes))
+                            <div class="timeline-body">
+                                <p class="no-margin">
+                                    <code>Notes</code> {{ $log->checkout->notes }}
+                                </p>
+                            </div>
+                        @endif
 
                         {{--<div class="timeline-footer">--}}
                             {{--<a class="btn btn-primary btn-xs">...</a>--}}
@@ -216,6 +194,54 @@
         </div>
     </div>
 </section>
+
+    <!-- Modal -->
+    <div id="editModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Asset</h4>
+                </div>
+                <div class="modal-body">
+                    {!! Form::model($asset, ['method' => 'PATCH', 'action' => ['Frontend\Asset\AssetController@update', $asset->id], 'files' => true, 'class' => 'form-horizontal']) !!}
+                    @include('frontend.assets.form')
+                    {!! Form::close() !!}
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="printModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Print Label</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="labelTextArea" class="control-label">Text on the chair label</label>
+                        <textarea class="form-control" name="labelTextArea" id="labelTextArea" rows="5">CSG ID # {{ $asset->id }}&#13;&#10;Manufacturer: {{ $asset->mfr->name }}&#13;&#10;Description: {{ $asset->id }}&#13;&#10;Part # {{ $asset->part }}</textarea>
+                    </div>
+                </div>
+                <div class="box-footer">
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-primary" id="printButton">Print</button>
+                    </div><!-- /.box-tools -->
+                    <div id='jobStatusDiv'>
+                        <span id='jobStatusMessageSpan'></span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
 @endsection
 
 

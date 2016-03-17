@@ -108,6 +108,7 @@ return [
         'samples' => [
             'main' => 'Samples',
             'recent' => 'Recent Samples',
+            'out' => 'Out Samples',
             'add' => 'Add Sample',
             'bulk' => 'Bulk Edit',
         ],

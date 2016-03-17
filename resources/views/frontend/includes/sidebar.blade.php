@@ -51,6 +51,12 @@
                             {{ trans('menus.frontend.samples.recent') }}
                         </a>
                     </li>
+                    <li class="{{ Active::pattern('samples/out') }}">
+                        <a href="{!! url('samples/out') !!}">
+                            <i class="fa fa-clock-o"></i>
+                            {{ trans('menus.frontend.samples.out') }}
+                        </a>
+                    </li>
                     <li class="{{ Active::pattern('samples/create') }}">
                         <a href="{!! url('samples/create') !!}">
                             <i class="fa fa-plus"></i>
