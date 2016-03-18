@@ -64,8 +64,8 @@ class DealershipsDataTable extends DataTable
         return [
             'id' => ['title' => 'ID'],
             'name' => ['title' => 'Dealership'],
-            'active_checkouts' => ['title' => 'Active'],
-            'total_checkouts' => ['title' => 'Total'],
+            'active_checkouts' => ['title' => 'Active', 'searchable' => false],
+            'total_checkouts' => ['title' => 'Total', 'searchable' => false],
         ];
     }
 

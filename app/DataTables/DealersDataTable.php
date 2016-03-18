@@ -18,8 +18,8 @@ class DealersDataTable extends DataTable
     public function ajax()
     {
         return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
-        ->editColumn('dealers.dsr', function ($data) {
-            $link = '<a href='.route('dealers.show', $data->id).'>'.$data->dsr.'</a>';
+        ->editColumn('dealers.name', function ($data) {
+            $link = '<a href='.route('dealers.show', $data->id).'>'.$data->name.'</a>';
 
             return $link;
         })
@@ -40,7 +40,7 @@ class DealersDataTable extends DataTable
             ->addSelect('dealers.id')
             ->addSelect('dealership_id')
             ->addSelect('user_id')
-            ->addSelect('dealers.name as dsr')
+            ->addSelect('dealers.name')
             ->addSelect(DB::raw('(select count(*) from checkouts where dealer_id = dealers.id and returned_date is null) as active_checkouts'))
             ->addSelect(DB::raw('(select count(*) from checkouts where dealer_id = dealers.id) as total_checkouts'))
             ->with('user')->with('dealership');
@@ -68,10 +68,10 @@ class DealersDataTable extends DataTable
         return [
             'id' => ['name' => 'dealers.id', 'title' => 'ID'],
             'dealership.name' => ['name' => 'dealership.name', 'title' => 'Dealership'],
-            'dealers.dsr' => ['name' => 'dsr', 'title' => 'DSR'],
+            'dealers.name' => ['name' => 'dealers.name', 'title' => 'DSR'],
             'user.name' => ['name' => 'user.name', 'title' => 'CSG Rep'],
-            'active_checkouts' => ['name' => 'active_checkouts', 'title' => 'Active'],
-            'total_checkouts' => ['name' => 'total_checkouts', 'title' => 'Total'],
+            'active_checkouts' => ['name' => 'active_checkouts', 'title' => 'Active', 'searchable' => false],
+            'total_checkouts' => ['name' => 'total_checkouts', 'title' => 'Total', 'searchable' => false],
         ];
     }
 
