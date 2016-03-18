@@ -151,7 +151,7 @@ class CheckoutController extends Controller
                 ->from(auth()->user()->email, auth()->user()->name)
                 ->to($checkout->dealer->email, $checkout->dealer->name) // TODO add a debug version
                 ->cc(auth()->user()->email, auth()->user()->name)
-                ->subject('Sample #' . $checkout->asset->id . ' Overdue');
+                ->subject('Sample #'.$checkout->asset->id.' Overdue');
         });
 
         Event::fire('audit.asset.checkout.reminder', $checkout);
