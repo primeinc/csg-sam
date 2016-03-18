@@ -375,5 +375,15 @@ class LegacySQLSeeder extends Seeder
         if (env('DB_CONNECTION') == 'mysql') {
             DB::statement('SET FOREIGN_KEY_CHECKS=1;');
         }
+
+        try {
+            Schema::drop('assets_old');
+            Schema::drop('checkin_old');
+            Schema::drop('emailtemplates_old');
+            Schema::drop('reserved_old');
+            Schema::drop('signout_old');
+            Schema::drop('users_old');
+        } catch (Exception $e) {
+        }
     }
 }
