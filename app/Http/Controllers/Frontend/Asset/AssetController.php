@@ -235,6 +235,19 @@ class AssetController extends Controller
         return view('frontend.assets.samples', compact('assets'));
     }
 
+    public function getByDsr($id)
+    {
+        $checkouts = Checkout::where('dealer_id', '=', $id)->where('returned_date', '=', null)->get();
+        $assetsIn = [];
+        foreach ($checkouts as $checkout) {
+            $assetsIn[] = $checkout->asset_id;
+        }
+
+        $assets = Asset::whereIn('id', $assetsIn)->get();
+
+        return view('frontend.assets.samples', compact('assets'));
+    }
+
     public function getMfrIdAttribute($value)
     {
         return 'wow - '.$value;

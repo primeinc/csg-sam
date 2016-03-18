@@ -36,15 +36,7 @@ class DealerController extends Controller
 
     public function show($id)
     {
-        $checkouts = Checkout::where('dealer_id', '=', $id)->where('returned_date', '=', null)->get();
-        $assetsIn = [];
-        foreach ($checkouts as $checkout) {
-            $assetsIn[] = $checkout->asset_id;
-        }
-
-        $assets = Asset::whereIn('id', $assetsIn)->get();
-
-        return view('frontend.assets.samples', compact('assets'));
+        return redirect(route('samples.out.dsr', $id));
     }
 
     public function create()

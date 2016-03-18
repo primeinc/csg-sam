@@ -25,6 +25,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('samples/recent', 'AssetController@index')->name('samples.recent');
         Route::get('samples/out', 'AssetController@out')->name('samples.out');
         Route::get('samples/out/rep-{rep}', 'AssetController@getByRep')->name('samples.out.rep');
+        Route::get('samples/out/dsr-{dsr}', 'AssetController@getByDsr')->name('samples.out.dsr');
         Route::resource('samples', 'AssetController');
     });
     Route::group(['namespace' => 'Dealership'], function () {
