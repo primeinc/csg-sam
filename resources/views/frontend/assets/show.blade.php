@@ -135,7 +135,7 @@
                         <span class="time"><i class="fa fa-clock-o"></i> {{ $log->created_at->diffForHumans() }}</span>
 
                         <h3 class="timeline-header">
-                            <a href="#">{{ $log->user->name }}</a>
+                            <a href="{!! route('samples.out.rep', $log->user->id) !!}">{{ $log->user->name }}</a>
                             @if($log->event == 'audit.asset.create')
                                 created this asset
                             @elseif($log->event == 'audit.asset.edit')
@@ -145,7 +145,7 @@
                                     checked out this asset to an {{ $log->checkout->dealer->dealership->name }}
                                 @else
                                     @if($log->user->id != $log->checkout->user_id)
-                                        (on behalf of <a href="#">{{ $log->checkout->user->name }}</a>)
+                                        (on behalf of <a href="{!! route('samples.out.rep', $log->checkout->user->id) !!}">{{ $log->checkout->user->name }}</a>)
                                     @endif
                                     checked out this asset to {{ $log->checkout->dealer->name }} @ {{ $log->checkout->dealer->dealership->name }}
                                 @endif

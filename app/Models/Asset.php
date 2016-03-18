@@ -77,7 +77,7 @@ class Asset extends Model
      */
     public function activeCheckout()
     {
-        return $this->hasOne('App\Models\Checkout')->whereNull('returned_date');
+        return $this->hasOne('App\Models\Checkout')->whereNull('returned_date')->with('user');
     }
 
     /**

@@ -24,6 +24,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::patch('samples/{asset}/edit/location', 'AssetController@updateLocation')->name('samples.edit.location');
         Route::get('samples/recent', 'AssetController@index')->name('samples.recent');
         Route::get('samples/out', 'AssetController@out')->name('samples.out');
+        Route::get('samples/out/rep-{rep}', 'AssetController@getByRep')->name('samples.out.rep');
         Route::resource('samples', 'AssetController');
     });
     Route::group(['namespace' => 'Dealership'], function () {

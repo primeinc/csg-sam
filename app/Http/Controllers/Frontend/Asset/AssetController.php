@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Frontend\Asset;
 
 use App\Http\Controllers\Controller;
 use App\Models\Asset;
+use App\Models\Checkout;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
@@ -211,6 +212,27 @@ class AssetController extends Controller
 
 //        return Redirect::route('frontend.assets.edit', array('asset' => $asset->id));
         return redirect()->action('Frontend\Asset\AssetController@show', [$asset->id]);
+    }
+
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function getByRep($id)
+    {
+        $checkouts = Checkout::where('user_id', '=', $id)->where('returned_date', '=', null)->get();
+        $assetsIn = [];
+        foreach ($checkouts as $checkout) {
+            $assetsIn[] = $checkout->asset_id;
+        }
+
+        $assets = Asset::whereIn('id', $assetsIn)->get();
+
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+
+        //        return view('frontend.user.dashboard');
+        //            ->withUser(access()->user());
+
+        return view('frontend.assets.samples', compact('assets'));
     }
 
     public function getMfrIdAttribute($value)

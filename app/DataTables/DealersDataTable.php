@@ -19,12 +19,17 @@ class DealersDataTable extends DataTable
     {
         return $this->datatables->eloquent($this->query())//            ->addColumn('action', 'path.to.action.view')
         ->editColumn('dealers.name', function ($data) {
-            $link = '<a href='.route('dealers.show', $data->id).'>'.$data->name.'</a>';
+            $link = '<a href=' . route('dealers.show', $data->id) . '>' . $data->name . '</a>';
+
+            return $link;
+        })
+        ->editColumn('user.name', function ($data) {
+            $link = '<a href=' . route('samples.out.rep', $data->user->id) . '>' . $data->user->name . '</a>';
 
             return $link;
         })
         ->addColumn('action', function ($data) {
-            //                return '<a href="#edit-'.$data->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>';
+
             return $data->action_buttons;
         })->make(true);
     }
