@@ -149,7 +149,7 @@ class CheckoutController extends Controller
         $beautymail->send('emails.reminder', compact('checkout'), function ($message) use ($checkout) {
             $message
                 ->from(auth()->user()->email, auth()->user()->name)
-                ->to(auth()->user()->email, auth()->user()->name) // TODO change this in production
+                ->to($checkout->dealer->email, $checkout->dealer->name) // TODO add a debug version
                 ->cc(auth()->user()->email, auth()->user()->name)
                 ->subject('Sample #' . $checkout->asset->id . ' Overdue');
         });
