@@ -45,7 +45,6 @@ class AssetLogs extends Model
             unset($context->mfr_id);
         }
 
-
         return $context;
     }
 }
