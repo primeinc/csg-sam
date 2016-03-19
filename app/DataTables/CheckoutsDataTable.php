@@ -103,6 +103,10 @@ class CheckoutsDataTable extends DataTable
             'order' => [[7, 'asc']],
             'dom' => '<\'box-body\'lfrtip><\'box-footer\'B>',
             'buttons' => ['excel', 'pdf', 'print'],
+            'scrollX' => true,
+            'scrollY' => '50vh',
+            'scrollCollapse' => true,
+
         ];
     }
 

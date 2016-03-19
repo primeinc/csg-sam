@@ -17,7 +17,7 @@
                 </div><!-- /.box-header -->
 
                 {{--<div class="box-body">--}}
-                    {!! $dataTable->table() !!}
+                    {!! $dataTable->table(['class' => 'table table-striped']) !!}
                 {{--</div>--}}
             </div>
         </div>
