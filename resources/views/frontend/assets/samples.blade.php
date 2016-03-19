@@ -44,11 +44,13 @@
                                     <dd class="hideOverflow-1">{{ $asset->mfr->name }}</dd>
                                     <dt>Description</dt>
                                     <dd class="hideOverflow-1">{{ $asset->description }}</dd>
-                                    @if ($asset->status == 2 && !$asset->activeCheckout->permanent)  <!--Checked Out-->
-                                    <dt>Expected Return</dt>
-                                    <dd>{!! $asset->activeCheckout->expected_return_date->diffForHumans() !!}</dd>
-                                    <dt>CSG Rep</dt>
-                                    <dd class="hideOverflow-1"><a href="{{ route('samples.out.rep', $asset->activeCheckout->user->id) }}">{{ $asset->activeCheckout->user->name }}</a></dd>
+                                    @if ($asset->status == 2)  <!--Checked Out-->
+                                    @if(!$asset->activeCheckout->permanent)
+                                        <dt>Expected Return</dt>
+                                        <dd>{!! $asset->activeCheckout->expected_return_date->diffForHumans() !!}</dd>
+                                    @endif
+                                        <dt>CSG Rep</dt>
+                                        <dd class="hideOverflow-1"><a href="{{ route('samples.out.rep', $asset->activeCheckout->user->id) }}">{{ $asset->activeCheckout->user->name }}</a></dd>
                                     @endif
                                 </dl>
                             </div>

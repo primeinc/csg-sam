@@ -62,9 +62,13 @@
                                 <dd>{{ $asset->ack }}</dd>
                                 <dt>List Price</dt>
                                 <dd>{{ $asset->msrp }}</dd>
-                                @if ($asset->status == 2 && !$asset->activeCheckout->permanent)  <!--Checked Out-->
-                                <dt>Expected Return</dt>
-                                <dd>{!! $asset->activeCheckout->expected_return_date->diffForHumans() !!}</dd>
+                                @if ($asset->status == 2)  <!--Checked Out-->
+                                    @if(!$asset->activeCheckout->permanent)
+                                        <dt>Expected Return</dt>
+                                        <dd>{!! $asset->activeCheckout->expected_return_date->diffForHumans() !!}</dd>
+                                    @endif
+                                    <dt>CSG Rep</dt>
+                                    <dd class="hideOverflow-1"><a href="{{ route('samples.out.rep', $asset->activeCheckout->user->id) }}">{{ $asset->activeCheckout->user->name }}</a></dd>
                                 @endif
                             </dl>
                         </div>
@@ -147,7 +151,8 @@
                                     @if($log->user->id != $log->checkout->user_id)
                                         (on behalf of <a href="{!! route('samples.out.rep', $log->checkout->user->id) !!}">{{ $log->checkout->user->name }}</a>)
                                     @endif
-                                    checked out this asset to {{ $log->checkout->dealer->name }} @ {{ $log->checkout->dealer->dealership->name }}
+                                    checked out this asset to <a href="{!! route('samples.out.dsr', $log->checkout->dealer->id) !!}">
+                                            {{ $log->checkout->dealer->name }} </a> @ {{ $log->checkout->dealer->dealership->name }}
                                 @endif
                             @elseif($log->event == 'audit.asset.checkin')
                                 checked in this asset
