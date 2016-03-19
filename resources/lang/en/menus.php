@@ -108,7 +108,8 @@ return [
         'samples' => [
             'main' => 'Samples',
             'recent' => 'Recent Samples',
-            'out' => 'Out Samples',
+            'out' => 'All Active Checkouts',
+            'listOut' => 'List Active Checkouts',
             'add' => 'Add Sample',
             'bulk' => 'Bulk Edit',
         ],

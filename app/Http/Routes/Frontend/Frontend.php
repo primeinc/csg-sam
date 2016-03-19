@@ -48,6 +48,7 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('samples/checkin/{asset}', 'CheckoutController@checkinModal')->name('checkout.checkin');
         Route::post('samples/checkin/{asset}', 'CheckoutController@returnAsset')->name('checkout.return');
         Route::get('samples/checkin/{asset}/remind', 'CheckoutController@sendReminder')->name('checkout.remind');
+        Route::resource('samples/out/list', 'DataTablesController');
     });
     Route::group(['namespace' => 'Location'], function () {
         //

@@ -57,6 +57,12 @@
                             {{ trans('menus.frontend.samples.out') }}
                         </a>
                     </li>
+                    <li class="{{ Active::pattern('samples/out/list') }}">
+                        <a href="{!! url('samples/out/list') !!}">
+                            <i class="fa fa-list"></i>
+                            {{ trans('menus.frontend.samples.listOut') }}
+                        </a>
+                    </li>
                     <li class="{{ Active::pattern('samples/create') }}">
                         <a href="{!! url('samples/create') !!}">
                             <i class="fa fa-plus"></i>
