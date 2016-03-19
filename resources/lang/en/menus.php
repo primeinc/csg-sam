@@ -107,11 +107,15 @@ return [
 
         'samples' => [
             'main' => 'Samples',
+            'search' => 'Samples Search',
             'recent' => 'Recent Samples',
             'out' => 'All Active Checkouts',
             'listOut' => 'List Active Checkouts',
             'add' => 'Add Sample',
             'bulk' => 'Bulk Edit',
+            'outRep' => 'Active Samples Managed By ',
+            'outDsr' => 'Checked Out to ',
+            'mine' => 'My Sample Checkouts',
         ],
 
         'dealers' => [

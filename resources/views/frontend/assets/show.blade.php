@@ -33,8 +33,7 @@
                                 @if($asset->activeCheckout->permanent)
                                     <span class="label label-danger">Permanently Checked Out</span>
                                 @else
-                                    <span class="label label-warning">Checked Out</span>
-                                    <span class="label label-default">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
+                                    <span class="label label-warning">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
                                 @endif
                         @elseif ($asset->status == 3)
                             <span class="label label-info">In-Storage</span>
@@ -91,7 +90,7 @@
                                     <a href="{{ route('checkout.remind', $asset->activeCheckout->id) }}" type="button" class="btn bg-teal reminder hidden-xs" data-id="{{ $asset->id }}" >Send Reminder</a>
                                     <a href="{{ route('checkout.remind', $asset->activeCheckout->id) }}" type="button" class="btn bg-teal reminder hidden-sm hidden-md hidden-lg" data-id="{{ $asset->id }}" >Reminder</a>
                                 @endif
-                                <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Checkin</button>
+                                <button type="button" class="btn btn-info checkin" data-id="{{ $asset->id }}" >Check-In</button>
                             @elseif ($asset->status == 3)  <!--In-Storage-->
                                 <button type="button" class="btn btn-primary checkout" data-id="{{ $asset->id }}" >Checkout</button>
                             @else

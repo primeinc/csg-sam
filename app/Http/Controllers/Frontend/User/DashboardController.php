@@ -11,6 +11,13 @@ use App\Models\Checkout;
  */
 class DashboardController extends Controller
 {
+    private $page;
+
+    public function __construct()
+    {
+        $this->page = app()->make('App\Classes\PageDisplayOptions');
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -29,6 +36,9 @@ class DashboardController extends Controller
 //        return view('frontend.user.dashboard');
 //            ->withUser(access()->user());
 
-        return view('frontend.assets.samples', compact('assets'));
+        $this->page->title = trans('menus.frontend.samples.mine');
+        $this->page->breadcrumb = trans('menus.frontend.samples.mine');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 }

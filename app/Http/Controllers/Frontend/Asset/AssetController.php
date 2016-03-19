@@ -29,6 +29,8 @@ class AssetController extends Controller
 
     protected $locations;
 
+    protected $page;
+
     /**
      * Create a new controller instance.
      *
@@ -43,6 +45,7 @@ class AssetController extends Controller
         $this->assets = $assets;
         $this->mfrs = $mfrs;
         $this->locations = $locations;
+        $this->page = app()->make('App\Classes\PageDisplayOptions');
     }
 
     public function index()
@@ -51,7 +54,10 @@ class AssetController extends Controller
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
-        return view('frontend.assets.samples', compact('assets'));
+        $this->page->title = trans('menus.frontend.samples.recent');
+        $this->page->breadcrumb = trans('menus.frontend.samples.recent');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 
     public function out()
@@ -66,7 +72,10 @@ class AssetController extends Controller
             return $asset->activeCheckout->expected_return_date;
         });
 
-        return view('frontend.assets.samples', compact('assets'));
+        $this->page->title = trans('menus.frontend.samples.out');
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 
     public function search(Request $request)
@@ -89,7 +98,10 @@ class AssetController extends Controller
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
-        return view('frontend.assets.samples', compact('assets'));
+        $this->page->title = trans('menus.frontend.samples.search');
+        $this->page->breadcrumb = trans('menus.frontend.samples.search');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 
     public function create()
@@ -229,10 +241,10 @@ class AssetController extends Controller
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
-        //        return view('frontend.user.dashboard');
-        //            ->withUser(access()->user());
+        $this->page->title = trans('menus.frontend.samples.outRep') . $assets->first()->activeCheckout->user->name;
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
 
-        return view('frontend.assets.samples', compact('assets'));
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 
     public function getByDsr($id)
@@ -245,7 +257,10 @@ class AssetController extends Controller
 
         $assets = Asset::whereIn('id', $assetsIn)->get();
 
-        return view('frontend.assets.samples', compact('assets'));
+        $this->page->title = trans('menus.frontend.samples.outDsr') . $assets->first()->activeCheckout->dealer->name;
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 
     public function getMfrIdAttribute($value)
