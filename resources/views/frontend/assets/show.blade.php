@@ -112,12 +112,12 @@
                 <!-- timeline time label -->
                 <li class="time-label">
                     <span class="bg-grey">
-                        {{ $logDay->created_at->toFormattedDateString() }}
+                        {{ $logDay->created_at->setTime(0, 0, 0)->toFormattedDateString() }}
                     </span>
                 </li>
                 <!-- /.timeline-label -->
                 @foreach($asset->assetLogs as $log )
-                    @if($log->created_at->diffInDays($logDay->created_at) === 0)
+                    @if($log->created_at->setTime(0, 0, 0)->diffInDays($logDay->created_at->setTime(0, 0, 0)) === 0 && $log->event != 'audit.asset.checkout.edit')
                 <!-- timeline item -->
                 <li>
                     <!-- timeline icon -->
@@ -171,14 +171,22 @@
                                     </p>
                                 @endforeach
                             </div>
-                        @elseif($log->event == 'audit.asset.checkout' && !empty($log->checkout->project))
+                        @elseif($log->event == 'audit.asset.checkout')
                             <div class="timeline-body">
+                                @if(isset($asset->activeCheckout->id) && ($log->checkout_id == $asset->activeCheckout->id))
+                                    <button class="btn btn-primary btn-flat btn-xs pull-right checkout-edit" data-id="{{ $log->checkout_id }}">Edit</button>
+                                @endif
+                                @if($asset->assetLogs->where('checkout_id', $log->checkout_id)->where('event', 'audit.asset.checkout.edit')->count() > 0)
+                                    <button class="btn btn-danger btn-flat btn-xs pull-right checkout-edit-log" data-id="{{ $log->checkout_id }}">Show Edit Log</button>
+                                @endif
                                     <p>
                                         <code>Expected Return Date</code> {{ $log->checkout->expected_return_date->toFormattedDateString() }}
                                     </p>
+                                @if(!empty($log->checkout->project))
                                     <p class="no-margin">
                                         <code>Project</code> {{ $log->checkout->project }}
                                     </p>
+                                @endif
                             </div>
                         @elseif($log->event == 'audit.asset.checkin' && !empty($log->checkout->notes))
                             <div class="timeline-body">

@@ -40,6 +40,19 @@ class AuditLogHandler
         $log->save();
     }
 
+    public function onCheckoutEdit($checkout)
+    {
+        $log = new AssetLogs;
+
+        $log->asset_id = $checkout->asset_id;
+        $log->user_id = Auth::user() ? Auth::user()->id : $checkout->user_id;
+        $log->checkout_id = $checkout->id;
+        $log->event = 'audit.asset.checkout.edit';
+        $log->context = $this->getChangesNew($checkout);
+
+        $log->save();
+    }
+
     public function onAssetCreate($asset)
     {
         $log = new AssetLogs;
@@ -102,5 +115,17 @@ class AuditLogHandler
         }
 
         return json_encode($changes);
+    }
+
+    public function getChangesNew($model)
+    {
+        $context = new \stdClass();
+        $context->new = $model->getDirty();
+        $context->old = new \stdClass();
+        foreach ($model->getDirty() as $key => $value) {
+            $context->old->{$key} = $model->getOriginal($key);
+        }
+
+        return json_encode($context);
     }
 }

@@ -45,6 +45,15 @@ class AssetLogs extends Model
             unset($context->mfr_id);
         }
 
+        if ($this->event == 'audit.asset.checkout.edit') {
+            $newContext = new stdClass();
+            $newContext->old = new Checkout(get_object_vars($context->old));
+            $newContext->new = new Checkout(get_object_vars($context->new));
+//            $context->load('dealer', 'dealer.dealership');
+
+            return $newContext;
+        }
+
         return $context;
     }
 }

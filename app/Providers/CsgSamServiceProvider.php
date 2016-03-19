@@ -55,5 +55,9 @@ class CsgSamServiceProvider extends ServiceProvider
             \App\Repositories\Frontend\Location\LocationContract::class,
             \App\Repositories\Frontend\Location\EloquentLocationRepository::class
         );
+        $this->app->bind(
+            \App\Repositories\Frontend\AssetLogs\AssetLogsContract::class,
+            \App\Repositories\Frontend\AssetLogs\EloquentAssetLogsRepository::class
+        );
     }
 }

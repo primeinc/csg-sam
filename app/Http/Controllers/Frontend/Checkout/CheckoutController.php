@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Frontend\Checkout;
 
+use App\Models\AssetLogs;
 use App\Models\Checkout;
 use App\Http\Controllers\Controller;
 use App\Repositories\Frontend\Asset\AssetContract;
@@ -62,6 +63,53 @@ class CheckoutController extends Controller
         return view('frontend.checkouts.add');
     }
 
+    public function edit($id)
+    {
+        $checkout = Checkout::find($id);
+
+        return view('frontend.checkout.editModal', compact('checkout'));
+    }
+
+    public function update($id, Request $request)
+    {
+        // TODO: validate asset is not already checked out
+
+        $this->validate($request, [
+            'daterange' => 'required|max:10',
+            'dealer.id' => 'required|numeric',
+            'user.id' => 'required|numeric',
+            'project' => 'max:255',
+        ]);
+
+        $dt = \Carbon\Carbon::createFromFormat('m/d/Y', $request->daterange)->toDateString();
+
+        $checkout = Checkout::find($id);
+
+        $checkout->expected_return_date = $dt;
+        $checkout->dealer_id = $request->dealer['id'];
+        $checkout->user_id = $request->user['id'];
+        $checkout->project = $request->project;
+
+        if ($request->permanent == 'on')
+            $checkout->permanent = 1;
+        else
+            $checkout->permanent = 0;
+
+        if (count($checkout->getDirty()) > 0)
+            Event::fire('audit.asset.checkout.edit', [$checkout]);
+
+        $checkout->save();
+
+        return Redirect::route('samples.show', ['id' => $checkout->asset_id]);
+    }
+
+    public function logsModal($id)
+    {
+        $logs = AssetLogs::where('checkout_id', $id)->where('event', 'audit.asset.checkout.edit')->get();
+
+        return view('frontend.checkout.logsModal', compact('logs'));
+    }
+
     /**
      * Create a new asset.
      *
@@ -74,8 +122,8 @@ class CheckoutController extends Controller
 
         $this->validate($request, [
             'daterange' => 'required|max:10',
-            'dealer_id' => 'required|numeric',
-            'user_id' => 'required|numeric',
+            'dealer.id' => 'required|numeric',
+            'user.id' => 'required|numeric',
             'project' => 'max:255',
         ]);
 
@@ -92,8 +140,8 @@ class CheckoutController extends Controller
 
         $checkout->expected_return_date = $dt;
         $checkout->asset_id = $request->asset;
-        $checkout->dealer_id = $request->dealer_id;
-        $checkout->user_id = $request->user_id;
+        $checkout->dealer_id = $request->dealer['id'];
+        $checkout->user_id = $request->user['id'];
         $checkout->project = $request->project;
 
         if ($request->permanent == 'on') {

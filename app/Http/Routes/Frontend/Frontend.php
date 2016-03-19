@@ -48,9 +48,15 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('samples/checkin/{asset}', 'CheckoutController@checkinModal')->name('checkout.checkin');
         Route::post('samples/checkin/{asset}', 'CheckoutController@returnAsset')->name('checkout.return');
         Route::get('samples/checkin/{asset}/remind', 'CheckoutController@sendReminder')->name('checkout.remind');
+        Route::get('/checkouts/{id}/edit', 'CheckoutController@edit')->name('checkout.edit');
+        Route::patch('/checkouts/{id}', 'CheckoutController@update')->name('checkout.update');
+        Route::get('/checkouts/{id}/logs', 'CheckoutController@logsModal')->name('checkout.logs');
         Route::resource('samples/out/list', 'DataTablesController');
     });
     Route::group(['namespace' => 'Location'], function () {
+        //
+    });
+    Route::group(['namespace' => 'AssetLogs'], function () {
         //
     });
 });

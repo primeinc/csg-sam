@@ -32,8 +32,8 @@ class Checkout extends Model
      *
      * @var array
      */
-    protected $fillable = ['asset_id', 'user_id', 'dealer_id',
-        'notes', 'expected_return_date', 'returned_date', ];
+    protected $fillable = ['asset_id', 'user_id', 'dealer_id', 'project',
+        'notes', 'expected_return_date', 'returned_date', 'permanent'];
 
     protected $dates = ['expected_return_date', 'returned_date'];
 
@@ -65,6 +65,13 @@ class Checkout extends Model
      * Get the Logs for checkout entry.
      */
     public function assetLogs()
+    {
+        return $this->hasMany('App\Models\AssetLogs');
+    }
+    /**
+     * Get the Logs for checkout entry.
+     */
+    public function assetLogContext()
     {
         return $this->hasMany('App\Models\AssetLogs');
     }

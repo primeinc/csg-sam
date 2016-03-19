@@ -13,9 +13,9 @@
             $('input[name="daterange"]').daterangepicker({
                 singleDatePicker: true,
                 showDropdowns: true,
-                startDate: "{{ Carbon\Carbon::now()->addDays(14)->format('m/d/Y') }}"
+                startDate: "{{ isset($asset->activeCheckout->expected_return_date) ? $asset->activeCheckout->expected_return_date->format('m/d/Y') : Carbon\Carbon::now()->addDays(14)->format('m/d/Y') }}"
             });
-            $("#dealer_id").select2({
+            $("#dealer\\[id\\]").select2({
                         placeholder: "Select a Dealer",
                         ajax: {
                             url: "{!! route('api.dealers.search') !!}",
@@ -43,7 +43,7 @@
                     })
                     .on('change', function(e) {
                         item = $(this).select2('data');
-                        $("#user_id")
+                        $("#user\\[id\\]")
                                 .empty()
                                 .append($('<option>', {value: item[0].user_id, selected: "selected"})
                                         .text(item[0].user_name))
@@ -67,6 +67,24 @@
             ev.preventDefault();
             var uid = $(this).data('id');
             $.get('/samples/checkin/' + uid, function(html){
+                $('#dynModal .modal-content').html(html);
+                $('#dynModal').modal('show', {backdrop: 'static'});
+            });
+        });
+
+        $('button.checkout-edit').click(function(ev){
+            ev.preventDefault();
+            var uid = $(this).data('id');
+            $.get('/checkouts/' + uid + '/edit', function(html){
+                $('#dynModal .modal-content').html(html);
+                $('#dynModal').modal('show', {backdrop: 'static'});
+            });
+        });
+
+        $('button.checkout-edit-log').click(function(ev){
+            ev.preventDefault();
+            var uid = $(this).data('id');
+            $.get('/checkouts/' + uid + '/logs', function(html){
                 $('#dynModal .modal-content').html(html);
                 $('#dynModal').modal('show', {backdrop: 'static'});
             });
