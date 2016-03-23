@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Frontend\Dealership;
 
 use App\Http\Controllers\Controller;
+use Exception;
 use Illuminate\Http\Request;
 use App\Models\Dealership;
 use App\Repositories\Frontend\Dealership\DealershipContract;
@@ -42,13 +43,23 @@ class DealershipController extends Controller
 
     public function update($id, Request $request)
     {
-        $dealership = $this->dealerships->find($id);
-        $dealershipReq = Dealership::find($request->name);
+        try {
+            $dealership = $this->dealerships->find($id);
+            $dealershipReq = Dealership::find($request->name);
+        } catch (Exception $e) {
+            \Log::error('An unknown error occured, E-001-Database DealershipController@update');
+            return redirect('/dealerships/list')->withFlashDanger('An unknown error occured, E-001-Database DealershipController@update');
+        }
         if ($dealershipReq) {
-            DB::table('dealers')
+            $change = DB::table('dealers')
                 ->where('dealership_id', $id)
                 ->update(['dealership_id' => $dealershipReq->id]);
-            $dealership->delete();
+            if($change)
+                $dealership->delete();
+            else {
+                \Log::error('An unknown error occured, E-002-Database DealershipController@update');
+                return redirect('/dealerships/list')->withFlashDanger('An unknown error occured, E-002-Database DealershipController@update');
+            }
 
             return redirect('/dealerships/list')->withFlashSuccess('Dealership successfully merged');
         }

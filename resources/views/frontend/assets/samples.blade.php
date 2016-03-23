@@ -14,14 +14,25 @@
 @endsection
 
 @section('content')
-    @foreach ($assets->chunk(2) as $chunk)
+    @forelse ($assets->chunk(2) as $chunk)
     <div class="row">
         @foreach($chunk as $asset)
             @include('frontend.assets._assetBox')
         @endforeach
     </div>
     <div class="clearfix"></div>
-    @endforeach
+    @empty
+        <div class="row">
+            <div class="col-md-12">
+                <div class="box box-solid box-warning">
+                    <div class="box-header">
+                        <h3 class="box-title">No Checked-Out Samples to List</h3>
+                    </div><!-- /.box-header -->
+                </div><!-- /.box -->
+            </div>
+        </div>
+        <div class="clearfix"></div>
+    @endforelse
 
 @endsection
 

@@ -3,8 +3,10 @@
 namespace App\Http\Controllers\Frontend\Asset;
 
 use App\Http\Controllers\Controller;
+use App\Models\Access\User\User;
 use App\Models\Asset;
 use App\Models\Checkout;
+use App\Models\Dealer;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
@@ -226,6 +228,19 @@ class AssetController extends Controller
         return redirect()->action('Frontend\Asset\AssetController@show', [$asset->id]);
     }
 
+    public function destroy($id)
+    {
+        $asset = $this->assets->find($id);
+
+        if($asset->activeCheckout) {
+            return redirect()->back()->withFlashDanger("Can't delete, currently checked out");
+        }
+
+        if ($asset->delete()) {
+            return redirect()->route('samples.recent')->withFlashSuccess("Sample deleted");
+        }
+    }
+
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -238,10 +253,10 @@ class AssetController extends Controller
         }
 
         $assets = Asset::whereIn('id', $assetsIn)->get();
-
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
 
-        $this->page->title = trans('menus.frontend.samples.outRep') . $assets->first()->activeCheckout->user->name;
+        $user = User::find($id);
+        $this->page->title = trans('menus.frontend.samples.outRep') . $user->name;
         $this->page->breadcrumb = trans('menus.frontend.samples.out');
 
         return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
@@ -257,7 +272,8 @@ class AssetController extends Controller
 
         $assets = Asset::whereIn('id', $assetsIn)->get();
 
-        $this->page->title = trans('menus.frontend.samples.outDsr') . $assets->first()->activeCheckout->dealer->name;
+        $dealer = Dealer::find($id);
+        $this->page->title = trans('menus.frontend.samples.outDsr') . $dealer->name;
         $this->page->breadcrumb = trans('menus.frontend.samples.out');
 
         return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);

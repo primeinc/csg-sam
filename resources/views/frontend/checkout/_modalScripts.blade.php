@@ -89,6 +89,12 @@
                 $('#dynModal').modal('show', {backdrop: 'static'});
             });
         });
+        $('button.checkout-print').click(function(ev){
+            ev.preventDefault();
+            var uid = $(this).data('id');
+            $('#labelTextArea').val(uid);
+            $('#printModal').modal('show', {backdrop: 'static'});
+        });
 
 
     });
