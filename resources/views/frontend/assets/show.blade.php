@@ -184,7 +184,7 @@
                                 @if(isset($asset->activeCheckout->id) && ($log->checkout_id == $asset->activeCheckout->id))
                                     <button class="btn btn-primary btn-flat btn-xs pull-right checkout-edit" data-id="{{ $log->checkout_id }}">Edit</button>
                                     <button class="btn btn-default btn-flat btn-xs pull-right checkout-print"
-                                            data-id="Checked Out&#13;&#10;{{ $asset->activeCheckout->dealer->name }} @ {{ $asset->activeCheckout->dealer->dealership->name }}&#13;&#10;Expected Return Date: {{ $asset->activeCheckout->expected_return_date->toFormattedDateString() }}&#13;&#10;CSG Rep: {{ $asset->activeCheckout->user->name }}"
+                                            data-id="Checked Out Sample #{{ $asset->activeCheckout->id }}&#13;&#10;{{ $asset->activeCheckout->dealer->name }} @ {{ $asset->activeCheckout->dealer->dealership->name }}&#13;&#10;Expected Return Date: {{ $asset->activeCheckout->expected_return_date->toFormattedDateString() }}&#13;&#10;CSG Rep: {{ $asset->activeCheckout->user->name }}"
                                     >Print</button>
                                 @endif
                                 @if($asset->assetLogs->where('checkout_id', $log->checkout_id)->where('event', 'audit.asset.checkout.edit')->count() > 0)
