@@ -76,12 +76,14 @@
                 <div class="box-footer">
                     <div class="pull-right">
                         <div class="btn-group">
+                            @if($asset->status != 2)
                             <a href="{{ route('samples.destroy', $asset->id) }}"
                                data-method="delete"
                                data-trans-button-cancel="{{ trans('buttons.general.cancel') }}"
                                data-trans-button-confirm="{{ trans('buttons.general.crud.delete') }}"
                                data-trans-title="{{ trans('strings.backend.general.are_you_sure') }}"
                                class="btn btn-danger destroy">Delete</a>
+                            @endif
                             <button type="button" class="btn btn-default edit" data-toggle="modal" data-target="#editModal">Edit</button>
                             <button type="button" class="btn btn-default print" data-toggle="modal" data-target="#printModal">Print Label</button>
                             @if($asset->location_id == 1 && $asset->status != 2)
