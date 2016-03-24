@@ -8,7 +8,6 @@
         {{ Form::select2('mfr[name]', 'Manufacturer') }}
     @endif
     {{ Form::bsText('description') }}
-    {{ Form::currencyText('msrp', 'List Price') }}
     {{ Form::bsFile('image', 'Picture') }}
 </div>
 <!-- /.box-body -->

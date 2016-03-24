@@ -7,6 +7,7 @@ use App\Models\Access\User\User;
 use App\Models\Asset;
 use App\Models\Checkout;
 use App\Models\Dealer;
+use App\Models\Dealership;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
@@ -85,10 +86,26 @@ class AssetController extends Controller
         //        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();
         $term = $request->q;
 
+        // TODO move to a trait
         $mfrList = $this->mfrs->findByNameAll($term);
         $mfrIn = [];
         foreach ($mfrList as $mfr) {
             $mfrIn[] = $mfr->id;
+        }
+        $dealershipIn = [];
+        $dealershipList = Dealership::where('name', 'LIKE', '%' .$term. '%')->get();
+        foreach ($dealershipList as $dealership) {
+            $dealershipIn[] = $dealership->id;
+        }
+        $dsrList = Dealer::where('name', 'LIKE', '%' .$term. '%')->orWhereIn('dealership_id', $dealershipIn)->get();
+        $dsrIn = [];
+        foreach ($dsrList as $dsr) {
+            $dsrIn[] = $dsr->id;
+        }
+        $checkedList = Checkout::select('asset_id')->where('returned_date', '=', null)->whereIn('dealer_id', $dsrIn)->orWhere('project', 'LIKE', '%' .$term. '%')->get();
+        $checkedIn = [];
+        foreach ($checkedList as $checkedout) {
+            $checkedIn[] = $checkedout->asset_id;
         }
 
         $assets = Asset::where('id', 'LIKE', '%'.$term.'%')
@@ -96,6 +113,7 @@ class AssetController extends Controller
             ->orWhere('description', 'LIKE', '%'.$term.'%')
             ->orWhere('ack', 'LIKE', '%'.$term.'%')
             ->orWhereIn('mfr_id', $mfrIn)
+            ->orWhereIn('id', $checkedIn)
             ->get();
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
@@ -124,7 +142,6 @@ class AssetController extends Controller
             'mfr' => 'required|max:255',
             'ack' => 'max:255',
             'description' => 'required|max:255',
-            'msrp' => 'numeric',
         ]);
 
         $asset = new Asset;
@@ -148,7 +165,6 @@ class AssetController extends Controller
         $asset->part = $request->part;
         $asset->ack = $request->ack;
         $asset->description = $request->description;
-        $asset->msrp = $request->msrp;
 
         $asset->save();
 
@@ -196,7 +212,6 @@ class AssetController extends Controller
             'mfr' => 'required|max:255',
             'description' => 'required|max:255',
             'ack' => 'max:255',
-            'msrp' => 'numeric',
         ]);
 
         $asset = $this->assets->find($id);
@@ -217,7 +232,6 @@ class AssetController extends Controller
 
         $asset->part = $request->part;
         $asset->description = $request->description;
-        $asset->msrp = $request->msrp;
         $asset->ack = $request->ack;
 
         Event::fire('audit.asset.edit', [$asset]);

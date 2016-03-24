@@ -59,8 +59,6 @@
                                 <dd>{{ $asset->part }}</dd>
                                 <dt>Ack #</dt>
                                 <dd>{{ $asset->ack }}</dd>
-                                <dt>List Price</dt>
-                                <dd>{{ $asset->msrp }}</dd>
                                 @if ($asset->status == 2)  <!--Checked Out-->
                                     @if(!$asset->activeCheckout->permanent)
                                         <dt>Expected Return</dt>
