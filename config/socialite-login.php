@@ -2,6 +2,6 @@
 
 return [
     'limit-access' => [
-        'email' => '/@csgreps\.com$/i',
+        'email' => getenv('GOOGLE_APP_DOMAIN_REGEX'),
     ],
 ];
