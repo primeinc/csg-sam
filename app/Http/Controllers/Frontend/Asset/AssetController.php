@@ -8,6 +8,7 @@ use App\Models\Asset;
 use App\Models\Checkout;
 use App\Models\Dealer;
 use App\Models\Dealership;
+use App\Models\Location;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
@@ -107,6 +108,11 @@ class AssetController extends Controller
         foreach ($checkedList as $checkedout) {
             $checkedIn[] = $checkedout->asset_id;
         }
+        $locationIn = [];
+        $locationList = Location::where('name', 'LIKE', '%' .$term. '%')->get();
+        foreach ($locationList as $location) {
+            $locationIn[] = $location->id;
+        }
 
         $assets = Asset::where('id', 'LIKE', '%'.$term.'%')
             ->orWhere('part', 'LIKE', '%'.$term.'%')
@@ -114,6 +120,7 @@ class AssetController extends Controller
             ->orWhere('ack', 'LIKE', '%'.$term.'%')
             ->orWhereIn('mfr_id', $mfrIn)
             ->orWhereIn('id', $checkedIn)
+            ->orWhereIn('location_id', $locationIn)
             ->get();
 
         $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');

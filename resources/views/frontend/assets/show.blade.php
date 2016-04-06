@@ -255,7 +255,7 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="labelTextArea" class="control-label">Text on the chair label</label>
-                        <textarea class="form-control" name="labelTextArea" id="labelTextArea" rows="5">CSG ID # {{ $asset->id }}&#13;&#10;Manufacturer: {{ $asset->mfr->name }}&#13;&#10;Description: {{ $asset->id }}&#13;&#10;Part # {{ $asset->part }}</textarea>
+                        <textarea class="form-control" name="labelTextArea" id="labelTextArea" rows="5">CSG ID # {{ $asset->id }}&#13;&#10;Manufacturer: {{ $asset->mfr->name }}&#13;&#10;Description: {{ $asset->description }}&#13;&#10;Part # {{ $asset->part }}</textarea>
                     </div>
                 </div>
                 <div class="box-footer">
