@@ -83,6 +83,18 @@ class AssetController extends Controller
         return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
     }
 
+    public function deleted()
+    {
+        $assets = Asset::onlyTrashed()->get();
+
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+
+        $this->page->title = trans('menus.frontend.samples.deleted');
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
+    }
+
     public function search(Request $request)
     {
         //        $assets = Asset::orderBy('created_at', 'desc')->with('Mfr')->with('activeCheckout')->get();

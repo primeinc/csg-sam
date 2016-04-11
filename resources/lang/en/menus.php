@@ -110,6 +110,7 @@ return [
             'search' => 'Samples Search',
             'recent' => 'Recent Samples',
             'out' => 'All Active Checkouts',
+            'deleted' => 'All Deleted Samples',
             'listOut' => 'List Active Checkouts',
             'add' => 'Add Sample',
             'bulk' => 'Bulk Edit',

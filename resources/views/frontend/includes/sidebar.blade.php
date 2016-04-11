@@ -63,6 +63,12 @@
                             {{ trans('menus.frontend.samples.listOut') }}
                         </a>
                     </li>
+                    <li class="{{ Active::pattern('samples/deleted') }}">
+                        <a href="{!! url('samples/deleted') !!}">
+                            <i class="fa fa-trash"></i>
+                            {{ trans('menus.frontend.samples.deleted') }}
+                        </a>
+                    </li>
                     <li class="{{ Active::pattern('samples/create') }}">
                         <a href="{!! url('samples/create') !!}">
                             <i class="fa fa-plus"></i>
