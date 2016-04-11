@@ -4,11 +4,11 @@
             <h3 class="box-title">#{{ $asset->id }}</h3>
             <div class="box-tools pull-right">
                 @if($asset->location_id != 1)
-                    <span class="label label-info">@ {!! $asset->location->name !!}</span>
+                    <span class="label label-info a-white"><a href="{{ route('samples.out.loc', $asset->location->id) }}" >@ {!! $asset->location->name !!}</a></span>
                 @endif
                 @if ($asset->status == 2 && $asset->activeCheckout)
                     <span class="label label-default "><a href="{{ route('samples.out.dsr', $asset->activeCheckout->dealer_id ) }}" >{!! $asset->activeCheckout->dealer->name !!}</a></span>
-                    <span class="label label-primary hidden-xs hidden-md">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
+                    <span class="label label-primary hidden-xs hidden-md a-white"><a href="{{ route('samples.out.ds', $asset->activeCheckout->dealer->dealership->id) }}" >{!! $asset->activeCheckout->dealer->dealership->name !!}</a></span>
                     @if($asset->activeCheckout->permanent)
                         <span class="label label-danger">Permanently Checked Out</span>
                     @else
@@ -29,7 +29,7 @@
                 <div class="col-xs-12 col-sm-6 col-md-7">
                     <dl>
                         <dt>Manufacturer</dt>
-                        <dd class="hideOverflow-1">{{ $asset->mfr->name }}</dd>
+                        <dd class="hideOverflow-1"><a href="{{ route('samples.out.mfr', $asset->mfr->id ) }}" >{{ $asset->mfr->name }}</a></dd>
                         <dt>Description</dt>
                         <dd class="hideOverflow-1">{{ $asset->description }}</dd>
                         @if ($asset->status == 2)  <!--Checked Out-->

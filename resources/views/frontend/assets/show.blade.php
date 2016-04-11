@@ -25,16 +25,16 @@
                     <h3 class="box-title"></h3>
                     <div class="box-tools pull-right">
                         @if($asset->location_id != 1)
-                            <span class="label label-info">@ {!! $asset->location->name !!}</span>
+                            <span class="label label-info a-white"><a href="{{ route('samples.out.loc', $asset->location->id) }}" >@ {!! $asset->location->name !!}</a></span>
                         @endif
                         @if ($asset->status == 2 && $asset->activeCheckout)
-                            <span class="label label-default">{!! $asset->activeCheckout->dealer->name !!}</span>
-                            <span class="label label-primary hidden-xs">{!! $asset->activeCheckout->dealer->dealership->name !!}</span>
-                                @if($asset->activeCheckout->permanent)
-                                    <span class="label label-danger">Permanently Checked Out</span>
-                                @else
-                                    <span class="label label-warning">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
-                                @endif
+                            <span class="label label-default "><a href="{{ route('samples.out.dsr', $asset->activeCheckout->dealer_id ) }}" >{!! $asset->activeCheckout->dealer->name !!}</a></span>
+                            <span class="label label-primary hidden-xs hidden-md a-white"><a href="{{ route('samples.out.ds', $asset->activeCheckout->dealer->dealership->id) }}" >{!! $asset->activeCheckout->dealer->dealership->name !!}</a></span>
+                            @if($asset->activeCheckout->permanent)
+                                <span class="label label-danger">Permanently Checked Out</span>
+                            @else
+                                <span class="label label-warning">Due {!! $asset->activeCheckout->expected_return_date->toFormattedDateString() !!}</span>
+                            @endif
                         @elseif ($asset->status == 3)
                             <span class="label label-info">In-Storage</span>
                         @else
@@ -52,7 +52,7 @@
                             {{--</div>--}}
                             <dl>
                                 <dt>Manufacturer</dt>
-                                <dd>{{ $asset->mfr->name }}</dd>
+                                <dd><a href="{{ route('samples.out.mfr', $asset->mfr->id ) }}" >{{ $asset->mfr->name }}</a></dd>
                                 <dt>Description</dt>
                                 <dd>{{ $asset->description }}</dd>
                                 <dt>Part #</dt>
@@ -157,12 +157,12 @@
                                         (on behalf of <a href="{!! route('samples.out.rep', $log->checkout->user->id) !!}">{{ $log->checkout->user->name }}</a>)
                                     @endif
                                     checked out this asset to <a href="{!! route('samples.out.dsr', $log->checkout->dealer->id) !!}">
-                                            {{ $log->checkout->dealer->name }} </a> @ {{ $log->checkout->dealer->dealership->name }}
+                                            {{ $log->checkout->dealer->name }} </a> @ <a href="{{ route('samples.out.ds', $log->checkout->dealer->dealership->id) }}" >{{ $log->checkout->dealer->dealership->name }}</a>
                                 @endif
                             @elseif($log->event == 'audit.asset.checkin')
                                 checked in this asset
                             @elseif($log->event == 'audit.asset.location.change')
-                                changed the location to {{ $log->context->location_name->new }}
+                                changed the location to <a href="{{ route('samples.out.loc', $log->context->location_name->newId) }}" >{{ $log->context->location_name->new }}</a>
                             @elseif($log->event == 'audit.asset.checkout.reminder')
                                 sent a reminder email to {{ $log->context->reminderLog->dealer_name }}
                             @endif

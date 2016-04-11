@@ -115,6 +115,9 @@ return [
             'bulk' => 'Bulk Edit',
             'outRep' => 'Active Samples Managed By ',
             'outDsr' => 'Checked Out to ',
+            'outLoc' => 'Samples Located @ ',
+            'outDs' => 'Checked Out to ',
+            'outMfr' => 'Samples by ',
             'mine' => 'My Sample Checkouts',
         ],
 

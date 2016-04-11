@@ -35,7 +35,9 @@ class AssetLogs extends Model
         if (isset($context->location_id)) {
             $context->location_name = new stdClass();
             $context->location_name->new = Location::withTrashed()->find($context->location_id->new)->name;
+            $context->location_name->newId = $context->location_id->new;
             $context->location_name->old = Location::withTrashed()->find($context->location_id->old)->name;
+            $context->location_name->oldId = $context->location_id->old;
         }
 
         if (isset($context->mfr_id)) {

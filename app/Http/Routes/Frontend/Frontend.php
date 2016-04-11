@@ -26,6 +26,9 @@ Route::group(['middleware' => 'auth'], function () {
         Route::get('samples/out', 'AssetController@out')->name('samples.out');
         Route::get('samples/out/rep-{rep}', 'AssetController@getByRep')->name('samples.out.rep');
         Route::get('samples/out/dsr-{dsr}', 'AssetController@getByDsr')->name('samples.out.dsr');
+        Route::get('samples/out/loc-{loc}', 'AssetController@getByLoc')->name('samples.out.loc');
+        Route::get('samples/out/ds-{ds}', 'AssetController@getByDs')->name('samples.out.ds');
+        Route::get('samples/out/mfr-{mfr}', 'AssetController@getByMfr')->name('samples.out.mfr');
         Route::resource('samples', 'AssetController');
     });
     Route::group(['namespace' => 'Dealership'], function () {

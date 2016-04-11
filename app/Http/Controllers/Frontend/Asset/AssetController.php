@@ -9,6 +9,7 @@ use App\Models\Checkout;
 use App\Models\Dealer;
 use App\Models\Dealership;
 use App\Models\Location;
+use App\Models\Mfr;
 use App\Repositories\Frontend\Asset\AssetContract;
 use App\Repositories\Frontend\Location\LocationContract;
 use App\Repositories\Frontend\Mfr\MfrContract;
@@ -295,6 +296,59 @@ class AssetController extends Controller
 
         $dealer = Dealer::find($id);
         $this->page->title = trans('menus.frontend.samples.outDsr') . $dealer->name;
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
+    }
+    
+    public function getByLoc($id)
+    {        
+        $assets = Asset::where('location_id', '=', $id)->get();
+
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+
+        $location = Location::find($id);
+
+        $this->page->title = trans('menus.frontend.samples.outLoc')  . $location->name;
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
+    }
+
+    public function getByDs($id)
+    {
+        $dsrList = Dealer::where('dealership_id', '=', $id)->get();
+        $dsrIn = [];
+        foreach ($dsrList as $dsr) {
+            $dsrIn[] = $dsr->id;
+        }
+        $checkedList = Checkout::select('asset_id')->where('returned_date', '=', null)->whereIn('dealer_id', $dsrIn)->get();
+        $checkedIn = [];
+        foreach ($checkedList as $checkedout) {
+            $checkedIn[] = $checkedout->asset_id;
+        }
+
+        $assets = Asset::whereIn('id', $checkedIn)->get();
+
+        $dealership = Dealership::find($id);
+
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+
+        $this->page->title = trans('menus.frontend.samples.outDs')  . $dealership->name;
+        $this->page->breadcrumb = trans('menus.frontend.samples.out');
+
+        return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
+    }
+
+    public function getByMfr($id)
+    {
+        $assets = Asset::where('mfr_id', '=', $id)->get();
+
+        $assets->load('mfr', 'location', 'activeCheckout.dealer', 'activeCheckout.dealer.dealership');
+
+        $mfr = Mfr::find($id);
+
+        $this->page->title = trans('menus.frontend.samples.outMfr')  . $mfr->name;
         $this->page->breadcrumb = trans('menus.frontend.samples.out');
 
         return view('frontend.assets.samples', compact('assets'))->with('page', $this->page);
