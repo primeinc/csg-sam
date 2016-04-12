@@ -61,7 +61,7 @@ class Asset extends Model
      */
     public function mfr()
     {
-        return $this->belongsTo('App\Models\Mfr');
+        return $this->belongsTo('App\Models\Mfr')->withTrashed();
     }
 
     /**
