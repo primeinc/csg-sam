@@ -2,20 +2,25 @@
 
 namespace App\Models\Access\SocialiteProviders\Google;
 
-use Laravel\Socialite\Two\AbstractProvider;
 use Laravel\Socialite\Two\ProviderInterface;
-use Laravel\Socialite\Two\User;
+use SocialiteProviders\Manager\OAuth2\AbstractProvider;
+use SocialiteProviders\Manager\OAuth2\User;
 
 class Provider extends AbstractProvider implements ProviderInterface
 {
     /**
+     * Unique Provider Identifier.
+     */
+    const IDENTIFIER = 'GOOGLE';
+
+    /**
      * {@inheritdoc}
      */
     protected $scopes = [
-        'https://www.googleapis.com/auth/plus.me',
-        'https://www.googleapis.com/auth/plus.login',
-        'https://www.googleapis.com/auth/plus.profile.emails.read',
-    ];
+		'openid',
+		'profile',
+		'email',
+	];
 
     /**
      * {@inheritdoc}
@@ -45,13 +50,16 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function getUserByToken($token)
     {
-        $response = $this->getHttpClient()->get(
-            'https://www.googleapis.com/plus/v1/people/me', [
-            'headers' => [
-                'Authorization' => 'Bearer '.$token,
-            ],
-        ]);
-
+        //fixing legacy google+ api
+		$response = $this->getHttpClient()->get('https://www.googleapis.com/oauth2/v3/userinfo?', [
+			'query' => [
+				'prettyPrint' => 'false',
+			],
+			'headers' => [
+				'Accept' => 'application/json',
+				'Authorization' => 'Bearer '.$token,
+			],
+		]);
         return json_decode($response->getBody()->getContents(), true);
     }
 
@@ -60,12 +68,20 @@ class Provider extends AbstractProvider implements ProviderInterface
      */
     protected function mapUserToObject(array $user)
     {
-        return (new User())->setRaw($user)->map([
-            'id' => $user['id'], 'nickname' => array_get($user, 'nickname'),
-            'name' => $user['displayName'],
-            'email' => $user['emails'][0]['value'],
-            'avatar' => array_get($user, 'image')['url'],
-        ]);
+		//fixing legacy google+ api
+        $user['id'] = array_get($user, 'sub');
+		$user['verified_email'] = array_get($user, 'email_verified');
+		$user['link'] = array_get($user, 'profile');
+
+		$avatarUrl = array_get($user, 'image.url');
+		return (new User)->setRaw($user)->map([
+			'id' => array_get($user, 'sub'),
+			'nickname' => array_get($user, 'nickname'),
+			'name' => array_get($user, 'name'),
+			'email' => array_get($user, 'email'),
+			'avatar' => $avatarUrl = array_get($user, 'picture'),
+			'avatar_original' => $avatarUrl,
+		]);
     }
 
     /**
@@ -76,17 +92,5 @@ class Provider extends AbstractProvider implements ProviderInterface
         return array_merge(parent::getTokenFields($code), [
             'grant_type' => 'authorization_code',
         ]);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function user()
-    {
-        $user = $this->mapUserToObject($this->getUserByToken(
-            $token = $this->getAccessToken($this->getCode())
-        ));
-
-        return $user->setToken($token);
     }
 }
